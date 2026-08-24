@@ -162,6 +162,26 @@
         <meta name="text:Custom Link 9 Name" content="" />
         <meta name="text:Custom Link 10 URL" content="" />
         <meta name="text:Custom Link 10 Name" content="" />
+        <meta name="text:Custom Link 11 URL" content="" />
+        <meta name="text:Custom Link 11 Name" content="" />
+        <meta name="text:Custom Link 12 URL" content="" />
+        <meta name="text:Custom Link 12 Name" content="" />
+        <meta name="text:Custom Link 13 URL" content="" />
+        <meta name="text:Custom Link 13 Name" content="" />
+        <meta name="text:Custom Link 14 URL" content="" />
+        <meta name="text:Custom Link 14 Name" content="" />
+        <meta name="text:Custom Link 15 URL" content="" />
+        <meta name="text:Custom Link 15 Name" content="" />
+        <meta name="text:Custom Link 16 URL" content="" />
+        <meta name="text:Custom Link 16 Name" content="" />
+        <meta name="text:Custom Link 17 URL" content="" />
+        <meta name="text:Custom Link 17 Name" content="" />
+        <meta name="text:Custom Link 18 URL" content="" />
+        <meta name="text:Custom Link 18 Name" content="" />
+        <meta name="text:Custom Link 19 URL" content="" />
+        <meta name="text:Custom Link 19 Name" content="" />
+        <meta name="text:Custom Link 20 URL" content="" />
+        <meta name="text:Custom Link 20 Name" content="" />
         
         <meta name="text:Home Link Label" content="Home">  
         <meta name="text:Ask Link Label" content="Ask">
@@ -345,26 +365,46 @@
         /*** Navigation ***/
         
         #navigation {
-            padding:20px var(--outer-margin) 20px var(--outer-margin);
             width:100%;
             position:fixed;
             left:0;
             top:0;
             z-index:9;
-            display: flex;
+            display:flex;
             list-style: none;
-            margin: 0;
-            white-space: nowrap; 
+            margin:0;
+            padding:0;
+            overflow:hidden;
+            white-space:nowrap;
+            background:linear-gradient(to bottom, rgba(0,0,0,.96) 0%, rgba(0,0,0,.78) 58%, rgba(0,0,0,0) 100%);
+            box-shadow:0 10px 24px rgba(0,0,0,.28);
+        }
+
+        #navigation .navigation-track {
+            display:flex;
+            width:max-content;
+            will-change:transform;
+            animation:navigation-marquee var(--navigation-duration, 90s) linear infinite;
+        }
+
+        #navigation:hover .navigation-track,
+        #navigation:focus-within .navigation-track {
+            animation-play-state:paused;
         }
 
         #navigation ul {
+            display:flex;
+            flex:none;
+            align-items:center;
+            width:max-content;
             list-style:none;
-            padding:0;
+            padding:18px 32px 30px var(--outer-margin);
+            margin:0;
         }
         
         #navigation ul li {
             list-style-type:none;
-            display:inline-block;
+            display:block;
             margin:0 14px 0 0;
             text-transform:uppercase;
             font-size:13px;
@@ -372,20 +412,30 @@
         }
         
         #navigation a {
-            color:var(--text);
+            color:#fff;
         }
         
-       .navigation ul li svg path {
-            fill:var(--text);
+       #navigation ul li svg path {
+            fill:#fff;
+        }
+
+        @keyframes navigation-marquee {
+            from { transform:translate3d(0,0,0); }
+            to { transform:translate3d(var(--navigation-distance, -50%),0,0); }
         }
         
-        #navigation .search {
-            transform: translateY(-2px);
-            padding: 0px 0 2px 0;
-        }
-        
-        body.over-banner #navigation a, body.over-banner .search input {
-            color:{color:Banner Text};
+        @media (prefers-reduced-motion: reduce) {
+            #navigation {
+                overflow-x:auto;
+            }
+
+            #navigation .navigation-track {
+                animation:none;
+            }
+
+            #navigation .navigation-list-clone {
+                display:none;
+            }
         }
         
         
@@ -419,11 +469,32 @@
             cursor:pointer;
         }
 
+        .index-intro {
+            margin-bottom:var(--outer-margin);
+        }
+
+        .index-intro .description-main {
+            padding-bottom:0;
+        }
+
+        .index-search {
+            width:70%;
+            max-width:34rem;
+            margin-top:var(--spacing);
+        }
+
+        .index-search input {
+            font-size:1em;
+            padding:.65rem 0;
+        }
+
         @media (max-width:740px) {
-            #navigation {
-                white-space: nowrap; 
-                overflow-x: auto;
-                overflow-y: hidden;
+            #navigation ul {
+                padding-left:var(--outer-margin);
+            }
+
+            .index-search {
+                width:90%;
             }
         }
         
@@ -2472,7 +2543,8 @@
     
         {block:ifnavigation}
         <nav id="navigation">
-            <ul>
+            <div class="navigation-track">
+            <ul class="navigation-list">
             
                 {block:ifHomeLink}<li><a href="/">{text:Home Link Label}</a></li>{/block:ifHomeLink}
                 {block:HasPages}
@@ -2489,6 +2561,16 @@
                 {block:IfCustomLink8URL}<li><a href="{text:Custom Link 8 URL}">{text:Custom Link 8 Name}</a></li>{/block:IfCustomLink8URL}
                 {block:IfCustomLink9URL}<li><a href="{text:Custom Link 9 URL}">{text:Custom Link 9 Name}</a></li>{/block:IfCustomLink9URL}
                 {block:IfCustomLink10URL}<li><a href="{text:Custom Link 10 URL}">{text:Custom Link 10 Name}</a></li>{/block:IfCustomLink10URL}
+                {block:IfCustomLink11URL}<li><a href="{text:Custom Link 11 URL}">{text:Custom Link 11 Name}</a></li>{/block:IfCustomLink11URL}
+                {block:IfCustomLink12URL}<li><a href="{text:Custom Link 12 URL}">{text:Custom Link 12 Name}</a></li>{/block:IfCustomLink12URL}
+                {block:IfCustomLink13URL}<li><a href="{text:Custom Link 13 URL}">{text:Custom Link 13 Name}</a></li>{/block:IfCustomLink13URL}
+                {block:IfCustomLink14URL}<li><a href="{text:Custom Link 14 URL}">{text:Custom Link 14 Name}</a></li>{/block:IfCustomLink14URL}
+                {block:IfCustomLink15URL}<li><a href="{text:Custom Link 15 URL}">{text:Custom Link 15 Name}</a></li>{/block:IfCustomLink15URL}
+                {block:IfCustomLink16URL}<li><a href="{text:Custom Link 16 URL}">{text:Custom Link 16 Name}</a></li>{/block:IfCustomLink16URL}
+                {block:IfCustomLink17URL}<li><a href="{text:Custom Link 17 URL}">{text:Custom Link 17 Name}</a></li>{/block:IfCustomLink17URL}
+                {block:IfCustomLink18URL}<li><a href="{text:Custom Link 18 URL}">{text:Custom Link 18 Name}</a></li>{/block:IfCustomLink18URL}
+                {block:IfCustomLink19URL}<li><a href="{text:Custom Link 19 URL}">{text:Custom Link 19 Name}</a></li>{/block:IfCustomLink19URL}
+                {block:IfCustomLink20URL}<li><a href="{text:Custom Link 20 URL}">{text:Custom Link 20 Name}</a></li>{/block:IfCustomLink20URL}
                 
                 {block:HasFeaturedTags}
                     {block:FeaturedTags}
@@ -2519,7 +2601,7 @@
                 {block:ifEmailAddress}<li><a target="_blank" href="mailto:{text:Email Address}"><i class="fa fa-envelope"></i></a></li>{/block:ifEmailAddress}
                         
                 {block:ifTwitterURL}<li><a target="_blank" href="{text:Twitter URL}"><svg class="x-icon" width="13.69" height="14" viewBox="0 0 1200 1227" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.165 687.828L521.697 619.934L144.011 79.6944H306.615L611.412 515.685L658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z" fill="white"/></svg></a></li>{/block:ifTwitterURL}
-                {block:ifInstagramURL}<li><a target="_blank" href="{text:Instagram URL}"><i class="fa-brands fa-instagram"></i></a></li>{block:ifInstagramURL}
+                {block:ifInstagramURL}<li><a target="_blank" href="{text:Instagram URL}"><i class="fa-brands fa-instagram"></i></a></li>{/block:ifInstagramURL}
                 {block:ifFacebookURL}<li><a target="_blank" href="{text:Facebook URL}"><i class="fa-brands fa-facebook"></i></a></li>{/block:ifFacebookURL}
                 {block:ifTikTokURL}<li><a target="_blank" href="{text:TikTok URL}"><i class="fa-brands fa-tiktok"></i></a></li>{/block:ifTikTokURL}
                 {block:ifYoutubeURL}<li><a target="_blank" href="{text:Youtube URL}"><i class="fa-brands fa-youtube"></i></a></li>{/block:ifYoutubeURL}
@@ -2539,17 +2621,8 @@
                 {block:ifTwitchURL}<li><a target="_blank" href="{text:Twitch URL}"><i class="fa-brands fa-twitch"></i></a></li>{/block:ifTwitchURL}
                 {block:ifVimeoURL}<li><a target="_blank" href="{text:Vimeo URL}"><i class="fa-brands fa-vimeo"></i></a></li>{/block:ifVimeoURL}
                 {block:ifWordpressURL}<li><a target="_blank" href="{text:Wordpress URL}"><i class="fa-brands fa-wordpress"></i></a></li>{/block:ifWordpressURL}
-                
-                {block:IfSearch}
-                <li>
-                    <div class="search">
-                        <form action="/search" method="get">
-                            <input type="text" name="q" placeholder="Search" value="{SearchQuery}"/>
-                        </form>
-                    </div>
-                </li>
-                {/block:IfSearch}
             </ul><!--navigation end-->
+            </div>
         </nav>
         {/block:ifnavigation}
 
@@ -2578,13 +2651,26 @@
     
         <!-- posts -->        
         <section id="posts">
+            {block:IndexPage}
+            <div class="index-intro">
+                {block:ShowDescription}
+                    <div class="description-main parsed"><p>{Description}</p></div>
+                {/block:ShowDescription}
+
+                {block:IfSearch}
+                    <div class="search index-search">
+                        <form action="/search" method="get" role="search">
+                            <label class="sr-text" for="site-search">Search this site</label>
+                            <input id="site-search" type="text" name="q" placeholder="Search" value="{SearchQuery}"/>
+                        </form>
+                    </div>
+                {/block:IfSearch}
+            </div>
+            {/block:IndexPage}
+
         <div id="stash-ants">
         
            {block:IndexPage}
-                {block:ShowDescription}
-                    <article class="post description-main parsed"><p>{Description}</p></article>
-                {/block:ShowDescription}
-          
                 <div class="post-sizer"></div>
                 <div class="post-gutter"></div>
             {/block:IndexPage}
@@ -2763,7 +2849,7 @@
                     <div class="footer-social">
                         <ul class="social-links">
                             {block:ifTwitterURL}<li><a target="_blank" href="{text:Twitter URL}"><svg class="x-icon" width="13.69" height="14" viewBox="0 0 1200 1227" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.165 687.828L521.697 619.934L144.011 79.6944H306.615L611.412 515.685L658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z" fill="white"/></svg></a></li>{/block:ifTwitterURL}
-                            {block:ifInstagramURL}<li><a target="_blank" href="{text:Instagram URL}"><i class="fa-brands fa-instagram"></i></a></li>{block:ifInstagramURL}
+                            {block:ifInstagramURL}<li><a target="_blank" href="{text:Instagram URL}"><i class="fa-brands fa-instagram"></i></a></li>{/block:ifInstagramURL}
                             {block:ifFacebookURL}<li><a target="_blank" href="{text:Facebook URL}"><i class="fa-brands fa-facebook"></i></a></li>{/block:ifFacebookURL}
                             {block:ifTikTokURL}<li><a target="_blank" href="{text:TikTok URL}"><i class="fa-brands fa-tiktok"></i></a></li>{/block:ifTikTokURL}
                             {block:ifYoutubeURL}<li><a target="_blank" href="{text:Youtube URL}"><i class="fa-brands fa-youtube"></i></a></li>{/block:ifYoutubeURL}
@@ -2860,6 +2946,52 @@
                         $("#banner").empty();
                     }
                 {/block:ifNotBannerOnTaggedPage}
+
+                // Slow, seamless navigation marquee. Cloned links remain clickable,
+                // while only the original list participates in keyboard navigation.
+                var $navigation = $('#navigation');
+                var $navigationTrack = $navigation.find('.navigation-track');
+                var $navigationList = $navigation.find('.navigation-list').first();
+                var navigationResizeTimer;
+
+                function setupNavigationMarquee() {
+                    if (!$navigationTrack.length || !$navigationList.length) {
+                        return;
+                    }
+
+                    $navigationTrack.find('.navigation-list-clone').remove();
+
+                    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                        return;
+                    }
+
+                    var listWidth = Math.ceil($navigationList.outerWidth(true));
+                    if (!listWidth) {
+                        return;
+                    }
+
+                    do {
+                        var $clone = $navigationList.clone()
+                            .removeClass('navigation-list')
+                            .addClass('navigation-list-clone')
+                            .attr('aria-hidden', 'true');
+
+                        $clone.find('a').attr('tabindex', '-1');
+                        $navigationTrack.append($clone);
+                    } while ($navigationTrack[0].scrollWidth < window.innerWidth + listWidth);
+
+                    $navigationTrack.css({
+                        '--navigation-distance': '-' + listWidth + 'px',
+                        '--navigation-duration': Math.max(70, listWidth / 12) + 's'
+                    });
+                }
+
+                setupNavigationMarquee();
+
+                $(window).off('resize.navigationMarquee').on('resize.navigationMarquee', function() {
+                    window.clearTimeout(navigationResizeTimer);
+                    navigationResizeTimer = window.setTimeout(setupNavigationMarquee, 200);
+                });
                 
                 // Footer Toggle
                 $(document).on("click",".footer-toggle",function(e){
