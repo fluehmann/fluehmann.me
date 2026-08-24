@@ -57,7 +57,6 @@
         <meta name="if:Home Link" content="1"/>
         <meta name="if:Random Link" content="0"/>    
         <meta name="if:Archive Link" content="0"/>    
-        <meta name="if:RSS Link" content="0"/> 
         
         <!-- Display -->
         
@@ -1031,6 +1030,21 @@
             font-style:italic;
             text-decoration:underline;
             text-underline-offset:.15em;
+        }
+
+        .tags:empty {
+            display:none;
+        }
+
+        .tags .permalink-link {
+            margin-left:.2rem;
+            margin-right:0;
+            font-style:normal;
+            text-decoration:none;
+        }
+
+        .tags .permalink-link:hover {
+            text-decoration:underline;
         }
         
         .pagination {
@@ -2593,10 +2607,6 @@
                 <li><a href="https://{name}.tumblr.com/random" title="{text:Random Link Label}">{text:Random Link Label}</a></li>
                 {/block:ifRandomLink}
                 
-                {block:ifRSSLink}
-                    <li><a href="{RSS}" title="{lang:RSS}">{lang:RSS}</a></li>
-                {/block:ifRSSLink}
-
                 {block:ifPhoneNumber}<li><a target="_blank" href="tel:{text:Phone Number}"><i class="fa fa-phone"></i></a></li>{/block:ifPhoneNumber} 
                 {block:ifEmailAddress}<li><a target="_blank" href="mailto:{text:Email Address}"><i class="fa fa-envelope"></i></a></li>{/block:ifEmailAddress}
                         
@@ -2781,13 +2791,14 @@
                 {/block:RebloggedFrom}
             </div>
             
-            {block:HasTags}
-                <div class="tags">
+            <div class="tags">
+                {block:HasTags}
                     {block:Tags}
                     <a href="{TagURL}">#{Tag}</a>
                     {/block:Tags}
-                </div>
-            {/block:HasTags}
+                {/block:HasTags}
+                {block:IndexPage}<a class="permalink-link" href="{Permalink}" aria-label="Permalink" title="Permalink">&gt;&gt;</a>{/block:IndexPage}
+            </div>
             
             {block:PermalinkPage}
                 {block:PermalinkPagination}
@@ -3098,7 +3109,7 @@
                 var controller = new ScrollMagic.Controller();
                 var $container = $('#stash-ants');
                 var $pagination = $('.hybrid-pagination');
-                var automaticLoadLimit = 5;
+                var automaticLoadLimit = 3;
                 var automaticLoads = 0;
                 var infiniteScrollStopped = false;
                 var initialPage = parseInt($pagination.attr('data-current-page'), 10) || 1;
@@ -3185,7 +3196,7 @@
                     revealPagination(currentPage);
                 }
                 
-                // Load five additional Tumblr pages, then switch to full pagination.
+                // Load three additional Tumblr pages, then switch to full pagination.
                 if ($pagination.length && $pagination.find('a.older').length) {
                     $container.infinitescroll({
                     navSelector: ".pagination",
@@ -3276,7 +3287,7 @@
         window.addEventListener('load', function() {
             var title = document.getElementById('animated-title');
             var preserve = 'Herr F';
-            var correction = 'lühmann.';
+            var correction = 'lühmann';
             var current = 'Herr Fühlmann?';
             var correctionIndex = 0;
 
