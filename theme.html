@@ -963,10 +963,59 @@
         }
         
         .pagination {
-        	justify-content: space-around;
-        	margin: 0 0 var(--outer-margin) 0;
-        	width: 100%;
-        	position:relative;
+	        margin:0 0 var(--outer-margin) 0;
+	        width:100%;
+	        position:relative;
+        }
+
+        .hybrid-pagination.pagination-visible {
+            display:flex !important;
+            flex-direction:column;
+            align-items:center;
+            gap:.75rem;
+            padding:var(--outer-margin) var(--spacing) 0;
+        }
+
+        .hybrid-pagination .page-navigation,
+        .hybrid-pagination .pages {
+            display:flex;
+            justify-content:center;
+            flex-wrap:wrap;
+            gap:.35rem;
+        }
+
+        .hybrid-pagination .page-navigation {
+            gap:.75rem;
+            margin-bottom:.5rem;
+        }
+
+        .hybrid-pagination .page-navigation a,
+        .hybrid-pagination .pages a,
+        .hybrid-pagination .pages span {
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            min-width:4ch;
+            min-height:2.5em;
+            padding:.25em .6em;
+            box-sizing:border-box;
+            text-decoration:none;
+        }
+
+        .hybrid-pagination .page-navigation a {
+            min-width:8rem;
+            border:1px solid var(--text);
+        }
+
+        .hybrid-pagination .pages a:hover,
+        .hybrid-pagination .page-navigation a:hover {
+            text-decoration:underline;
+        }
+
+        .hybrid-pagination .pages .current_page {
+            color:var(--background-color);
+            background:var(--text);
+            font-weight:600;
         }
         
         body.index-page #posts article {
@@ -2516,7 +2565,7 @@
 
             {block:ShowTitle} 
                 {block:ifnotlogoimage}
-                    <div class="logo"><h1><a href="/">{Title}</a></h1></div>
+                    <div class="logo"><h1><a href="/" aria-label="Herr Flühmann"><span id="animated-title">Herr Fühlmann?</span></a></h1></div>
                 {/block:ifnotlogoimage}
                 
                 {block:iflogoimage}
@@ -2678,13 +2727,25 @@
     </section> 
     
       {block:Pagination}
-            <div class="pagination flex centered">
-                {block:previouspage}
-                <a href="{previouspage}">Prev</a>
-                {/block:previouspage}
-                {block:nextpage}
-                <a class="older" href="{nextpage}">Next</a>
-                {/block:nextpage}
+            <div class="pagination hybrid-pagination" data-current-page="{CurrentPage}" data-total-pages="{TotalPages}" aria-label="Page navigation">
+                <div class="page-navigation">
+                    {block:previouspage}
+                    <a class="pagination-prev" href="{previouspage}">← Present</a>
+                    {/block:previouspage}
+                    {block:nextpage}
+                    <a class="older pagination-next" href="{nextpage}">Past →</a>
+                    {/block:nextpage}
+                </div>
+                <div class="pages">
+                    {block:JumpPagination length="1000"}
+                        {block:CurrentPage}
+                            <span class="current_page" data-page="{PageNumber}">{PageNumber}</span>
+                        {/block:CurrentPage}
+                        {block:JumpPage}
+                            <a class="jump_page" data-page="{PageNumber}" href="{URL}">{PageNumber}</a>
+                        {/block:JumpPage}
+                    {/block:JumpPagination}
+                </div>
             </div>
         {/block:pagination}
                 
@@ -2904,10 +2965,97 @@
                 
                 var controller = new ScrollMagic.Controller();
                 var $container = $('#stash-ants');
+                var $pagination = $('.hybrid-pagination');
+                var automaticLoadLimit = 5;
+                var automaticLoads = 0;
+                var infiniteScrollStopped = false;
+                var initialPage = parseInt($pagination.attr('data-current-page'), 10) || 1;
+                var totalPages = parseInt($pagination.attr('data-total-pages'), 10) || initialPage;
+
+                function getPageUrl(pageNumber) {
+                    var url = new URL(window.location.href);
+                    var basePath = url.pathname.replace(/\/page\/\d+\/?$/, '');
+
+                    if (pageNumber > 1) {
+                        url.pathname = basePath.replace(/\/$/, '') + '/page/' + pageNumber;
+                    } else {
+                        url.pathname = basePath || '/';
+                    }
+
+                    url.hash = '';
+                    return url.toString();
+                }
+
+                function revealPagination(currentPage) {
+                    if (!$pagination.length) {
+                        return;
+                    }
+
+                    currentPage = Math.max(1, Math.min(currentPage, totalPages));
+
+                    $pagination.find('.current_page').each(function() {
+                        var pageNumber = parseInt($(this).attr('data-page'), 10);
+
+                        if (pageNumber !== currentPage) {
+                            $(this).replaceWith(
+                                $('<a>', {
+                                    'class': 'jump_page',
+                                    'data-page': pageNumber,
+                                    'href': getPageUrl(pageNumber),
+                                    'text': pageNumber
+                                })
+                            );
+                        }
+                    });
+
+                    var $currentLink = $pagination.find('[data-page="' + currentPage + '"]').first();
+                    if ($currentLink.is('a')) {
+                        $currentLink.replaceWith(
+                            $('<span>', {
+                                'class': 'current_page',
+                                'data-page': currentPage,
+                                'text': currentPage
+                            })
+                        );
+                    }
+
+                    var $pageNavigation = $pagination.find('.page-navigation').empty();
+
+                    if (currentPage > 1) {
+                        $('<a>', {
+                            'class': 'pagination-prev',
+                            'href': getPageUrl(currentPage - 1),
+                            'text': '← Present'
+                        }).appendTo($pageNavigation);
+                    }
+
+                    if (currentPage < totalPages) {
+                        $('<a>', {
+                            'class': 'older pagination-next',
+                            'href': getPageUrl(currentPage + 1),
+                            'text': 'Past →'
+                        }).appendTo($pageNavigation);
+                    }
+
+                    $pagination.addClass('pagination-visible').css('display', 'flex');
+                }
+
+                function stopInfiniteScroll(currentPage) {
+                    if (!infiniteScrollStopped) {
+                        infiniteScrollStopped = true;
+                        try {
+                            $container.infinitescroll('destroy');
+                        } catch (error) {
+                            // The final page may already have stopped the plugin.
+                        }
+                    }
+
+                    revealPagination(currentPage);
+                }
                 
-                // Infinite Scroll
-                
-                $container.infinitescroll({
+                // Load five additional Tumblr pages, then switch to full pagination.
+                if ($pagination.length && $pagination.find('a.older').length) {
+                    $container.infinitescroll({
                     navSelector: ".pagination",
                     nextSelector: ".pagination a.older",
                     itemSelector: ".articlepost",
@@ -2923,9 +3071,22 @@
                         },
                         errorCallback: function() {
                             $('#infscr-loading').animate({opacity: .8}, 5000).fadeOut('normal');
+                            stopInfiniteScroll(Math.min(initialPage + automaticLoads, totalPages));
                         },
                     },
                   },function( newElements ) {
+
+                    automaticLoads += 1;
+                    var reachedLoadLimit = automaticLoads >= automaticLoadLimit;
+
+                    if (reachedLoadLimit && !infiniteScrollStopped) {
+                        infiniteScrollStopped = true;
+                        try {
+                            $container.infinitescroll('destroy');
+                        } catch (error) {
+                            // The callback can finish even if the plugin already stopped.
+                        }
+                    }
                       
                     stashFuel();
                 
@@ -2963,15 +3124,60 @@
                         }
                         
                         $('#infscr-loading').remove();
+
+                        if (reachedLoadLimit) {
+                            revealPagination(Math.min(initialPage + automaticLoads, totalPages));
+                        }
                     });
                     
                     // $(newElements).animate({ opacity: 1, visibility:'visible' });
                     
                     $('#stash-ants').isotope(true).isotope('layout');
-            });
+                    });
+                } else {
+                    revealPagination(initialPage);
+                }
     
     
         })(window.jQuery);
+
+        window.addEventListener('load', function() {
+            var title = document.getElementById('animated-title');
+            var preserve = 'Herr F';
+            var correction = 'lühmann.';
+            var current = 'Herr Fühlmann?';
+            var correctionIndex = 0;
+
+            if (!title) {
+                return;
+            }
+
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                title.textContent = preserve + correction;
+                return;
+            }
+
+            function typeCorrection() {
+                if (correctionIndex < correction.length) {
+                    current += correction.charAt(correctionIndex);
+                    title.textContent = current;
+                    correctionIndex += 1;
+                    window.setTimeout(typeCorrection, 100);
+                }
+            }
+
+            function deleteMistake() {
+                if (current.length > preserve.length) {
+                    current = current.slice(0, -1);
+                    title.textContent = current;
+                    window.setTimeout(deleteMistake, 70);
+                } else {
+                    window.setTimeout(typeCorrection, 250);
+                }
+            }
+
+            window.setTimeout(deleteMistake, 500);
+        });
         
         $(document).on('click', '.more-toggle', function(){
             if ( $('.remove-stash-credit').hasClass( "open" ) ) {
