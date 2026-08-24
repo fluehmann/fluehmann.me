@@ -627,6 +627,37 @@
             }
         }
         
+        /* Keep the four-column desktop layout, but use one column on mobile. */
+        @media screen and (max-width: 740px) {
+            .post-columns-four .post-sizer,
+            .post-columns-four #posts article {
+                width:100% !important;
+            }
+            
+            .post-columns-four #posts article {
+                margin:0 0 var(--spacing) 0 !important;
+            }
+            
+            .post-columns-four .post-gutter {
+                width:0 !important;
+            }
+        }
+
+        /* Give posts more breathing room without changing the masonry gutters. */
+        #posts article:not(.description-main),
+        .post-columns-three #posts article:not(.description-main),
+        .post-columns-four #posts article:not(.description-main) {
+            margin-bottom:2rem;
+        }
+
+        @media screen and (max-width: 740px) {
+            #posts article:not(.description-main),
+            .post-columns-three #posts article:not(.description-main),
+            .post-columns-four #posts article:not(.description-main) {
+                margin-bottom:1.5rem !important;
+            }
+        }
+        
         #posts article {
             float:left;
         }
@@ -730,10 +761,24 @@
         }
     
         .spotify_audio_player,
+        article iframe[src*='spotify'] {
+	        border:0;
+	        width:100%;
+            display:block;
+            margin:0;
+        }
+
         article iframe[src*='soundcloud'] {
-        	max-height: calc(170px + var(--spacing));
-        	border: 0;
-        	width:100%;
+	        max-height:calc(170px + var(--spacing));
+	        border:0;
+	        width:100%;
+        }
+
+        .post-audio figure:has(.spotify_audio_player),
+        .post-audio figure:has(iframe[src*='spotify']) {
+            padding-top:0;
+            margin:0;
+            line-height:0;
         }
         
         .album-cover {
@@ -745,18 +790,44 @@
         }
         
         .npf-link-block {
-        	margin: var(--spacing) 0 !important;
+            margin:var(--spacing) 0 !important;
+            padding:0 !important;
+            border:0 !important;
+            border-radius:0 !important;
+            background:transparent !important;
+            box-shadow:none !important;
         }
         
-        article .caption p, article .caption h2, article .caption h1 {
-        	padding: var(--spacing) 0;
-        	padding-bottom: 0;
-        	margin: 0;
-        	margin-top:0 !important;
+        .npf-link-block a {
+            display:inline;
+            padding:0 !important;
+            border:0 !important;
+            background:transparent !important;
+            color:var(--text) !important;
+            font-size:1em !important;
+            font-weight:inherit !important;
+            line-height:1.5;
+            text-decoration:underline;
+            text-underline-offset:.15em;
+            overflow-wrap:anywhere;
+        }
+        
+        .npf-link-block a::after {
+            content:" ↗";
+            font-size:.8em;
+        }
+        
+        article .caption p,
+        article .caption h2,
+        article .caption h1 {
+	        padding:0;
+	        margin:0;
         }
 
-        article.post-text .caption *:first-child,  article.post-text .caption blockquote *:first-child {
-            padding-top:0;   
+        article .caption p + p,
+        article .caption h1 + p,
+        article .caption h2 + p {
+            margin-top:var(--spacing);
         }
         
         article .caption p a {
@@ -776,10 +847,6 @@
         {block:IfNotShowPostReblogs}
             .reblog-user {display:none !important;}
         {/block:IfNotShowPostReblogs}
-        
-        article div.caption blockquote p:last-child {
-            padding-bottom: 0;
-        }
         
         .reblog-content {
             white-space:nowrap;
@@ -857,7 +924,7 @@
         }
         
         .reblog-content p:last-of-type {
-        	padding-bottom: var(--spacing);
+	        margin-bottom:var(--spacing);
         }
         
         .reblog-header a {
@@ -985,12 +1052,12 @@
             display:none !important;
         }
         
-        blockquote p {
-            padding-bottom:var(--spacing);
+        blockquote p + p {
+	        margin-top:var(--spacing);
         }
         
         article .caption p.reblog-user {
-            padding-bottom:var(--spacing);
+            margin-bottom:var(--spacing);
             display:block;
         }
         
