@@ -627,6 +627,22 @@
             }
         }
         
+        /* Keep the four-column desktop layout, but use one column on mobile. */
+        @media screen and (max-width: 740px) {
+            .post-columns-four .post-sizer,
+            .post-columns-four #posts article {
+                width:100% !important;
+            }
+            
+            .post-columns-four #posts article {
+                margin:0 0 var(--spacing) 0 !important;
+            }
+            
+            .post-columns-four .post-gutter {
+                width:0 !important;
+            }
+        }
+        
         #posts article {
             float:left;
         }
@@ -745,7 +761,31 @@
         }
         
         .npf-link-block {
-        	margin: var(--spacing) 0 !important;
+            margin:var(--spacing) 0 !important;
+            padding:0 !important;
+            border:0 !important;
+            border-radius:0 !important;
+            background:transparent !important;
+            box-shadow:none !important;
+        }
+        
+        .npf-link-block a {
+            display:inline;
+            padding:0 !important;
+            border:0 !important;
+            background:transparent !important;
+            color:var(--text) !important;
+            font-size:1em !important;
+            font-weight:inherit !important;
+            line-height:1.5;
+            text-decoration:underline;
+            text-underline-offset:.15em;
+            overflow-wrap:anywhere;
+        }
+        
+        .npf-link-block a::after {
+            content:" ↗";
+            font-size:.8em;
         }
         
         article .caption p, article .caption h2, article .caption h1 {
