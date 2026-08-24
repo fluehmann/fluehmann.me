@@ -53,12 +53,9 @@
         <meta name="if:Modal Post" content="1" />
         <meta name="if:Show Photo Overlay" content="1" />
         <meta name="if:Show Media Only" content="0" />
-        <meta name="if:Dark Reblog Buttons" content="0" />
         <meta name="if:Show Post Reblogs" content="0" />
         <meta name="if:Show Post Meta" content="1" />
         <meta name="if:Show Post Notes" content="0" />
-        <meta name="if:Show Post Date" content="0" />
-        <meta name="if:Show Post Share" content="1" />
         <meta name="if:Show Post Tags" content="1" />
         
         <meta name="if:Home Link" content="1"/>
@@ -780,10 +777,6 @@
             text-decoration:underline;
         }
         
-        /*body.index-page #posts article .share, body.index-page #posts article .info, body.index-page #posts article .post-meta {*/
-        /*    z-index:99999;*/
-        /*}*/
-        
         {block:IfShowPhotoOverlay}
             body.index-page #posts article.post-photo .caption, 
             body.index-page #posts article.post-photo .info, 
@@ -978,27 +971,13 @@
             z-index:2;
         }
         
-        {block:IfDarkReblogButtons}
-            article .overlay .like_button, article .overlay .reblog_button { -webkit-filter: invert(100%); filter: invert(100%); }
-            article .overlay { background:rgba(0,0,0,0.45) !important; color:white !important;}
-            article .overlay p a, article .overlay .post-share-toggle {color:white !important;}
-        {/block:IfDarkReblogButtons}
-        {block:IfNotDarkReblogButtons}
-            article .overlay { background:rgba(0,0,0,0.45) !important; color:white !important;}
-            article .overlay p a {color:white !important;}
-        {/block:IfNotDarkReblogButtons}
+        article .overlay { background:rgba(0,0,0,0.45) !important; color:white !important;}
+        article .overlay p a {color:white !important;}
         
         .overlay a {
             text-decoration:underline;
             color:white;
         }
-        
-        {block:IfDarkReblogButtons}
-            article .post-share-toggle {color:black;}
-        {/block:IfDarkReblogButtons}
-        {block:IfNotDarkReblogButtons}
-            article .post-share-toggle {color:white;}
-        {/block:IfNotDarkReblogButtons}
         
         article:hover .overlay {
             opacity: 1;
@@ -1008,19 +987,6 @@
         }
         
         article .overlay p { display:block; padding-bottom: var(--spacing); margin:0; }
-        
-        article .overlay .share {
-            bottom: var(--spacing);
-            right: var(--spacing);
-            position: absolute;
-            margin:0;
-            padding:0;
-        }
-        
-        article .overlay .standard-share {
-            color:black;
-            bottom:20px;
-        }
         
         article .open-modal.photo-modal {
             position:absolute;
@@ -1135,29 +1101,12 @@
             padding:var(--spacing);
         }
         
-        article .info,
-        .share {
-        	justify-content: space-between;
-        }
-        
-        .share iframe {
-            width: auto;
-            max-width: 16px;
-        }
-        
-        article .info, article .tags {
-        	/*padding: 0 var(--spacing) var(--spacing) var(--spacing);*/
-        	padding: 0 0 var(--spacing) 0;
-        }
-        
-        article .info {
-            padding-top: var(--spacing);
+        article .tags {
+	        /*padding: 0 var(--spacing) var(--spacing) var(--spacing);*/
+	        padding: 0 0 var(--spacing) 0;
         }
         
         {block:ifNotShowPostMeta}
-            article .info, article .overlay .share {
-                display:none;
-            }
             article .caption {
                 padding-bottom:0;
             }
@@ -1229,28 +1178,6 @@
             }
         {/block:ifNotShowPostNotes}
         
-        {block:ifNotShowPostDate}
-            .post-date {
-                display:none !important;
-            }
-        {/block:ifNotShowPostDate}
-        
-        {block:ifNotShowPostShare}
-            .share {
-                display:none !important;
-            }
-            
-            /*article.post-photo,  article figure {*/
-            /*    padding:0;*/
-            /*}*/
-        {/block:ifNotShowPostShare}
-        
-        {block:ifShowPostShare}
-            article ol.notes {
-                margin-top: calc(var(--spacing) - var(--spacing) - var(--spacing));
-            }
-        {/block:ifShowPostShare}
-        
         /*body.permalink video {*/
         /*    max-width:720px;*/
         /*}*/
@@ -1301,94 +1228,6 @@
             display:block;
         }
         
-        
-        /** Posts Share **/
-                
-        .share {
-        	width: 80px;
-        	align-items: center;
-        	position:relative;
-        	color:black;
-        }
-        
-        .post-note-count, .post-date {
-            display:inline-block;
-        }
-                
-        .standard-share {
-            position: absolute;
-            padding:7px 0;
-            bottom: 32px;
-            left: -15px;
-            background: white;
-            border:1px solid #ececec;
-            border-radius: 2px;
-            color:black !important;
-            opacity: 0;
-            z-index: 2;
-            visibility: hidden;
-            -webkit-transition: .3s all;
-            transition: .3s all;
-        }
-        .standard-share .fa {
-            margin: 0 8px 0 0;
-        }
-        .standard-share span {
-            display: block;
-            margin: 0;
-            white-space: nowrap;
-            border-bottom: 1px solid rgba(255,255,255,0.4);
-            text-decoration: none;
-            color:#222222 !important;
-        }
-        
-        .standard-share span:last-child {
-            border:none;
-            margin:0;
-        }
-                
-        .standard-share span a {
-            color:black !important;
-            text-decoration:none;
-            display:block;
-            padding:0 8px;
-            font-size: 13px;
-            line-height: 30px;
-        }
-                
-        .standard-share span i {
-            margin-right: 9px;
-        }
-        
-        .standard-share.open {
-            opacity:1;
-            visibility:visible;
-        }
-        
-        .post-share-toggle {
-            cursor:pointer;
-            font-size:16px;
-        }
-        
-        .like_button { margin-top:3px; }
-
-        .copy-btn::before {
-            margin: 0;
-            content: "Copy Link";
-            font-size: 13px;
-        }
-        
-        .share .fa-twitter {
-            color:#55acee !important;
-        }
-        
-        .share .fa-facebook {
-            color: #4c66a4 !important;
-        }
-        
-        .share .fa-pinterest {
-            color: #d34836 !important;
-        }
         
         /** Posts Loader **/
 
@@ -3114,19 +2953,6 @@
             
             {block:IndexPage}
                 <a class="open-modal photo-modal" href="{Permalink}" data-id="{PostID}"></a>
-                <div class="overlay">
-                    <div class="share flex align-center">
-                        <div class="post-share-parent s-i" title="Share this post">
-                            <a class="post-share-toggle"><i class="fa-solid fa-share-nodes"></i></a>
-                            <ul class="standard-share">
-                                <span class="share-facebook" title="Share on Facebook"><a href="https://www.facebook.com/sharer.php?u={Permalink}{block:Title}&t={Title}{/block:Title}" target="_new"><i class="fa-brands fa-facebook"></i>Facebook</a></span>
-                                <span class="share-twitter" title="Share on Twitter"><a href="https://twitter.com/intent/tweet?url={ShortURL}" target="_new"><i class="fa-brands fa-twitter"></i>Twitter</a></span>
-                                <span style="cursor:pointer; padding: 5px 10px ;" class="share-copy copy-btn" title="Copy Link"><span style="font-size:0; text-transform:lowercase !important;">{Permalink}</span></span>
-                            </ul>
-                        </div>
-                        
-                    </div>
-                </div>
             {/block:IndexPage}
             
             <div class="caption {block:notreblog} original-post {/block:notreblog}">
@@ -3154,26 +2980,6 @@
                     {/block:Reblogs}
                 {/block:RebloggedFrom}
             </div>
-            
-            {block:Date}
-                <div class="info flex align-center">
-                    <div class="perma-info">
-                        <a href="{Permalink}" data-id="{PostID}" class="post-date {block:IndexPage}open-modal{/block:IndexPage}">Posted on {ShortMonth} {DayofMonth}, {Year}</a>
-                    </div>
-                    
-                    <div class="share flex align-center">
-                        <div class="post-share-parent s-i" title="Share this post">
-                            <a class="post-share-toggle"><i class="fa-solid fa-share-nodes"></i></a>
-                            <ul class="standard-share">
-                                <span class="share-facebook" title="Share on Facebook"><a href="https://www.facebook.com/sharer.php?u={Permalink}{block:Title}&t={Title}{/block:Title}" target="_new"><i class="fa-brands fa-facebook"></i>Facebook</a></span>
-                                <span class="share-twitter" title="Share on Twitter"><a href="https://twitter.com/intent/tweet?url={ShortURL}" target="_new"><i class="fa-brands fa-twitter"></i>Twitter</a></span>
-                                <span style="cursor:pointer; padding: 5px 10px ;" class="share-copy copy-btn" title="Copy Link"><span style="font-size:0; text-transform:lowercase !important;">{Permalink}</span></span>
-                            </ul>
-                        </div>
-                        
-                    </div>
-                </div>
-            {/block:Date}
             
             {block:Hastags}
                 <div class="tags">
