@@ -51,15 +51,8 @@
         <meta name="if:Search" content="0" />
         <meta name="if:Curved Edges" content="1">
         <meta name="if:Modal Post" content="1" />
-        <meta name="if:Show Photo Overlay" content="1" />
-        <meta name="if:Show Media Only" content="0" />
-        <meta name="if:Dark Reblog Buttons" content="0" />
         <meta name="if:Show Post Reblogs" content="0" />
-        <meta name="if:Show Post Meta" content="1" />
         <meta name="if:Show Post Notes" content="0" />
-        <meta name="if:Show Post Date" content="0" />
-        <meta name="if:Show Post Share" content="1" />
-        <meta name="if:Show Post Tags" content="1" />
         
         <meta name="if:Home Link" content="1"/>
         <meta name="if:Random Link" content="0"/>    
@@ -70,9 +63,6 @@
         
         <meta name="select:Layout" content="fullscreen" Title="Fullscreen" />
         <meta name="select:Layout" content="wrap" Title="Wrap" />
-        
-        <meta name="select:Photoset Post Type" content="true" Title="Carousel" />
-        <meta name="select:Photoset Post Type" content="false" Title="Normal" />
         
         <meta name="select:Posts Columns" content="two" Title="2" /><meta name="select:Posts Columns" content="three" Title="3" /><meta name="select:Posts Columns" content="four" Title="4" />
         
@@ -187,7 +177,7 @@
         BANNER_VIDEO_VOLUME = "{select:Banner Video Volume}",
         BANNER_VIDEO_AUTOPLAY = "{select:Banner Video Autoplay}",
         SHOW_POST_NOTES = false,
-        PHOTOSET_POST_TYPE = {select:Photoset Post Type},
+        PHOTOSET_POST_TYPE = false,
         VIMEO_BANNER = {block:IfNotBannerVimeoVideoID} false{/block:IfNotBannerVimeoVideoID}{block:IndexPage}{block:IfBannerVimeoVideoID} true{/block:IfBannerVimeoVideoID}{/block:IndexPage}{block:PermalinkPage}{block:IfBannerVimeoVideoID} false{/block:IfBannerVimeoVideoID}{/block:PermalinkPage};
     </script>
     
@@ -662,8 +652,6 @@
             max-width:1280px;
         }
         
-        .posts-minimal .reblog-header, body.index-page .posts-minimal .post-photo .tags, body.index-page .posts-minimal .post-photo .info, body.index-page .posts-minimal .post-photoset .tags, body.index-page .posts-minimal .post-photoset .info { display:none; }
-        
         .npf-link-block,
         article .answer,
         .tags,
@@ -687,7 +675,6 @@
             padding-top: var(--spacing);
         }
         
-        .post-answer .overlay { display:none !important; }
         html .index-page article.post-answer p, html .index-page article.post-answer h1, html .index-page article.post-answer h2 { display:block; }
         
         
@@ -724,10 +711,6 @@
         }
         article.post-photoset blockquote:first-child .adaptable_npf_photoset {
             padding-top:0;
-        }
-        
-        .index-page article.post-photoset .overlay {
-            display:none;
         }
         
         /** Audio **/
@@ -780,67 +763,15 @@
             text-decoration:underline;
         }
         
-        /*body.index-page #posts article .share, body.index-page #posts article .info, body.index-page #posts article .post-meta {*/
-        /*    z-index:99999;*/
-        /*}*/
+        article .caption {
+            font-size:1em;
+            line-height:1.5;
+        }
         
-        {block:IfShowPhotoOverlay}
-            body.index-page #posts article.post-photo .caption, 
-            body.index-page #posts article.post-photo .info, 
-            body.index-page #posts article.post-photo .tags,
-            body.index-page #posts article.post-photoset .caption, 
-            body.index-page #posts article.post-photoset .info, 
-            body.index-page #posts article.post-photoset .tags
-            
-            {
-                display:none;
-            }
-            
-            #posts article.post-photo .overlay, #posts article.post-photoset .overlay { display:block; }
-            
-            article .caption, body.permalink article .caption {
-                padding-bottom:var(--spacing);
-            }
-            
-            article.post-photo .caption, article.post-photo blockquote {
-                padding:0;
-            }
-            
-            body.index-page #posts article.post-photo figcaption {
-                overflow:hidden;
-            }
-            body.index-page #posts article.post-photoset .caption {
-                display:none;
-            }
-        {/block:IfShowPhotoOverlay}
-        
-        {block:IfNotShowPhotoOverlay}
-            .overlay {
-                display:none !important;
-            }
-            body #posts article.post-photo .open-modal.photo-modal, body #posts article.post-photoset .open-modal.photo-modal {
-                display:none;
-            }
-            
-            /*article .caption { padding-bottom:var(--spacing); }*/
-            
-            /*article.post-photoset .caption > *:last-child {*/
-            /*    padding-bottom:var(--spacing);*/
-            /*}*/
-        {/block:IfNotShowPhotoOverlay}
-        
-        /** To hide meta/content **/
-        {block:IfShowMediaOnly}
-            #posts .post-photo .caption, #posts .post-photo .info, #posts .post-photoset .caption, #posts .post-photoset .info, #posts .post-photoset-grid .info, #posts .post-video .caption, #posts .post-video .info, #posts .post-audio .caption, #posts .post-audio .info, #posts .instagram-post .caption, #posts .instagram-post .info, .index-page #posts .post-photoset .caption p {
-                display:none;
-            }
-            .instagram-post .media {
-                margin:0 !important;
-            }
-            .index-page.photoset-type-false #posts .post-photoset .caption p {
-                display:block;
-            }
-        {/block:IfShowMediaOnly}
+        article.post-photo .caption,
+        article.post-photoset .caption {
+            margin-top:var(--spacing);
+        }
         
         {block:IfNotShowPostReblogs}
             .reblog-user {display:none !important;}
@@ -856,189 +787,11 @@
 
         /** Photo **/
         {block:IfCurvedEdges}
-            article.post-photo .media, article.post-photo .media, body.photoset-type-false .post-photoset .npf_col, body.photoset-type-true .post-photoset .npf_col, .stash-overlay .media img, .permalink .npf_col .post_media_photo, .post-video .media, .post-video iframe, .permalink .post_media_photo_anchor img, #footer, article .overlay, .post-text .post_media_photo, .single-photoset img {
+            article.post-photo .media, .post-photoset .npf_col, .stash-overlay .media img, .permalink .npf_col .post_media_photo, .post-video .media, .post-video iframe, .permalink .post_media_photo_anchor img, #footer, .post-text .post_media_photo, .stacked-photoset img {
                 border-radius:20px;
                 overflow:hidden;
             }
         {/block:IfCurvedEdges}
-        
-        /*** Overlay ***/
-        
-        article .overlay, body.photoset-type-false #posts article.post-photoset .overlay { display:none; }
-
-        body article .overlay:not(:has(.post-caption)) {
-            background:transparent !important;
-        }
-        
-        article .overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            opacity: 0;
-            visibility: hidden;
-            z-index: 2;
-            -webkit-transition: opacity 0.3s ease-out;
-            transition: opacity 0.3s ease-out;
-            pointer-events: none;
-            background:rgba(255,255,255,0.45);
-            color:black;
-            padding: 30px;
-        }
-        
-        article .overlay .post-caption {
-            overflow-y:scroll;
-            max-height:90%;
-        }
-        
-        article.post-photoset .post-caption {
-            padding: var(--spacing) var(--spacing) var(--spacing) calc(var(--spacing) + 50px);
-            overflow-y: scroll;
-            position: absolute;
-            left: 0;
-            top: 0;
-            max-height: 90%;
-            font-size: 12px;
-            line-height: 1.4;
-            z-index: 2;
-            overflow-y: scroll;
-            color: white;
-            margin-top: 10px;
-            max-width: 98%;
-        }
-        
-        .post-caption::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.1);
-        }
-                
-        /* width */
-        .post-caption::-webkit-scrollbar {
-            width: 4px;
-            height:auto;
-            /*display:block;*/
-        }
-        
-        /* Track */
-        .post-caption::-webkit-scrollbar-track {
-            background: transparent; 
-        }
-        
-        /* Handle */
-        .post-caption::-webkit-scrollbar-thumb {
-            width:2px;
-        }
-        
-        article .overlay h1 {
-            font-size:36px;
-            transform: translateY(-20px);
-            opacity: 0;
-            visiblity: hidden;
-            -webkit-transition: all 0.3s ease-in-out;
-            transition: all 0.3s ease-in-out;
-        }
-        
-        article.post-photo .overlay h1:first-of-type {
-            position:absolute;
-            bottom:0;
-            left:20px;
-        }
-        
-        article .overlay p {
-            transform: translateY(20px);
-            opacity: 0;
-            visiblity: hidden;
-            -webkit-transition: all 0.3s ease-in-out;
-            transition: all 0.3s ease-in-out;
-        }
-        
-        article:hover .overlay h1:first-of-type, article:hover .overlay p {
-            opacity: 1;
-            visibility: visible;
-            transform:none;
-        }
-        
-        @media only screen and (max-width: 740px) {
-            article .overlay h1 {
-                font-size:16px;
-            }  
-            article .overlay {
-                font-size:11px;
-                padding:16px 16px 24px 16px;
-                overflow-y:scroll;
-            }
-        }
-        
-        article.post-photoset .overlay {
-            padding:var(--spacing) var(--spacing) var(--spacing) calc(var(--spacing) + 50px);
-        }
-        
-        .overlay * {
-            pointer-events:auto;
-            z-index:2;
-        }
-        
-        {block:IfDarkReblogButtons}
-            article .overlay .like_button, article .overlay .reblog_button { -webkit-filter: invert(100%); filter: invert(100%); }
-            article .overlay { background:rgba(0,0,0,0.45) !important; color:white !important;}
-            article .overlay p a, article .overlay .post-share-toggle {color:white !important;}
-        {/block:IfDarkReblogButtons}
-        {block:IfNotDarkReblogButtons}
-            article .overlay { background:rgba(0,0,0,0.45) !important; color:white !important;}
-            article .overlay p a {color:white !important;}
-        {/block:IfNotDarkReblogButtons}
-        
-        .overlay a {
-            text-decoration:underline;
-            color:white;
-        }
-        
-        {block:IfDarkReblogButtons}
-            article .post-share-toggle {color:black;}
-        {/block:IfDarkReblogButtons}
-        {block:IfNotDarkReblogButtons}
-            article .post-share-toggle {color:white;}
-        {/block:IfNotDarkReblogButtons}
-        
-        article:hover .overlay {
-            opacity: 1;
-            visibility: visible;
-            -webkit-transition: opacity 0.3s ease-out;
-            transition: opacity 0.3s ease-out;
-        }
-        
-        article .overlay p { display:block; padding-bottom: var(--spacing); margin:0; }
-        
-        article .overlay .share {
-            bottom: var(--spacing);
-            right: var(--spacing);
-            position: absolute;
-            margin:0;
-            padding:0;
-        }
-        
-        article .overlay .standard-share {
-            color:black;
-            bottom:20px;
-        }
-        
-        article .open-modal.photo-modal {
-            position:absolute;
-            top:0;
-            left:0;
-            width:100%;
-            height:100%;
-            z-index:1;
-            display:none;
-        }
-        
-        body #posts article.post-photo .open-modal.photo-modal, body #posts article.post-photoset .open-modal.photo-modal {
-            display:block;
-        }
-        
-        body.index-page article.post-photo .info .open-modal, body.index-page article.post-photoset .info .open-modal {
-            display:inline-block;
-        }
         
         .post img {
             display: block;
@@ -1054,12 +807,6 @@
         body.permalink article img {
            width:auto;
         }
-        
-        article .overlay img {
-            display:none;
-        }
-        
-        .overlay ul { padding-left:0; list-style-position:inside; }
         
         /** Video **/
         
@@ -1135,49 +882,17 @@
             padding:var(--spacing);
         }
         
-        article .info,
-        .share {
-        	justify-content: space-between;
-        }
-        
-        .share iframe {
-            width: auto;
-            max-width: 16px;
-        }
-        
-        article .info, article .tags {
-        	/*padding: 0 var(--spacing) var(--spacing) var(--spacing);*/
-        	padding: 0 0 var(--spacing) 0;
-        }
-        
-        article .info {
-            padding-top: var(--spacing);
-        }
-        
-        {block:ifNotShowPostMeta}
-            article .info, article .overlay .share {
-                display:none;
-            }
-            article .caption {
-                padding-bottom:0;
-            }
-            article.post-text .caption { padding-bottom:var(--spacing); }
-            
-        {/block:ifNotShowPostMeta}
-       
-        
-        .tags {
-            {block:ifShowPostMeta}
-                padding-top:0;
-            {/block:ifShowPostMeta}
-            
-            {block:ifNotShowPostTags}
-                display:none;
-            {/block:ifNotShowPostTags}
+        article .tags {
+	        padding: .25rem 0 var(--spacing) 0;
+            font-size:.85em;
+            line-height:1.4;
         }
         
         .tags a {
             margin-right:7px;
+            font-style:italic;
+            text-decoration:underline;
+            text-underline-offset:.15em;
         }
         
         .pagination {
@@ -1229,28 +944,6 @@
             }
         {/block:ifNotShowPostNotes}
         
-        {block:ifNotShowPostDate}
-            .post-date {
-                display:none !important;
-            }
-        {/block:ifNotShowPostDate}
-        
-        {block:ifNotShowPostShare}
-            .share {
-                display:none !important;
-            }
-            
-            /*article.post-photo,  article figure {*/
-            /*    padding:0;*/
-            /*}*/
-        {/block:ifNotShowPostShare}
-        
-        {block:ifShowPostShare}
-            article ol.notes {
-                margin-top: calc(var(--spacing) - var(--spacing) - var(--spacing));
-            }
-        {/block:ifShowPostShare}
-        
         /*body.permalink video {*/
         /*    max-width:720px;*/
         /*}*/
@@ -1288,7 +981,7 @@
             margin:0;
         }
         
-        blockquote:empty, p:empty, body article.post-photo .overlay:empty, .replies:empty, article .caption:empty, .overlay:empty {
+        blockquote:empty, p:empty, .replies:empty, article .caption:empty {
             display:none !important;
         }
         
@@ -1301,94 +994,6 @@
             display:block;
         }
         
-        
-        /** Posts Share **/
-                
-        .share {
-        	width: 80px;
-        	align-items: center;
-        	position:relative;
-        	color:black;
-        }
-        
-        .post-note-count, .post-date {
-            display:inline-block;
-        }
-                
-        .standard-share {
-            position: absolute;
-            padding:7px 0;
-            bottom: 32px;
-            left: -15px;
-            background: white;
-            border:1px solid #ececec;
-            border-radius: 2px;
-            color:black !important;
-            opacity: 0;
-            z-index: 2;
-            visibility: hidden;
-            -webkit-transition: .3s all;
-            transition: .3s all;
-        }
-        .standard-share .fa {
-            margin: 0 8px 0 0;
-        }
-        .standard-share span {
-            display: block;
-            margin: 0;
-            white-space: nowrap;
-            border-bottom: 1px solid rgba(255,255,255,0.4);
-            text-decoration: none;
-            color:#222222 !important;
-        }
-        
-        .standard-share span:last-child {
-            border:none;
-            margin:0;
-        }
-                
-        .standard-share span a {
-            color:black !important;
-            text-decoration:none;
-            display:block;
-            padding:0 8px;
-            font-size: 13px;
-            line-height: 30px;
-        }
-                
-        .standard-share span i {
-            margin-right: 9px;
-        }
-        
-        .standard-share.open {
-            opacity:1;
-            visibility:visible;
-        }
-        
-        .post-share-toggle {
-            cursor:pointer;
-            font-size:16px;
-        }
-        
-        .like_button { margin-top:3px; }
-
-        .copy-btn::before {
-            margin: 0;
-            content: "Copy Link";
-            font-size: 13px;
-        }
-        
-        .share .fa-twitter {
-            color:#55acee !important;
-        }
-        
-        .share .fa-facebook {
-            color: #4c66a4 !important;
-        }
-        
-        .share .fa-pinterest {
-            color: #d34836 !important;
-        }
         
         /** Posts Loader **/
 
@@ -1436,10 +1041,6 @@
         }
         
         @media only screen and (max-width: 768px) {
-            .overlay {
-                display:none;
-            }
-            
             .back-to-top { display:none; }
         }
         
@@ -1622,182 +1223,62 @@
             padding:0 !important;
         }
         
-        /* Inline Photosets */
+        /** Stacked Photosets **/
         
-        .stash-photoset {
-            position: relative;
-            overflow: hidden;
-            width: auto !important;
-            -webkit-transition: height .3s;
-            transition: height .3s;
-            height: auto !important;
-        }
-        .permalink .stash-photoset {
-            margin: 0 auto;
-        }
-        .stash-photoset.open .ps-nav-left, .stash-photoset.open .ps-nav-right {
-            z-index: 0;
-        }
-        
-        .ps-options {
-            width:50px;
-            height:50px;
-            display:block;
-            cursor:pointer;
-            position:absolute;
-            left:0;
-            z-index:3;
-            line-height:50px;
-            text-align:center;
-            opacity:0;
-            visibility:hidden;
-            -webkit-transition:all 0.3s;
-            transition:all 0.3s;
-            background:black;
-            color:white;
-        }
-        
-        .ps-options:hover {
-            color:black;
-            background:white;
-        }
-        
-        .post-photo:hover .ps-options, .post-photoset:hover .ps-options {
-            opacity:1;
-            visibility:visible;
-        }
-        
-        .stash-overlay .ps-options, body.permalink .ps-options {
-            display:none;
-        }
-        
-        .ps-options::after {
-            height:1px;
-            background:black;
-            position:absolute;
-            bottom:0;
-            left:0;
-            z-index:9999;
-        }
-        
-        .ps-nav-right {
-            top:51px;
-        }
-        
-        .ps-nav-left {
-            top:102px;
-        }
-        
-        .ps-options .total { display:inline-block; }
-        
-        .photoset-count {
-            top:0;
-            font-size: 12px;
-            text-transform:uppercase;
-            z-index: 3;
-            font-weight:bold;
-            cursor:pointer;
-            opacity:1;
-            visibility:visible;
-        }
-        
-        @media (max-width:740px) {
-            .ps-options {
-                width:30px;
-                height:30px;
-                line-height:30px;
-            }
-            .ps-nav-right {
-                top:31px;
-            }
-            
-            .ps-nav-left {
-                top:62px;
-            }
-            .photoset-count {
-                font-size: 8px;
-            }
-        }
-        
-        .single-photoset.active {
-            opacity: 1;
-            -webkit-transition: opacity 1s;
-            transition: opacity 1s;
-            z-index:1;
-        }
-        
-        .single-photoset:first-child {
-            position: relative;
-        }
-        .single-photoset {
-            display: block;
-            position: absolute;
-            top: 0;
-            opacity: 0;
-            width: 100%;
-            margin: 0 0 2px 0;
-        }
-        
-        body.permalink .single-photoset, .stash-overlay .single-photoset {
-            position: relative;
-            top: initial;
-            opacity: 1;
-        }
-        
-        @media (min-width:740px) {
-            body.permalink .single-photoset, .stash-overlay .single-photoset {
-                margin:0 0 var(--spacing) 0;
-            }
-        
-            body.permalink .single-photoset:last-of-type, .stash-overlay .single-photoset:last-of-type {
-                margin:0 0 var(--spacing) 0;
-            }
-        }
-        
-        .stash-photoset.cps:hover .single-photoset:not(.active) {
-            opacity: .2;
-        }
-        
-        /** New Photoset **/
-        .photoset-type-true .post-photoset .npf_col {
-            display: none;
-            width: 100%;
-        }
-    
-        .photoset-type-true .post-photoset .npf_col.active {
-            opacity: 1;
-            display:block;
-            -webkit-transition: opacity 1s;
-            transition: opacity 1s;
-            z-index:1;
-        }
-        .photoset-type-true #posts .post-photoset .npf_col:first-child {
-            position: relative;
-        }
-        
-        body.index-page.photoset-type-false #posts article.post-photoset .caption {
+        .stacked-photoset,
+        .post-photoset .adaptable_npf_photoset {
             display:block !important;
-        }
-
-        body.photoset-type-false #posts article.post-photoset .open-modal.photo-modal {
-            height: 80%;
+            width:100%;
         }
         
-        body.permalink .post-photoset .npf_col, .stash-overlay .post-photoset .npf_col {
-            position: relative;
-            top: initial;
-            opacity: 1;
+        .post-photoset .npf_row {
+            display:flex !important;
+            flex-direction:column;
+            gap:var(--spacing);
+            width:100%;
+            margin-bottom:var(--spacing);
         }
         
-        /*@media (min-width:740px) {*/
-        /*    body.permalink .post-photoset .npf_col, .stash-overlay .post-photoset .npf_col {*/
-        /*        margin:0 0 var(--spacing) 0;*/
-        /*    }*/
+        .post-photoset .npf_row:last-child {
+            margin-bottom:0;
+        }
         
-        /*    body.permalink .post-photoset .npf_col:last-of-type, .stash-overlay .post-photoset .npf_col:last-of-type {*/
-        /*        margin:0 0 var(--spacing) 0;*/
-        /*    }*/
-        /*}*/
+        .stacked-photoset .photoset-photo,
+        .post-photoset .npf_col {
+            display:block !important;
+            position:relative !important;
+            top:auto !important;
+            width:100% !important;
+            opacity:1 !important;
+            margin:0;
+        }
+        
+        .post-photoset .npf_col figure,
+        .post-photoset .post_media_photo_anchor {
+            display:block !important;
+            position:relative !important;
+            width:100% !important;
+            height:auto !important;
+            margin:0;
+        }
+        
+        .stacked-photoset .photoset-photo {
+            margin-bottom:var(--spacing);
+        }
+        
+        .stacked-photoset .photoset-photo:last-child,
+        .post-photoset .npf_row:last-child .npf_col:last-child {
+            margin-bottom:0;
+        }
+        
+        .stacked-photoset img,
+        .post-photoset .npf_col img,
+        .post-photoset .post_media_photo {
+            display:block;
+            position:relative !important;
+            width:100%;
+            height:auto;
+        }
         
         
         
@@ -2319,15 +1800,6 @@
         }
         
         
-        .stash-overlay.photoset .photoset-count {
-            display:none;
-        }
-        
-        .photoset-type-true .stash-overlay .post-photoset .npf_col {
-            display:block;
-            margin:0 0 var(--spacing);
-        }
-        
         .stash-overlay.photo .stash-container,  .stash-overlay.video .stash-container, .stash-overlay.audio .stash-container, .stash-overlay.photoset .stash-container {
             max-width:100%;
             padding:0;
@@ -2338,20 +1810,6 @@
                 padding:30px 0;
             }
         
-            body.photoset-type-false.modal-photo-full .stash-overlay.photoset .stash-post-meta, body.photoset-type-false.modal-photo-full  .stash-overlay.photoset-grid .stash-post-meta {
-                padding:0 0 30px 0;
-                max-width:100%;
-            }
-        
-            body.photoset-type-false.modal-photo-full .stash-overlay.photoset .info {
-                max-width: 1280px;
-                margin: 0 auto;
-                width: 100%;
-            }
-        
-            body.photoset-type-false.modal-photo-full .stash-overlay.photoset .stash-caption {
-                margin:0;
-            }
         }
         
         .stash-overlay.photo .caption, .stash-overlay.video .caption, .stash-overlay.audio .caption, .stash-overlay.photoset .caption, .stash-overlay.photo .info, .stash-overlay.video .info, .stash-overlay.audio .info, .stash-overlay.photoset .info, .stash-overlay.text .tags, .stash-overlay.text .tags, .stash-overlay.text .tags, .stash-overlay.text .tags, .stash-overlay .caption, .stash-overlay .info, .stash-overlay .tags
@@ -2377,10 +1835,6 @@
         
         .modal-photo-full .stash-overlay.video .stash-container video, .modal-photo-full .stash-overlay .caption, .modal-photo-full .stash-overlay .info {
             max-width:100%;
-        }
-        
-        .stash-overlay .overlay, .stash-overlay .photo-modal {
-            display:none;
         }
         
 
@@ -2733,8 +2187,8 @@
     {text:Font Embed Code}
 </head>
 
-<body class="{block:homepage}home {/block:homepage}{block:tagpage}tagged-page {/block:tagpage} {block:IndexPage}index-page {/block:IndexPage} {block:PermalinkPage}permalink  {/block:PermalinkPage}{block:searchpage}search-page {/block:searchpage}{block:submitpage}submit {/block:submitpage}{block:AskPage}ask-page {/block:AskPage}{block:IfShowPhotoOverlay}posts-minimal {/block:IfShowPhotoOverlay}
- {block:ifbanner} has-banner {block:IfBannerVimeoVideoID}has-vimeo-video {/block:IfBannerVimeoVideoID} {block:ifmobilebannerbackgroundimage}has-mobile-banner-image {/block:ifmobilebannerbackgroundimage}{/block:ifbanner} photoset-type-{select:Photoset Post Type} modal-photo-{select:Modal Photo Size} post-columns-{select:Posts Columns} page-layout-{select:Layout}">
+<body class="{block:homepage}home {/block:homepage}{block:tagpage}tagged-page {/block:tagpage} {block:IndexPage}index-page {/block:IndexPage} {block:PermalinkPage}permalink  {/block:PermalinkPage}{block:searchpage}search-page {/block:searchpage}{block:submitpage}submit {/block:submitpage}{block:AskPage}ask-page {/block:AskPage}
+ {block:ifbanner} has-banner {block:IfBannerVimeoVideoID}has-vimeo-video {/block:IfBannerVimeoVideoID} {block:ifmobilebannerbackgroundimage}has-mobile-banner-image {/block:ifmobilebannerbackgroundimage}{/block:ifbanner} modal-photo-{select:Modal Photo Size} post-columns-{select:Posts Columns} page-layout-{select:Layout}">
 
 
     <div id="preloader"><div id="loader"><div class="loading-icon"></div></div></div>
@@ -3030,30 +2484,17 @@
         	</div>
             
             {block:Photo}
-                <div class="media"><img src="{PhotoURL-HighRes}" alt="{photoalt}" class="photos"></div>
+                <div class="media"><a href="{PhotoURL-HighRes}"><img src="{PhotoURL-HighRes}" alt="{photoalt}" class="photos"></a></div>
             {/block:Photo}
     
             {block:Photoset}
-                <div class="stash-photoset ips">
-                    <div class="ps-options ps-nav-right"><i class="fa fa-arrow-right"></i></div>
-                    <div class="ps-options ps-nav-left"><i class="fa fa-arrow-left"></i></div>
-                    <div class="ps-options photoset-count" data-id="{PostID}"><span>1</span> / {PhotoCount}</div>
-    
-                    <div class="photo-slideshow" id="photoset_{PostID}" data-layout="{PhotosetLayout}">
-                        {block:Photos}
-                        {block:IndexPage}
-                        <a class="open-modal single-photoset" href="{Permalink}" data-id="{PostID}">
-                        <img data-img-hq="{PhotoURL-HighRes}" alt="{PhotoAlt}" src="{PhotoURL-HighRes}" />
+                <div class="stacked-photoset">
+                    {block:Photos}
+                        <a class="photoset-photo" href="{PhotoURL-HighRes}">
+                            <img alt="{PhotoAlt}" src="{PhotoURL-HighRes}" />
                         </a>
-                        {/block:IndexPage}
-                        {block:PermalinkPage}
-                        <a class="single-photoset" href="{PhotoURL-HighRes}"><img data-img-hq="{PhotoURL-HighRes}" alt="{PhotoAlt}" src="{PhotoURL-HighRes}" /></a>
-                        {/block:PermalinkPage}
-                        {/block:Photos}
-                    </div>
+                    {/block:Photos}
                 </div>
-            
-               <!--<div class="photo-containerset"><blockquote data-layout="{PhotosetLayout}">{Photoset}</blockquote></div> -->
             {/block:Photoset}
                 
             {block:Panorama}
@@ -3112,23 +2553,6 @@
                {/block:NotReblog}
             {/block:Answer}
             
-            {block:IndexPage}
-                <a class="open-modal photo-modal" href="{Permalink}" data-id="{PostID}"></a>
-                <div class="overlay">
-                    <div class="share flex align-center">
-                        <div class="post-share-parent s-i" title="Share this post">
-                            <a class="post-share-toggle"><i class="fa-solid fa-share-nodes"></i></a>
-                            <ul class="standard-share">
-                                <span class="share-facebook" title="Share on Facebook"><a href="https://www.facebook.com/sharer.php?u={Permalink}{block:Title}&t={Title}{/block:Title}" target="_new"><i class="fa-brands fa-facebook"></i>Facebook</a></span>
-                                <span class="share-twitter" title="Share on Twitter"><a href="https://twitter.com/intent/tweet?url={ShortURL}" target="_new"><i class="fa-brands fa-twitter"></i>Twitter</a></span>
-                                <span style="cursor:pointer; padding: 5px 10px ;" class="share-copy copy-btn" title="Copy Link"><span style="font-size:0; text-transform:lowercase !important;">{Permalink}</span></span>
-                            </ul>
-                        </div>
-                        
-                    </div>
-                </div>
-            {/block:IndexPage}
-            
             <div class="caption {block:notreblog} original-post {/block:notreblog}">
                 {block:Text}
                     {block:Title}<h2><a class="open-modal" href="{Permalink}" data-id="{PostID}">{Title}</a></h2>{/block:Title}
@@ -3155,33 +2579,13 @@
                 {/block:RebloggedFrom}
             </div>
             
-            {block:Date}
-                <div class="info flex align-center">
-                    <div class="perma-info">
-                        <a href="{Permalink}" data-id="{PostID}" class="post-date {block:IndexPage}open-modal{/block:IndexPage}">Posted on {ShortMonth} {DayofMonth}, {Year}</a>
-                    </div>
-                    
-                    <div class="share flex align-center">
-                        <div class="post-share-parent s-i" title="Share this post">
-                            <a class="post-share-toggle"><i class="fa-solid fa-share-nodes"></i></a>
-                            <ul class="standard-share">
-                                <span class="share-facebook" title="Share on Facebook"><a href="https://www.facebook.com/sharer.php?u={Permalink}{block:Title}&t={Title}{/block:Title}" target="_new"><i class="fa-brands fa-facebook"></i>Facebook</a></span>
-                                <span class="share-twitter" title="Share on Twitter"><a href="https://twitter.com/intent/tweet?url={ShortURL}" target="_new"><i class="fa-brands fa-twitter"></i>Twitter</a></span>
-                                <span style="cursor:pointer; padding: 5px 10px ;" class="share-copy copy-btn" title="Copy Link"><span style="font-size:0; text-transform:lowercase !important;">{Permalink}</span></span>
-                            </ul>
-                        </div>
-                        
-                    </div>
-                </div>
-            {/block:Date}
-            
-            {block:Hastags}
+            {block:HasTags}
                 <div class="tags">
                     {block:Tags}
                     <a href="{TagURL}">#{Tag}</a>
                     {/block:Tags}
                 </div>
-            {/block:Hastags}
+            {/block:HasTags}
             
             {block:PermalinkPage}
                 {block:PermalinkPagination}
@@ -3357,8 +2761,6 @@
             {block:IndexPage}    
                 $antsIsoCont = $('#stash-ants');
                 antsIsotope = $antsIsoCont.imagesLoaded(function(){
-                    $('.stash-photoset.ips').stashIPS();
-                    
                     TweenMax.fromTo("#stash-ants", 1, {opacity:0, y:100, ease:Power2.easeOut, force3D: true},{opacity:1, y:0, ease:Power2.easeOut, force3D: true});   
                     
                     antsIsotope = $antsIsoCont.isotope({
@@ -3470,8 +2872,6 @@
                     
                     var $newElems = $( newElements ).css({ opacity: 0 });
                     $newElems.imagesLoaded(function(){
-                        
-                        $('.stash-photoset.ips').stashIPS();
                         $("article").fitVids();
                         
                         $newElems.animate({ opacity: 1 });
