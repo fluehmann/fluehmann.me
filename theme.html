@@ -373,22 +373,10 @@
             list-style: none;
             margin:0;
             padding:0;
-            overflow:hidden;
+            overflow-x:auto;
+            overflow-y:hidden;
             white-space:nowrap;
             background:linear-gradient(to bottom, rgba(0,0,0,.96) 0%, rgba(0,0,0,.78) 58%, rgba(0,0,0,0) 100%);
-            box-shadow:0 10px 24px rgba(0,0,0,.28);
-        }
-
-        #navigation .navigation-track {
-            display:flex;
-            width:max-content;
-            will-change:transform;
-            animation:navigation-marquee var(--navigation-duration, 90s) linear infinite;
-        }
-
-        #navigation:hover .navigation-track,
-        #navigation:focus-within .navigation-track {
-            animation-play-state:paused;
         }
 
         #navigation ul {
@@ -418,27 +406,6 @@
             fill:#fff;
         }
 
-        @keyframes navigation-marquee {
-            from { transform:translate3d(0,0,0); }
-            to { transform:translate3d(var(--navigation-distance, -50%),0,0); }
-        }
-        
-        @media (prefers-reduced-motion: reduce) {
-            #navigation {
-                overflow-x:auto;
-            }
-
-            #navigation .navigation-track {
-                animation:none;
-            }
-
-            #navigation .navigation-list-clone {
-                display:none;
-            }
-        }
-        
-        
-        
         /*** Search ***/
         
         .search input {
@@ -2557,7 +2524,6 @@
     
         {block:ifnavigation}
         <nav id="navigation">
-            <div class="navigation-track">
             <ul class="navigation-list">
             
                 {block:ifHomeLink}<li><a href="/">{text:Home Link Label}</a></li>{/block:ifHomeLink}
@@ -2632,7 +2598,6 @@
                 {block:ifVimeoURL}<li><a target="_blank" href="{text:Vimeo URL}"><i class="fa-brands fa-vimeo"></i></a></li>{/block:ifVimeoURL}
                 {block:ifWordpressURL}<li><a target="_blank" href="{text:Wordpress URL}"><i class="fa-brands fa-wordpress"></i></a></li>{/block:ifWordpressURL}
             </ul><!--navigation end-->
-            </div>
         </nav>
         {/block:ifnavigation}
 
@@ -2958,52 +2923,6 @@
                     }
                 {/block:ifNotBannerOnTaggedPage}
 
-                // Slow, seamless navigation marquee. Cloned links remain clickable,
-                // while only the original list participates in keyboard navigation.
-                var $navigation = $('#navigation');
-                var $navigationTrack = $navigation.find('.navigation-track');
-                var $navigationList = $navigation.find('.navigation-list').first();
-                var navigationResizeTimer;
-
-                function setupNavigationMarquee() {
-                    if (!$navigationTrack.length || !$navigationList.length) {
-                        return;
-                    }
-
-                    $navigationTrack.find('.navigation-list-clone').remove();
-
-                    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                        return;
-                    }
-
-                    var listWidth = Math.ceil($navigationList.outerWidth(true));
-                    if (!listWidth) {
-                        return;
-                    }
-
-                    do {
-                        var $clone = $navigationList.clone()
-                            .removeClass('navigation-list')
-                            .addClass('navigation-list-clone')
-                            .attr('aria-hidden', 'true');
-
-                        $clone.find('a').attr('tabindex', '-1');
-                        $navigationTrack.append($clone);
-                    } while ($navigationTrack[0].scrollWidth < window.innerWidth + listWidth);
-
-                    $navigationTrack.css({
-                        '--navigation-distance': '-' + listWidth + 'px',
-                        '--navigation-duration': Math.max(70, listWidth / 12) + 's'
-                    });
-                }
-
-                setupNavigationMarquee();
-
-                $(window).off('resize.navigationMarquee').on('resize.navigationMarquee', function() {
-                    window.clearTimeout(navigationResizeTimer);
-                    navigationResizeTimer = window.setTimeout(setupNavigationMarquee, 200);
-                });
-                
                 // Footer Toggle
                 $(document).on("click",".footer-toggle",function(e){
                     $('body').toggleClass("footer-open");
