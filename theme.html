@@ -854,17 +854,15 @@
             font-size:.8em;
         }
         
-        article .caption p,
+        article .caption p {
+	        padding:var(--spacing) 0 0;
+	        margin:0;
+        }
+
         article .caption h2,
         article .caption h1 {
 	        padding:0;
 	        margin:0;
-        }
-
-        article .caption p + p,
-        article .caption h1 + p,
-        article .caption h2 + p {
-            margin-top:var(--spacing);
         }
         
         article .caption p a {
@@ -876,9 +874,21 @@
             line-height:1.5;
         }
         
-        article.post-photo .caption,
-        article.post-photoset .caption {
+        article .post-date {
             margin-top:var(--spacing);
+            font-size:.85em;
+            line-height:1.4;
+            font-style:normal;
+        }
+
+        article .post-date a {
+            color:inherit;
+            font-style:normal;
+            text-decoration:none;
+        }
+
+        article .post-date a:hover {
+            text-decoration:underline;
         }
         
         {block:IfNotShowPostReblogs}
@@ -1151,10 +1161,6 @@
         
         blockquote:empty, p:empty, .replies:empty, article .caption:empty {
             display:none !important;
-        }
-        
-        blockquote p + p {
-	        margin-top:var(--spacing);
         }
         
         article .caption p.reblog-user {
@@ -2755,6 +2761,14 @@
                     {/block:Reblogs}
                 {/block:RebloggedFrom}
             </div>
+
+            {block:Date}
+            <div class="post-date">
+                <a href="{Permalink}" title="Permalink">
+                    <time datetime="{Year}-{MonthNumberWithZero}-{DayOfMonthWithZero}">{TimeAgo}, {DayOfWeek} {DayOfMonthWithZero}.{MonthNumberWithZero}.{Year}</time>
+                </a>
+            </div>
+            {/block:Date}
             
             <div class="tags">
                 {block:HasTags}
