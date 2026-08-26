@@ -369,13 +369,20 @@
         }
         
         #preloader .loading-dodecahedron {
-            position: absolute;
-            top: 48%;
-            left: 50%;
+            position:absolute;
+            top:48%;
+            left:50%;
             translate:-50% -50%;
-            width:42px;
-            height:42px;
+            width:88px;
+            height:88px;
             color:{color:Text};
+        }
+
+        @media screen and (max-width:740px) {
+            #preloader .loading-dodecahedron {
+                width:68px;
+                height:68px;
+            }
         }
         .hidden {
             display:none;
@@ -576,7 +583,12 @@
             max-width:600px;
         }
         
-        body.search-page .description-main, body.tagged-page .description-main {
+        body.search-page .description-default,
+        body.tagged-page .description-default {
+            display:none;
+        }
+
+        .description-context {
             position:relative;
         }
 
@@ -743,14 +755,14 @@
         #posts article:not(.description-main),
         .post-columns-three #posts article:not(.description-main),
         .post-columns-four #posts article:not(.description-main) {
-            margin-bottom:2rem;
+            margin-bottom:3.5rem;
         }
 
         @media screen and (max-width: 740px) {
             #posts article:not(.description-main),
             .post-columns-three #posts article:not(.description-main),
             .post-columns-four #posts article:not(.description-main) {
-                margin-bottom:1.5rem !important;
+                margin-bottom:3rem !important;
             }
         }
         
@@ -1237,10 +1249,10 @@
             transform: translateX(-50%);
             z-index: 1000000;
             display:none;
-            width:44px;
-            height:44px;
+            width:64px;
+            height:64px;
             color:var(--text);
-            padding:5px;
+            padding:7px;
             border-radius:50%;
             background:var(--background-color);
         }
@@ -1254,7 +1266,7 @@
             width:100%;
             height:100%;
             transform-origin:50% 50%;
-            animation:dodecahedron-counter-clockwise 2.4s linear infinite;
+            animation:dodecahedron-counter-clockwise 3.5s linear infinite;
         }
 
         @keyframes dodecahedron-counter-clockwise {
@@ -2712,8 +2724,14 @@
             {block:IndexPage}
             <div class="index-intro">
                 {block:ShowDescription}
-                    <div class="description-main parsed"><p>{Description}</p></div>
+                    <div class="description-main description-default parsed"><p>{Description}</p></div>
                 {/block:ShowDescription}
+                {block:TagPage}
+                    <div class="description-main description-context parsed"><p>#{Tag}</p></div>
+                {/block:TagPage}
+                {block:SearchPage}
+                    <div class="description-main description-context parsed"><p>#{SearchQuery}</p></div>
+                {/block:SearchPage}
 
                 {block:IfSearch}
                     <div class="search index-search">
@@ -2997,6 +3015,20 @@
     
     <script type="text/javascript">
         (function($) {
+            var preloaderShownAt = Date.now();
+            var preloaderMinimumDuration = 1100;
+
+            function hideInitialPreloader() {
+                var remaining = Math.max(0, preloaderMinimumDuration - (Date.now() - preloaderShownAt));
+
+                window.setTimeout(function() {
+                    if (!$('#preloader').length) {
+                        return;
+                    }
+
+                    TweenLite.to('#preloader', .4, {opacity:0, onComplete:removePre});
+                }, remaining);
+            }
             
             stashFuel();
             
@@ -3067,7 +3099,7 @@
                         }
                     });
                     
-                    TweenLite.to('#preloader', 1, {opacity: 0, onComplete: removePre});
+                    hideInitialPreloader();
                     $('#stash-ants').isotope(true).isotope('layout');
                 });
                 
@@ -3104,7 +3136,7 @@
             {/block:TaggedPage}  
         
             {block:PermalinkPage}
-                TweenLite.to('#preloader', .5, {opacity: 0, onComplete: removePre});
+                hideInitialPreloader();
             {/block:PermalinkPage}
 
             function removePre() {
@@ -3130,18 +3162,43 @@
                 var automaticLoadLimit = 3;
                 var automaticLoads = 0;
                 var infiniteScrollStopped = false;
+                var postLoaderShownAt = 0;
+                var postLoaderMinimumDuration = 650;
+                var postLoaderHideTimer = null;
                 var initialPage = parseInt($pagination.attr('data-current-page'), 10) || 1;
                 var totalPages = parseInt($pagination.attr('data-total-pages'), 10) || initialPage;
 
                 function showPostLoader() {
+                    window.clearTimeout(postLoaderHideTimer);
+                    postLoaderShownAt = Date.now();
                     $dynamicPostLoader.addClass('is-loading').attr('aria-hidden', 'false');
                     $loadMoreFallback.prop('disabled', true);
                 }
 
                 function hidePostLoader() {
+                    var remaining = Math.max(0, postLoaderMinimumDuration - (Date.now() - postLoaderShownAt));
+
+                    window.clearTimeout(postLoaderHideTimer);
+                    postLoaderHideTimer = window.setTimeout(function() {
+                        $dynamicPostLoader.removeClass('is-loading').attr('aria-hidden', 'true');
+                        $loadMoreFallback.prop('disabled', false);
+                    }, remaining);
+                }
+
+                $(document).on('click.pageLoader', '#navigation a, .tags a, .hybrid-pagination a', function(event) {
+                    if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+                        showPostLoader();
+                    }
+                });
+
+                $('.index-search form').on('submit.pageLoader', function() {
+                    showPostLoader();
+                });
+
+                window.addEventListener('pageshow', function() {
                     $dynamicPostLoader.removeClass('is-loading').attr('aria-hidden', 'true');
                     $loadMoreFallback.prop('disabled', false);
-                }
+                });
 
                 function getPageUrl(pageNumber) {
                     var url = new URL(window.location.href);
