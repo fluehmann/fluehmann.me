@@ -884,6 +884,13 @@
             margin:0;
         }
 
+        /* Keep playlists, albums and podcasts unchanged; compact single tracks only. */
+        iframe.spotify_audio_player[src*='%2Ftrack%2F'],
+        iframe.spotify_audio_player[src*='/embed/track/'] {
+            height:180px !important;
+            min-height:180px !important;
+        }
+
         article iframe[src*='soundcloud'] {
 	        max-height:calc(170px + var(--spacing));
 	        border:0;
