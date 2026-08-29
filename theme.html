@@ -519,6 +519,13 @@
             padding:.65rem 0;
         }
 
+        .search-empty {
+            width:100%;
+            padding:var(--spacing) var(--outer-margin);
+            font-size:var(--font-size);
+            box-sizing:border-box;
+        }
+
         @media (max-width:740px) {
             #navigation ul {
                 padding-left:var(--outer-margin);
@@ -3042,6 +3049,13 @@
                     }
 
                     TweenLite.to('#preloader', .4, {opacity:0, onComplete:removePre});
+
+                    // Never leave the opening loader covering a completed page.
+                    window.setTimeout(function() {
+                        if ($('#preloader').length) {
+                            removePre();
+                        }
+                    }, 450);
                 }, remaining);
             }
             
@@ -3094,6 +3108,17 @@
             
             {block:IndexPage}    
                 $antsIsoCont = $('#stash-ants');
+
+                if ($('body').hasClass('search-page') && !$antsIsoCont.find('.articlepost').length) {
+                    $('<p>', {
+                        'class': 'search-empty',
+                        'role': 'status',
+                        'text': 'No posts found.'
+                    }).appendTo($antsIsoCont);
+                    $antsIsoCont.css({opacity:1, transform:'none'});
+                    hideInitialPreloader();
+                }
+
                 antsIsotope = $antsIsoCont.imagesLoaded(function(){
                     TweenMax.fromTo("#stash-ants", 1, {opacity:0, y:100, ease:Power2.easeOut, force3D: true},{opacity:1, y:0, ease:Power2.easeOut, force3D: true});   
                     
