@@ -895,7 +895,7 @@
         iframe.spotify_audio_player[src*='%2Ftrack%2F'],
         iframe.spotify_audio_player[src*='/embed/track/'] {
             height:180px !important;
-            min-height:180px !important;
+            max-height:180px !important;
         }
 
         article iframe[src*='soundcloud'] {
@@ -955,7 +955,7 @@
         article .caption h2,
         article .caption h1 {
 	        padding:0;
-	        margin:0;
+	        margin:var(--spacing) 0 0;
         }
         
         article .caption p a {
@@ -983,6 +983,10 @@
         article .post-date a:hover {
             text-decoration:underline;
         }
+
+        body.permalink article > .permalink-post-date {
+            margin:0 0 var(--spacing);
+        }
         
         {block:IfNotShowPostReblogs}
             .reblog-user {display:none !important;}
@@ -1008,7 +1012,7 @@
         body.index-page #posts .post_media_photo_anchor {
             height: 100%;
             display: block;
-            pointer-events: none;
+            pointer-events: auto;
         }
         
         body.permalink article img {
@@ -2477,6 +2481,25 @@
 
 
     <div id="preloader"><div id="loader"><svg class="loading-dodecahedron" aria-hidden="true"><use href="#icon-dodecahedron" xlink:href="#icon-dodecahedron"></use></svg></div></div>
+    <script>
+        // Independent failsafe: the opening loader must be gone after four seconds.
+        window.setTimeout(function() {
+            var preloader = document.getElementById("preloader");
+
+            if (!preloader) {
+                return;
+            }
+
+            preloader.style.transition = "opacity .4s ease";
+            preloader.style.opacity = "0";
+
+            window.setTimeout(function() {
+                if (preloader.parentNode) {
+                    preloader.parentNode.removeChild(preloader);
+                }
+            }, 400);
+        }, 3600);
+    </script>
     
     
     {block:IndexPage}
@@ -2775,7 +2798,17 @@
             
         {block:Posts}
     	
-        <article id="{PostID}" data-id="{PostID}" data-pt="{posttype}" class="post-{posttype} post articlepost {block:Text}{/block:Text} {block:Audio}parsed{/block:Audio}  {block:Video}parsed{/block:Video} {block:Quote}parsed{/block:Quote} {block:Link}parsed{/block:Link} {block:Chat}parsed{/block:Chat} {block:Photo}parsed{/block:Photo} {block:Photoset}parsed{/block:Photoset} {block:Answer}parsed{/block:Answer} {block:Tags}tag-{Tag} {/block:Tags}">
+        <article id="{PostID}" data-id="{PostID}" data-permalink="{Permalink}" data-pt="{posttype}" class="post-{posttype} post articlepost {block:Text}{/block:Text} {block:Audio}parsed{/block:Audio}  {block:Video}parsed{/block:Video} {block:Quote}parsed{/block:Quote} {block:Link}parsed{/block:Link} {block:Chat}parsed{/block:Chat} {block:Photo}parsed{/block:Photo} {block:Photoset}parsed{/block:Photoset} {block:Answer}parsed{/block:Answer} {block:Tags}tag-{Tag} {/block:Tags}">
+            {block:PermalinkPage}
+                {block:Date}
+                <div class="post-date permalink-post-date">
+                    <a href="{Permalink}" title="Permalink">
+                        <time datetime="{Year}-{MonthNumberWithZero}-{DayOfMonthWithZero}">{TimeAgo}, {DayOfWeek} {DayOfMonthWithZero}.{MonthNumberWithZero}.{Year}</time>
+                    </a>
+                </div>
+                {/block:Date}
+            {/block:PermalinkPage}
+
                 
         	<div class="hidden">
         		<script type="text/json">
@@ -2784,13 +2817,13 @@
         	</div>
             
             {block:Photo}
-                <div class="media"><a href="{PhotoURL-HighRes}"><img src="{PhotoURL-HighRes}" alt="{photoalt}" class="photos"></a></div>
+                <div class="media"><a href="{Permalink}"><img src="{PhotoURL-HighRes}" alt="{photoalt}" class="photos"></a></div>
             {/block:Photo}
     
             {block:Photoset}
                 <div class="stacked-photoset">
                     {block:Photos}
-                        <a class="photoset-photo" href="{PhotoURL-HighRes}">
+                        <a class="photoset-photo" href="{Permalink}">
                             <img alt="{PhotoAlt}" src="{PhotoURL-HighRes}" />
                         </a>
                     {/block:Photos}
@@ -2879,13 +2912,15 @@
                 {/block:RebloggedFrom}
             </div>
 
-            {block:Date}
-            <div class="post-date">
-                <a href="{Permalink}" title="Permalink">
-                    <time datetime="{Year}-{MonthNumberWithZero}-{DayOfMonthWithZero}">{TimeAgo}, {DayOfWeek} {DayOfMonthWithZero}.{MonthNumberWithZero}.{Year}</time>
-                </a>
-            </div>
-            {/block:Date}
+            {block:IndexPage}
+                {block:Date}
+                <div class="post-date">
+                    <a href="{Permalink}" title="Permalink">
+                        <time datetime="{Year}-{MonthNumberWithZero}-{DayOfMonthWithZero}">{TimeAgo}, {DayOfWeek} {DayOfMonthWithZero}.{MonthNumberWithZero}.{Year}</time>
+                    </a>
+                </div>
+                {/block:Date}
+            {/block:IndexPage}
             
             <div class="tags">
                 {block:HasTags}
@@ -3059,7 +3094,22 @@
                 }, remaining);
             }
             
+            function linkPostImagesToPermalink(context) {
+                var $context = $(context);
+                var $posts = $context.filter("article.articlepost").add($context.find("article.articlepost"));
+
+                $posts.each(function() {
+                    var $post = $(this);
+                    var permalink = $post.attr("data-permalink");
+
+                    if (permalink) {
+                        $post.find(".post_media_photo_anchor").attr("href", permalink);
+                    }
+                });
+            }
+
             stashFuel();
+            linkPostImagesToPermalink(document);
             
             $(document).ready(function(){
             
@@ -3378,6 +3428,7 @@
                     }
                       
                     stashFuel();
+                    linkPostImagesToPermalink(newElements);
                 
                     // Remove Reblogs
                     $(this).find('.tumblr_blog').closest('p').addClass('reblog-user');
