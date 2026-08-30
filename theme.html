@@ -433,7 +433,15 @@
             overflow-x:auto;
             overflow-y:hidden;
             white-space:nowrap;
+            -ms-overflow-style:none;
+            scrollbar-width:none;
             background:linear-gradient(to bottom, rgba(0,0,0,.96) 0%, rgba(0,0,0,.78) 58%, rgba(0,0,0,0) 100%);
+        }
+
+        #navigation::-webkit-scrollbar {
+            display:none;
+            width:0;
+            height:0;
         }
 
         #navigation ul {
@@ -509,6 +517,13 @@
         .index-search input {
             font-size:1em;
             padding:.65rem 0;
+        }
+
+        .search-empty {
+            width:100%;
+            padding:var(--spacing) var(--outer-margin);
+            font-size:var(--font-size);
+            box-sizing:border-box;
         }
 
         @media (max-width:740px) {
@@ -874,6 +889,13 @@
 	        width:100%;
             display:block;
             margin:0;
+        }
+
+        /* Keep playlists, albums and podcasts unchanged; compact single tracks only. */
+        iframe.spotify_audio_player[src*='%2Ftrack%2F'],
+        iframe.spotify_audio_player[src*='/embed/track/'] {
+            height:180px !important;
+            min-height:180px !important;
         }
 
         article iframe[src*='soundcloud'] {
@@ -3027,6 +3049,13 @@
                     }
 
                     TweenLite.to('#preloader', .4, {opacity:0, onComplete:removePre});
+
+                    // Never leave the opening loader covering a completed page.
+                    window.setTimeout(function() {
+                        if ($('#preloader').length) {
+                            removePre();
+                        }
+                    }, 450);
                 }, remaining);
             }
             
@@ -3079,6 +3108,17 @@
             
             {block:IndexPage}    
                 $antsIsoCont = $('#stash-ants');
+
+                if ($('body').hasClass('search-page') && !$antsIsoCont.find('.articlepost').length) {
+                    $('<p>', {
+                        'class': 'search-empty',
+                        'role': 'status',
+                        'text': 'No posts found.'
+                    }).appendTo($antsIsoCont);
+                    $antsIsoCont.css({opacity:1, transform:'none'});
+                    hideInitialPreloader();
+                }
+
                 antsIsotope = $antsIsoCont.imagesLoaded(function(){
                     TweenMax.fromTo("#stash-ants", 1, {opacity:0, y:100, ease:Power2.easeOut, force3D: true},{opacity:1, y:0, ease:Power2.easeOut, force3D: true});   
                     
