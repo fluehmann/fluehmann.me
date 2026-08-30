@@ -968,6 +968,7 @@
         
         article .post-date {
             margin-top:var(--spacing);
+            color:darkgray;
             font-size:.85em;
             line-height:1.4;
             font-style:normal;
@@ -1090,12 +1091,14 @@
         
         article .tags {
 	        padding: .25rem 0 var(--spacing) 0;
+            color:darkgray;
             font-size:.85em;
             line-height:1.4;
         }
         
         .tags a {
             margin-right:7px;
+            color:darkgray;
             font-style:italic;
             text-decoration:underline;
             text-underline-offset:.15em;
@@ -1108,6 +1111,7 @@
         .tags .permalink-link {
             margin-left:.2rem;
             margin-right:0;
+            color:darkgray;
             font-style:normal;
             text-decoration:none;
         }
@@ -1355,13 +1359,31 @@
         
         #back-to-top {
             position:fixed;
-            bottom:0;
-            right:0;
-            padding:10px 12.5px;
+            right:var(--outer-margin);
+            bottom:var(--outer-margin);
+            z-index:90;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            width:40px;
+            height:40px;
+            padding:0;
+            color:darkgray;
+            background:{color:Background};
+            border:1px solid darkgray;
+            border-radius:50%;
             cursor:pointer;
             opacity:0;
             visibility:hidden;
-            font-size:12px;
+            font-size:16px;
+            line-height:1;
+            transition:color .2s ease, border-color .2s ease, transform .2s ease;
+        }
+
+        #back-to-top:hover {
+            color:{color:Text};
+            border-color:{color:Text};
+            transform:translateY(-2px);
         }
         
         /**** Footer *****/
@@ -2949,7 +2971,7 @@
                     <a href="{TagURL}">#{Tag}</a>
                     {/block:Tags}
                 {/block:HasTags}
-                {block:IndexPage}<a class="permalink-link" href="{Permalink}" aria-label="Permalink" title="Permalink">+</a>{/block:IndexPage}
+                {block:IndexPage}<a class="permalink-link" href="{Permalink}" aria-label="Permalink" title="Permalink">⋯</a>{/block:IndexPage}
             </div>
             
             {block:PermalinkPage}
