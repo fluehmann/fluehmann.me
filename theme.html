@@ -1012,7 +1012,7 @@
         body.index-page #posts .post_media_photo_anchor {
             height: 100%;
             display: block;
-            pointer-events: none;
+            pointer-events: auto;
         }
         
         body.permalink article img {
@@ -2798,7 +2798,7 @@
             
         {block:Posts}
     	
-        <article id="{PostID}" data-id="{PostID}" data-pt="{posttype}" class="post-{posttype} post articlepost {block:Text}{/block:Text} {block:Audio}parsed{/block:Audio}  {block:Video}parsed{/block:Video} {block:Quote}parsed{/block:Quote} {block:Link}parsed{/block:Link} {block:Chat}parsed{/block:Chat} {block:Photo}parsed{/block:Photo} {block:Photoset}parsed{/block:Photoset} {block:Answer}parsed{/block:Answer} {block:Tags}tag-{Tag} {/block:Tags}">
+        <article id="{PostID}" data-id="{PostID}" data-permalink="{Permalink}" data-pt="{posttype}" class="post-{posttype} post articlepost {block:Text}{/block:Text} {block:Audio}parsed{/block:Audio}  {block:Video}parsed{/block:Video} {block:Quote}parsed{/block:Quote} {block:Link}parsed{/block:Link} {block:Chat}parsed{/block:Chat} {block:Photo}parsed{/block:Photo} {block:Photoset}parsed{/block:Photoset} {block:Answer}parsed{/block:Answer} {block:Tags}tag-{Tag} {/block:Tags}">
             {block:PermalinkPage}
                 {block:Date}
                 <div class="post-date permalink-post-date">
@@ -2817,13 +2817,13 @@
         	</div>
             
             {block:Photo}
-                <div class="media"><a href="{PhotoURL-HighRes}"><img src="{PhotoURL-HighRes}" alt="{photoalt}" class="photos"></a></div>
+                <div class="media"><a href="{Permalink}"><img src="{PhotoURL-HighRes}" alt="{photoalt}" class="photos"></a></div>
             {/block:Photo}
     
             {block:Photoset}
                 <div class="stacked-photoset">
                     {block:Photos}
-                        <a class="photoset-photo" href="{PhotoURL-HighRes}">
+                        <a class="photoset-photo" href="{Permalink}">
                             <img alt="{PhotoAlt}" src="{PhotoURL-HighRes}" />
                         </a>
                     {/block:Photos}
@@ -3094,7 +3094,22 @@
                 }, remaining);
             }
             
+            function linkPostImagesToPermalink(context) {
+                var $context = $(context);
+                var $posts = $context.filter("article.articlepost").add($context.find("article.articlepost"));
+
+                $posts.each(function() {
+                    var $post = $(this);
+                    var permalink = $post.attr("data-permalink");
+
+                    if (permalink) {
+                        $post.find(".post_media_photo_anchor").attr("href", permalink);
+                    }
+                });
+            }
+
             stashFuel();
+            linkPostImagesToPermalink(document);
             
             $(document).ready(function(){
             
@@ -3413,6 +3428,7 @@
                     }
                       
                     stashFuel();
+                    linkPostImagesToPermalink(newElements);
                 
                     // Remove Reblogs
                     $(this).find('.tumblr_blog').closest('p').addClass('reblog-user');
