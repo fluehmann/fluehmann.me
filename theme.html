@@ -983,6 +983,10 @@
         article .post-date a:hover {
             text-decoration:underline;
         }
+
+        body.permalink article > .permalink-post-date {
+            margin:0 0 var(--spacing);
+        }
         
         {block:IfNotShowPostReblogs}
             .reblog-user {display:none !important;}
@@ -2795,6 +2799,16 @@
         {block:Posts}
     	
         <article id="{PostID}" data-id="{PostID}" data-pt="{posttype}" class="post-{posttype} post articlepost {block:Text}{/block:Text} {block:Audio}parsed{/block:Audio}  {block:Video}parsed{/block:Video} {block:Quote}parsed{/block:Quote} {block:Link}parsed{/block:Link} {block:Chat}parsed{/block:Chat} {block:Photo}parsed{/block:Photo} {block:Photoset}parsed{/block:Photoset} {block:Answer}parsed{/block:Answer} {block:Tags}tag-{Tag} {/block:Tags}">
+            {block:PermalinkPage}
+                {block:Date}
+                <div class="post-date permalink-post-date">
+                    <a href="{Permalink}" title="Permalink">
+                        <time datetime="{Year}-{MonthNumberWithZero}-{DayOfMonthWithZero}">{TimeAgo}, {DayOfWeek} {DayOfMonthWithZero}.{MonthNumberWithZero}.{Year}</time>
+                    </a>
+                </div>
+                {/block:Date}
+            {/block:PermalinkPage}
+
                 
         	<div class="hidden">
         		<script type="text/json">
@@ -2898,13 +2912,15 @@
                 {/block:RebloggedFrom}
             </div>
 
-            {block:Date}
-            <div class="post-date">
-                <a href="{Permalink}" title="Permalink">
-                    <time datetime="{Year}-{MonthNumberWithZero}-{DayOfMonthWithZero}">{TimeAgo}, {DayOfWeek} {DayOfMonthWithZero}.{MonthNumberWithZero}.{Year}</time>
-                </a>
-            </div>
-            {/block:Date}
+            {block:IndexPage}
+                {block:Date}
+                <div class="post-date">
+                    <a href="{Permalink}" title="Permalink">
+                        <time datetime="{Year}-{MonthNumberWithZero}-{DayOfMonthWithZero}">{TimeAgo}, {DayOfWeek} {DayOfMonthWithZero}.{MonthNumberWithZero}.{Year}</time>
+                    </a>
+                </div>
+                {/block:Date}
+            {/block:IndexPage}
             
             <div class="tags">
                 {block:HasTags}
