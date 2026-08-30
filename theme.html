@@ -2817,13 +2817,14 @@
         	</div>
             
             {block:Photo}
-                <div class="media"><a href="{Permalink}"><img src="{PhotoURL-HighRes}" alt="{photoalt}" class="photos"></a></div>
+                <div class="media">{block:IndexPage}<a href="{Permalink}">{/block:IndexPage}{block:PermalinkPage}<a href="{PhotoURL-HighRes}">{/block:PermalinkPage}<img src="{PhotoURL-HighRes}" alt="{photoalt}" class="photos"></a></div>
             {/block:Photo}
     
             {block:Photoset}
                 <div class="stacked-photoset">
                     {block:Photos}
-                        <a class="photoset-photo" href="{Permalink}">
+                        {block:IndexPage}<a class="photoset-photo" href="{Permalink}">{/block:IndexPage}
+                        {block:PermalinkPage}<a class="photoset-photo" href="{PhotoURL-HighRes}">{/block:PermalinkPage}
                             <img alt="{PhotoAlt}" src="{PhotoURL-HighRes}" />
                         </a>
                     {/block:Photos}
@@ -3095,6 +3096,10 @@
             }
             
             function linkPostImagesToPermalink(context) {
+                if (!$("body").hasClass("index-page")) {
+                    return;
+                }
+
                 var $context = $(context);
                 var $posts = $context.filter("article.articlepost").add($context.find("article.articlepost"));
 
