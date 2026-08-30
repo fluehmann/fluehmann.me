@@ -895,7 +895,7 @@
         iframe.spotify_audio_player[src*='%2Ftrack%2F'],
         iframe.spotify_audio_player[src*='/embed/track/'] {
             height:180px !important;
-            min-height:180px !important;
+            max-height:180px !important;
         }
 
         article iframe[src*='soundcloud'] {
@@ -955,7 +955,7 @@
         article .caption h2,
         article .caption h1 {
 	        padding:0;
-	        margin:0;
+	        margin:var(--spacing) 0 0;
         }
         
         article .caption p a {
@@ -2477,6 +2477,25 @@
 
 
     <div id="preloader"><div id="loader"><svg class="loading-dodecahedron" aria-hidden="true"><use href="#icon-dodecahedron" xlink:href="#icon-dodecahedron"></use></svg></div></div>
+    <script>
+        // Independent failsafe: the opening loader must be gone after four seconds.
+        window.setTimeout(function() {
+            var preloader = document.getElementById("preloader");
+
+            if (!preloader) {
+                return;
+            }
+
+            preloader.style.transition = "opacity .4s ease";
+            preloader.style.opacity = "0";
+
+            window.setTimeout(function() {
+                if (preloader.parentNode) {
+                    preloader.parentNode.removeChild(preloader);
+                }
+            }, 400);
+        }, 3600);
+    </script>
     
     
     {block:IndexPage}
