@@ -51,7 +51,6 @@
         <meta name="if:Search" content="0" />
         <meta name="if:Curved Edges" content="1">
         <meta name="if:Modal Post" content="1" />
-        <meta name="if:Show Post Reblogs" content="0" />
         <meta name="if:Show Post Notes" content="0" />
         
         <meta name="if:Home Link" content="1"/>
@@ -988,10 +987,6 @@
             margin:0 0 var(--spacing);
         }
         
-        {block:IfNotShowPostReblogs}
-            .reblog-user {display:none !important;}
-        {/block:IfNotShowPostReblogs}
-        
         .reblog-content {
             white-space:nowrap;
         }
@@ -1251,18 +1246,43 @@
         }
         
         blockquote {
-            /*padding-bottom: var(--spacing);*/
-            border: none;
+            border:none;
             margin:0;
+        }
+
+        article .caption blockquote {
+            border-left:1px solid currentColor;
+            margin:.75rem 0 0;
+            padding-left:1rem;
+        }
+
+        article .caption p.reblog-user {
+            display:block;
+            margin:0 0 .35rem;
+            padding:0;
+            font-size:.85em;
+            line-height:1.4;
+            font-style:normal;
+        }
+
+        article .caption p.reblog-user a.tumblr_blog {
+            color:inherit;
+            font-style:normal;
+            text-decoration:none;
+        }
+
+        article .caption p.reblog-user a.tumblr_blog:hover {
+            text-decoration:underline;
+        }
+
+        @media screen and (max-width:740px) {
+            article .caption blockquote {
+                padding-left:.75rem;
+            }
         }
         
         blockquote:empty, p:empty, .replies:empty, article .caption:empty {
             display:none !important;
-        }
-        
-        article .caption p.reblog-user {
-            margin-bottom:var(--spacing);
-            display:block;
         }
         
         
@@ -3124,12 +3144,6 @@
                     $( "p:contains('(via')" ).closest('p').empty();
 				});
                 
-                {block:IfNotShowPostReblogs}
-				$( "article" ).each(function(i, v) {
-                    $(this).find('.reblog-user').remove();
-				});
-                {/block:IfNotShowPostReblogs}
-                    
                 {block:ifNotBannerOnTaggedPage}
                     if ( $('body').hasClass('tagged-page') ) {
                         $("#banner").empty();
@@ -3438,10 +3452,6 @@
                     // Remove Reblogs
                     $(this).find('.tumblr_blog').closest('p').addClass('reblog-user');
                     $( "p:contains('(via')" ).closest('p').remove();
-                    {block:IfNotShowPostReblogs}
-                        $(this).find('.reblog-user').remove();
-                    {/block:IfNotShowPostReblogs}
-
                     
                     var $newElems = $( newElements ).css({ opacity: 0 });
                     $newElems.imagesLoaded(function(){
