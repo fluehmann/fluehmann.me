@@ -885,9 +885,13 @@
         .spotify_audio_player,
         article iframe[src*='spotify'] {
 	        border:0;
-	        width:100%;
+	        width:100% !important;
+            max-width:100% !important;
+            min-width:0 !important;
+            box-sizing:border-box;
             display:block;
             margin:0;
+            overflow:hidden;
         }
 
         /* Keep playlists, albums and podcasts unchanged; compact single tracks only. */
@@ -905,9 +909,13 @@
 
         .post-audio figure:has(.spotify_audio_player),
         .post-audio figure:has(iframe[src*='spotify']) {
+            width:100%;
+            max-width:100%;
+            min-width:0;
             padding-top:0;
             margin:0;
             line-height:0;
+            overflow-x:hidden;
         }
         
         .album-cover {
@@ -3163,8 +3171,18 @@
                 });
             }
 
+            function containSpotifyEmbeds(context) {
+                var $context = $(context);
+                var $embeds = $context
+                    .filter("iframe.spotify_audio_player, iframe[src*='spotify']")
+                    .add($context.find("iframe.spotify_audio_player, iframe[src*='spotify']"));
+
+                $embeds.attr("scrolling", "no").css("overflow", "hidden");
+            }
+
             stashFuel();
             linkPostImagesToPermalink(document);
+            containSpotifyEmbeds(document);
             
             $(document).ready(function(){
             
@@ -3478,6 +3496,7 @@
                       
                     stashFuel();
                     linkPostImagesToPermalink(newElements);
+                    containSpotifyEmbeds(newElements);
                 
                     // Remove Reblogs
                     $(this).find('.tumblr_blog').closest('p').addClass('reblog-user');
