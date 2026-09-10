@@ -885,9 +885,13 @@
         .spotify_audio_player,
         article iframe[src*='spotify'] {
 	        border:0;
-	        width:100%;
+	        width:100% !important;
+            max-width:100% !important;
+            min-width:0 !important;
+            box-sizing:border-box;
             display:block;
             margin:0;
+            overflow:hidden;
         }
 
         /* Keep playlists, albums and podcasts unchanged; compact single tracks only. */
@@ -905,9 +909,13 @@
 
         .post-audio figure:has(.spotify_audio_player),
         .post-audio figure:has(iframe[src*='spotify']) {
+            width:100%;
+            max-width:100%;
+            min-width:0;
             padding-top:0;
             margin:0;
             line-height:0;
+            overflow-x:hidden;
         }
         
         .album-cover {
@@ -1104,6 +1112,10 @@
             text-underline-offset:.15em;
         }
 
+        .tags a:hover {
+            text-decoration:underline;
+        }
+
         .tags:empty {
             display:none;
         }
@@ -1258,6 +1270,10 @@
             border-left:1px solid color-mix(in srgb, currentColor 30%, transparent);
             margin:.75rem 0 0;
             padding-left:1rem;
+        }
+
+        article .caption > p.reblog-user {
+            padding-top:var(--spacing);
         }
 
         article .caption p.reblog-user {
@@ -2169,7 +2185,61 @@
         }
         
 
-        /** OverlayNavigation **/
+        /** Image lightbox **/
+
+        html.image-lightbox-open,
+        html.image-lightbox-open body {
+            overflow:hidden;
+        }
+
+        .image-lightbox-trigger,
+        article .post_media_photo_anchor {
+            cursor:zoom-in;
+        }
+
+        #image-lightbox {
+            position:fixed;
+            inset:0;
+            z-index:1000002;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:var(--outer-margin);
+            background:rgba(0, 0, 0, .94);
+            opacity:0;
+            visibility:hidden;
+            transition:opacity .2s ease, visibility .2s ease;
+        }
+
+        #image-lightbox.is-visible {
+            opacity:1;
+            visibility:visible;
+        }
+
+        #image-lightbox img {
+            display:block;
+            width:auto;
+            height:auto;
+            max-width:calc(100vw - (2 * var(--outer-margin)));
+            max-height:calc(100vh - (2 * var(--outer-margin)));
+            object-fit:contain;
+            cursor:zoom-out;
+        }
+
+        .image-lightbox-close {
+            position:absolute;
+            top:0;
+            right:0;
+            z-index:1;
+            padding:20px 24px;
+            border:0;
+            background:transparent;
+            color:#fff;
+            font:normal 32px/1 Arial, sans-serif;
+            cursor:pointer;
+        }
+
+                /** OverlayNavigation **/
 
   
         .dark-overlay {
@@ -2859,14 +2929,13 @@
         	</div>
             
             {block:Photo}
-                <div class="media">{block:IndexPage}<a href="{Permalink}">{/block:IndexPage}{block:PermalinkPage}<a href="{PhotoURL-HighRes}">{/block:PermalinkPage}<img src="{PhotoURL-HighRes}" alt="{photoalt}" class="photos"></a></div>
+                <div class="media"><a class="image-lightbox-trigger" href="{PhotoURL-HighRes}"><img src="{PhotoURL-HighRes}" alt="{photoalt}" class="photos"></a></div>
             {/block:Photo}
     
             {block:Photoset}
                 <div class="stacked-photoset">
                     {block:Photos}
-                        {block:IndexPage}<a class="photoset-photo" href="{Permalink}">{/block:IndexPage}
-                        {block:PermalinkPage}<a class="photoset-photo" href="{PhotoURL-HighRes}">{/block:PermalinkPage}
+                        <a class="photoset-photo image-lightbox-trigger" href="{PhotoURL-HighRes}">
                             <img alt="{PhotoAlt}" src="{PhotoURL-HighRes}" />
                         </a>
                     {/block:Photos}
@@ -3099,6 +3168,11 @@
     
     
     
+    <div id="image-lightbox" role="dialog" aria-modal="true" aria-label="Image preview" aria-hidden="true">
+        <button class="image-lightbox-close" type="button" aria-label="Close image">&times;</button>
+        <img src="" alt="">
+    </div>
+
     <div id="back-to-top">▲</div>
 
     <div id="dynamic-post-loader" role="status" aria-live="polite" aria-hidden="true">
@@ -3137,26 +3211,85 @@
                 }, remaining);
             }
             
-            function linkPostImagesToPermalink(context) {
-                if (!$("body").hasClass("index-page")) {
-                    return;
+            function initImageLightbox() {
+                var triggerSelector = "article.post-photo .media a, article.post-photoset a.photoset-photo, article .post_media_photo_anchor";
+                var $lightbox = $("#image-lightbox");
+                var $lightboxImage = $lightbox.find("img");
+
+                function closeImageLightbox() {
+                    $lightbox.removeClass("is-visible").attr("aria-hidden", "true");
+                    $("html").removeClass("image-lightbox-open");
+
+                    window.setTimeout(function() {
+                        if (!$lightbox.hasClass("is-visible")) {
+                            $lightboxImage.attr("src", "").attr("alt", "");
+                        }
+                    }, 200);
                 }
 
+                $(document)
+                    .off("click.imageLightbox", triggerSelector)
+                    .on("click.imageLightbox", triggerSelector, function(event) {
+                        var $link = $(this);
+                        var $image = $link.find("img").first();
+                        var href = $link.attr("href") || "";
+                        var hrefIsPermalink = /\/post\/\d+/.test(href);
+                        var source = !hrefIsPermalink && href !== "#"
+                            ? href
+                            : ($image.attr("data-big-photo") || $image.attr("data-orig-src") || $image.attr("src"));
+
+                        if (!$image.length || !source) {
+                            return;
+                        }
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        $lightboxImage
+                            .attr("src", source)
+                            .attr("alt", $image.attr("alt") || "");
+                        $lightbox.addClass("is-visible").attr("aria-hidden", "false");
+                        $("html").addClass("image-lightbox-open");
+                    });
+
+                $lightbox
+                    .off("click.imageLightbox")
+                    .on("click.imageLightbox", closeImageLightbox);
+
+                $lightboxImage
+                    .off("click.imageLightbox")
+                    .on("click.imageLightbox", function(event) {
+                        event.stopPropagation();
+                    });
+
+                $lightbox.find(".image-lightbox-close")
+                    .off("click.imageLightbox")
+                    .on("click.imageLightbox", function(event) {
+                        event.stopPropagation();
+                        closeImageLightbox();
+                    });
+
+                $(document)
+                    .off("keydown.imageLightbox")
+                    .on("keydown.imageLightbox", function(event) {
+                        if (event.key === "Escape" && $lightbox.hasClass("is-visible")) {
+                            closeImageLightbox();
+                        }
+                    });
+            }
+
+            function containSpotifyEmbeds(context) {
                 var $context = $(context);
-                var $posts = $context.filter("article.articlepost").add($context.find("article.articlepost"));
+                var $embeds = $context
+                    .filter("iframe.spotify_audio_player, iframe[src*='spotify']")
+                    .add($context.find("iframe.spotify_audio_player, iframe[src*='spotify']"));
 
-                $posts.each(function() {
-                    var $post = $(this);
-                    var permalink = $post.attr("data-permalink");
-
-                    if (permalink) {
-                        $post.find(".post_media_photo_anchor").attr("href", permalink);
-                    }
-                });
+                $embeds.attr("scrolling", "no").css("overflow", "hidden");
             }
 
             stashFuel();
-            linkPostImagesToPermalink(document);
+            initImageLightbox();
+            containSpotifyEmbeds(document);
             
             $(document).ready(function(){
             
@@ -3469,7 +3602,7 @@
                     }
                       
                     stashFuel();
-                    linkPostImagesToPermalink(newElements);
+                    containSpotifyEmbeds(newElements);
                 
                     // Remove Reblogs
                     $(this).find('.tumblr_blog').closest('p').addClass('reblog-user');
