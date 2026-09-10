@@ -1272,10 +1272,6 @@
             padding-left:1rem;
         }
 
-        article .caption > p.reblog-user {
-            padding-top:var(--spacing);
-        }
-
         article .caption p.reblog-user {
             display:block;
             margin:0 0 .35rem;
@@ -1283,6 +1279,12 @@
             font-size:.85em;
             line-height:1.4;
             font-style:normal;
+        }
+
+        /* Separate a legacy reblog caption from the post media without
+           adding the same large gap to nested reblog authors. */
+        article .caption > p.reblog-user:first-child {
+            padding-top:var(--spacing);
         }
 
         article .caption p.reblog-user a.tumblr_blog {
@@ -2193,7 +2195,8 @@
         }
 
         .image-lightbox-trigger,
-        article .post_media_photo_anchor {
+        article .post_media_photo_anchor,
+        article img.post_media_photo {
             cursor:zoom-in;
         }
 
@@ -3212,7 +3215,7 @@
             }
             
             function initImageLightbox() {
-                var triggerSelector = "article.post-photo .media a, article.post-photoset a.photoset-photo, article .post_media_photo_anchor";
+                var triggerSelector = "article.post-photo .media a, article.post-photoset a.photoset-photo, article .post_media_photo_anchor, article img.post_media_photo";
                 var $lightbox = $("#image-lightbox");
                 var $lightboxImage = $lightbox.find("img");
 
@@ -3230,13 +3233,18 @@
                 $(document)
                     .off("click.imageLightbox", triggerSelector)
                     .on("click.imageLightbox", triggerSelector, function(event) {
-                        var $link = $(this);
-                        var $image = $link.find("img").first();
+                        var $trigger = $(this);
+                        var $image = $trigger.is("img") ? $trigger : $trigger.find("img").first();
+                        var $link = $trigger.is("a") ? $trigger : $trigger.closest("a");
+                        var imageElement = $image.get(0);
                         var href = $link.attr("href") || "";
                         var hrefIsPermalink = /\/post\/\d+/.test(href);
                         var source = !hrefIsPermalink && href !== "#"
                             ? href
-                            : ($image.attr("data-big-photo") || $image.attr("data-orig-src") || $image.attr("src"));
+                            : ($image.attr("data-big-photo") ||
+                               $image.attr("data-orig-src") ||
+                               (imageElement && imageElement.currentSrc) ||
+                               $image.attr("src"));
 
                         if (!$image.length || !source) {
                             return;
