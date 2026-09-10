@@ -1272,10 +1272,6 @@
             padding-left:1rem;
         }
 
-        article .caption > p.reblog-user {
-            padding-top:var(--spacing);
-        }
-
         article .caption p.reblog-user {
             display:block;
             margin:0 0 .35rem;
@@ -1283,6 +1279,12 @@
             font-size:.85em;
             line-height:1.4;
             font-style:normal;
+        }
+
+        /* Separate a legacy reblog caption from the post media without
+           adding the same large gap to nested reblog authors. */
+        article .caption > p.reblog-user:first-child {
+            padding-top:var(--spacing);
         }
 
         article .caption p.reblog-user a.tumblr_blog {
