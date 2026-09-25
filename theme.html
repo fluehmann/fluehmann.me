@@ -511,6 +511,7 @@
             width:70%;
             max-width:34rem;
             margin-top:var(--spacing);
+            padding-bottom:1.5rem;
         }
 
         .index-search input {
@@ -3695,7 +3696,8 @@
                 }
             }
 
-            window.setTimeout(deleteMistake, 500);
+            // Leave the original misspelling visible long enough to be noticed.
+            window.setTimeout(deleteMistake, 2500);
         });
         
         $(document).on('click', '.more-toggle', function(){
