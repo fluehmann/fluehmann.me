@@ -1379,30 +1379,40 @@
         #back-to-top {
             position:fixed;
             right:var(--outer-margin);
-            bottom:var(--outer-margin);
+            bottom:0;
             z-index:90;
             display:flex;
             align-items:center;
             justify-content:center;
-            width:40px;
-            height:40px;
-            padding:0;
+            gap:.55rem;
+            width:auto;
+            min-height:40px;
+            padding:.6rem .8rem;
+            box-sizing:border-box;
             color:darkgray;
             background:{color:Background};
             border:1px solid darkgray;
-            border-radius:50%;
+            border-bottom:0;
+            border-radius:0;
             cursor:pointer;
             opacity:0;
             visibility:hidden;
-            font-size:16px;
+            font-size:12px;
             line-height:1;
-            transition:color .2s ease, border-color .2s ease, transform .2s ease;
+            letter-spacing:.02em;
+            white-space:nowrap;
+            transition:color .2s ease, border-color .2s ease;
+        }
+
+        #back-to-top .beam-icon {
+            width:20px;
+            height:20px;
+            flex:none;
         }
 
         #back-to-top:hover {
             color:{color:Text};
             border-color:{color:Text};
-            transform:translateY(-2px);
         }
         
         /**** Footer *****/
@@ -3177,7 +3187,10 @@
         <img src="" alt="">
     </div>
 
-    <div id="back-to-top">▲</div>
+    <div id="back-to-top" role="button" tabindex="0" aria-label="Back to top">
+        <span>beam me up scotty.</span>
+        <svg class="beam-icon" aria-hidden="true"><use href="#icon-dodecahedron" xlink:href="#icon-dodecahedron"></use></svg>
+    </div>
 
     <div id="dynamic-post-loader" role="status" aria-live="polite" aria-hidden="true">
         <svg class="loading-dodecahedron" aria-hidden="true"><use href="#icon-dodecahedron" xlink:href="#icon-dodecahedron"></use></svg>
