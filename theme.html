@@ -1133,30 +1133,26 @@
             text-decoration:underline;
         }
 
-        .tags .post-edit-link {
+        .post-owner-tools {
             display:none;
-            margin-left:.35rem;
-            margin-right:0;
-            color:darkgray;
-            font-style:normal;
-            text-decoration:none;
+            margin-top:var(--spacing);
+            padding-bottom:var(--spacing);
+            text-align:right;
+            font-size:.85em;
+            line-height:1;
         }
 
-        html.tumblr-user-logged-in .tags .post-edit-link {
-            display:inline-block;
-        }
-
-        .tags:has(> .post-edit-link:only-child) {
-            display:none;
-        }
-
-        html.tumblr-user-logged-in .tags:has(> .post-edit-link:only-child) {
+        html.tumblr-user-logged-in .post-owner-tools {
             display:block;
         }
 
-        .tags .post-edit-link:hover {
-            color:{color:Text};
+        .post-owner-tools .post-edit-link {
+            color:darkgray;
             text-decoration:none;
+        }
+
+        .post-owner-tools .post-edit-link:hover {
+            color:{color:Text};
         }
         
         .pagination {
@@ -3085,7 +3081,6 @@
                     {/block:Tags}
                 {/block:HasTags}
                 {block:IndexPage}<a class="permalink-link" href="{Permalink}" aria-label="Permalink" title="Permalink">⋯</a>{/block:IndexPage}
-                <a class="post-edit-link" href="https://www.tumblr.com/edit/fluehmann/{PostID}" target="_blank" rel="noopener" aria-label="Edit post" title="Edit post"><i class="fa fa-pencil" aria-hidden="true"></i></a>
             </div>
             
             {block:PermalinkPage}
@@ -3104,6 +3099,10 @@
                     {/block:PreviousPost}
                 </div>
                 {/block:PermalinkPagination}
+
+                <div class="post-owner-tools">
+                    <a class="post-edit-link" href="https://www.tumblr.com/edit/fluehmann/{PostID}" target="_blank" rel="noopener" aria-label="Edit post" title="Edit post"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                </div>
             {/block:PermalinkPage}
             
         </article>
