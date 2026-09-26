@@ -2206,10 +2206,13 @@
             overflow:hidden;
         }
 
-        .image-lightbox-trigger,
-        article .post_media_photo_anchor,
-        article img.post_media_photo {
+        article img {
             cursor:zoom-in;
+        }
+
+        article .asker-avatar,
+        article .reblog-header img {
+            cursor:default;
         }
 
         #image-lightbox {
@@ -3230,7 +3233,7 @@
             }
             
             function initImageLightbox() {
-                var triggerSelector = "article.post-photo .media a, article.post-photoset a.photoset-photo, article .post_media_photo_anchor, article img.post_media_photo";
+                var triggerSelector = "article img";
                 var $lightbox = $("#image-lightbox");
                 var $lightboxImage = $lightbox.find("img");
 
@@ -3248,20 +3251,21 @@
                 $(document)
                     .off("click.imageLightbox", triggerSelector)
                     .on("click.imageLightbox", triggerSelector, function(event) {
-                        var $trigger = $(this);
-                        var $image = $trigger.is("img") ? $trigger : $trigger.find("img").first();
-                        var $link = $trigger.is("a") ? $trigger : $trigger.closest("a");
+                        var $image = $(this);
+                        var $link = $image.closest("a");
                         var imageElement = $image.get(0);
                         var href = $link.attr("href") || "";
-                        var hrefIsPermalink = /\/post\/\d+/.test(href);
-                        var source = !hrefIsPermalink && href !== "#"
-                            ? href
-                            : ($image.attr("data-big-photo") ||
-                               $image.attr("data-orig-src") ||
-                               (imageElement && imageElement.currentSrc) ||
-                               $image.attr("src"));
+                        var hrefIsImage = /\.(?:avif|gif|jpe?g|png|webp)(?:[?#].*)?$/i.test(href) ||
+                            /media\.tumblr\.com/i.test(href);
+                        var source = $image.attr("data-big-photo") ||
+                            $image.attr("data-orig-src") ||
+                            (hrefIsImage ? href : "") ||
+                            (imageElement && imageElement.currentSrc) ||
+                            $image.attr("src");
 
-                        if (!$image.length || !source) {
+                        if ($image.is(".asker-avatar") ||
+                            $image.closest(".reblog-header").length ||
+                            !source) {
                             return;
                         }
 
