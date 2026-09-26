@@ -1132,6 +1132,32 @@
         .tags .permalink-link:hover {
             text-decoration:underline;
         }
+
+        .tags .post-edit-link {
+            display:none;
+            margin-left:.35rem;
+            margin-right:0;
+            color:darkgray;
+            font-style:normal;
+            text-decoration:none;
+        }
+
+        html.tumblr-user-logged-in .tags .post-edit-link {
+            display:inline-block;
+        }
+
+        .tags:has(> .post-edit-link:only-child) {
+            display:none;
+        }
+
+        html.tumblr-user-logged-in .tags:has(> .post-edit-link:only-child) {
+            display:block;
+        }
+
+        .tags .post-edit-link:hover {
+            color:{color:Text};
+            text-decoration:none;
+        }
         
         .pagination {
 	        margin:0 0 var(--outer-margin) 0;
@@ -3059,6 +3085,7 @@
                     {/block:Tags}
                 {/block:HasTags}
                 {block:IndexPage}<a class="permalink-link" href="{Permalink}" aria-label="Permalink" title="Permalink">⋯</a>{/block:IndexPage}
+                <a class="post-edit-link" href="https://www.tumblr.com/edit/fluehmann/{PostID}" target="_blank" rel="noopener" aria-label="Edit post" title="Edit post"><i class="fa fa-pencil" aria-hidden="true"></i></a>
             </div>
             
             {block:PermalinkPage}
@@ -3232,6 +3259,34 @@
                 }, remaining);
             }
             
+            function initOwnerEditLinks() {
+                var loggedInControlsSelector = [
+                    "iframe.tmblr-iframe--desktop-loggedin-controls",
+                    "iframe.tmblr-iframe--desktop-logged-in-controls",
+                    "iframe[name='desktop-loggedin-controls']",
+                    "iframe[src*='/dashboard/iframe']"
+                ].join(",");
+
+                function updateOwnerControls() {
+                    $("html").toggleClass(
+                        "tumblr-user-logged-in",
+                        $(loggedInControlsSelector).length > 0
+                    );
+                }
+
+                updateOwnerControls();
+
+                if (window.MutationObserver) {
+                    new MutationObserver(updateOwnerControls).observe(document.body, {
+                        childList:true,
+                        subtree:true
+                    });
+                }
+
+                window.setTimeout(updateOwnerControls, 1000);
+                window.setTimeout(updateOwnerControls, 3000);
+            }
+
             function initImageLightbox() {
                 var triggerSelector = "article img";
                 var $lightbox = $("#image-lightbox");
@@ -3315,6 +3370,7 @@
             }
 
             stashFuel();
+            initOwnerEditLinks();
             initImageLightbox();
             containSpotifyEmbeds(document);
             
