@@ -1405,10 +1405,10 @@
             transition:color .2s ease, border-color .2s ease;
         }
 
-        #back-to-top .beam-icon {
-            width:20px;
-            height:20px;
+        #back-to-top .beam-symbol {
             flex:none;
+            font-size:18px;
+            line-height:1;
         }
 
         #back-to-top:hover {
@@ -3190,7 +3190,7 @@
 
     <button id="back-to-top" type="button" aria-label="Back to top">
         <span>beam me up scotty.</span>
-        <svg class="beam-icon" aria-hidden="true"><use href="#icon-dodecahedron" xlink:href="#icon-dodecahedron"></use></svg>
+        <span class="beam-symbol" aria-hidden="true">△</span>
     </button>
 
     <div id="dynamic-post-loader" role="status" aria-live="polite" aria-hidden="true">
