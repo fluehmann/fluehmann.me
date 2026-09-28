@@ -1400,42 +1400,59 @@
         
         #back-to-top {
             position:fixed;
-            right:var(--outer-margin);
-            bottom:0;
+            left:50%;
+            right:auto;
+            bottom:calc(18px + env(safe-area-inset-bottom));
             z-index:90;
             display:flex;
             align-items:center;
             justify-content:center;
             gap:.55rem;
             width:auto;
-            min-height:40px;
-            padding:.6rem .8rem;
+            min-height:44px;
+            padding:.7rem 1rem;
             box-sizing:border-box;
-            color:darkgray;
-            background:{color:Background};
-            border:1px solid darkgray;
-            border-bottom:0;
-            border-radius:0;
+            color:{color:Background};
+            background:{color:Text};
+            border:1px solid {color:Text};
+            border-radius:999px;
+            box-shadow:0 8px 24px rgba(0,0,0,.28);
             cursor:pointer;
-            opacity:0;
-            visibility:hidden;
+            opacity:0 !important;
+            visibility:hidden !important;
+            pointer-events:none;
+            transform:translateX(-50%);
             font-family:inherit;
             font-size:12px;
+            font-weight:600;
             line-height:1;
-            letter-spacing:.02em;
+            letter-spacing:.08em;
             white-space:nowrap;
-            transition:color .2s ease, border-color .2s ease;
+            transition:opacity .2s ease, color .2s ease, background-color .2s ease, transform .2s ease;
         }
 
-        #back-to-top .beam-symbol {
+        #back-to-top .upstairs-rocket {
             flex:none;
-            font-size:18px;
+            font-size:14px;
             line-height:1;
+        }
+
+        html.back-to-top-visible #back-to-top {
+            opacity:1 !important;
+            visibility:visible !important;
+            pointer-events:auto;
+        }
+
+        body:has(#dynamic-post-loader.is-loading) #back-to-top {
+            opacity:0 !important;
+            visibility:hidden !important;
+            pointer-events:none;
         }
 
         #back-to-top:hover {
             color:{color:Text};
-            border-color:{color:Text};
+            background:{color:Background};
+            transform:translate(-50%, -2px);
         }
         
         /**** Footer *****/
@@ -3218,8 +3235,8 @@
     </div>
 
     <button id="back-to-top" type="button" aria-label="Back to top">
-        <span>beam me up scotty.</span>
-        <span class="beam-symbol" aria-hidden="true">△</span>
+        <i class="fa fa-rocket upstairs-rocket" aria-hidden="true"></i>
+        <span>UPSTAIRS</span>
     </button>
 
     <div id="dynamic-post-loader" role="status" aria-live="polite" aria-hidden="true">
@@ -3258,6 +3275,24 @@
                 }, remaining);
             }
             
+            function initBackToTopVisibility() {
+                var thresholdInViewports = 2.5;
+
+                function updateBackToTopVisibility() {
+                    var threshold = window.innerHeight * thresholdInViewports;
+                    $("html").toggleClass(
+                        "back-to-top-visible",
+                        window.pageYOffset >= threshold
+                    );
+                }
+
+                $(window)
+                    .off("scroll.backToTopVisibility resize.backToTopVisibility")
+                    .on("scroll.backToTopVisibility resize.backToTopVisibility", updateBackToTopVisibility);
+
+                updateBackToTopVisibility();
+            }
+
             function initOwnerEditLinks() {
                 var loggedInControlsSelector = [
                     "iframe.tmblr-iframe--desktop-loggedin-controls",
@@ -3369,6 +3404,7 @@
             }
 
             stashFuel();
+            initBackToTopVisibility();
             initOwnerEditLinks();
             initImageLightbox();
             containSpotifyEmbeds(document);
