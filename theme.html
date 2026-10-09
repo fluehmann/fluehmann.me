@@ -482,18 +482,22 @@
         }
 
         #navigation .navigation-random {
-            margin-right:26px;
+            margin-right:18px;
+        }
+
+        #navigation .navigation-social {
+            margin-right:10px;
         }
 
         #navigation .navigation-spotify {
-            margin-right:26px;
+            margin-right:20px;
         }
 
-        #navigation .navigation-spotify > a {
+        #navigation .navigation-social > a {
             display:inline-flex;
             align-items:center;
             justify-content:center;
-            min-width:20px;
+            min-width:18px;
             min-height:26px;
         }
 
@@ -2880,8 +2884,13 @@
                 {/block:HasPages}
                 <li class="navigation-primary"><a href="/archive" title="{text:Archive Link Label}">{text:Archive Link Label}</a></li>
                 <li class="navigation-primary navigation-random"><a href="/random" title="{text:Random Link Label}">{text:Random Link Label}</a></li>
+                {block:ifInstagramURL}
+                    <li class="navigation-social navigation-instagram">
+                        <a target="_blank" rel="me noopener" href="{text:Instagram URL}" aria-label="Instagram" title="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+                    </li>
+                {/block:ifInstagramURL}
                 {block:ifSpotifyURL}
-                    <li class="navigation-spotify">
+                    <li class="navigation-social navigation-spotify">
                         <a target="_blank" rel="me noopener" href="{text:Spotify URL}" aria-label="Spotify" title="Spotify"><i class="fa-brands fa-spotify" aria-hidden="true"></i></a>
                     </li>
                 {/block:ifSpotifyURL}
