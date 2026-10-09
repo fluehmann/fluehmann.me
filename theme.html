@@ -466,19 +466,22 @@
             display:inline-flex;
             align-items:center;
             min-height:26px;
-            padding:0 9px;
-            border:1px solid rgba(255,255,255,.55);
-            border-radius:999px;
+            padding:0;
             font-weight:700;
             letter-spacing:.02em;
-            transition:background-color .2s ease, color .2s ease, border-color .2s ease;
+            transition:opacity .2s ease;
         }
 
         #navigation .navigation-primary > a:hover,
         #navigation .navigation-primary > a:focus-visible {
-            color:#000;
-            background:#fff;
-            border-color:#fff;
+            color:#fff;
+            opacity:.65;
+        }
+
+        #navigation .navigation-home > a {
+            font-size:18px;
+            line-height:1;
+            transform:translateY(-1px);
         }
 
         #navigation .navigation-random {
@@ -2879,6 +2882,7 @@
         {block:ifnavigation}
         <nav id="navigation" aria-label="Primary navigation">
             <ul class="navigation-list">
+                <li class="navigation-primary navigation-home"><a href="/" aria-label="Home" title="Home">⌂</a></li>
                 {block:HasPages}
                     {block:Pages}<li class="navigation-primary"><a href="{URL}">{Label}</a></li>{/block:Pages}
                 {/block:HasPages}
