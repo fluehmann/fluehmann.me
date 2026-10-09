@@ -54,7 +54,6 @@
         <meta name="if:Show Post Notes" content="0" />
         
         <meta name="if:Home Link" content="1"/>
-        <meta name="if:Random Link" content="0"/>    
         <meta name="if:Archive Link" content="0"/>    
         
         <!-- Display -->
@@ -463,6 +462,39 @@
         }
         
         #navigation a {
+            color:#fff;
+        }
+
+        #navigation .navigation-primary > a {
+            display:inline-flex;
+            align-items:center;
+            min-height:26px;
+            padding:0 9px;
+            border:1px solid rgba(255,255,255,.55);
+            border-radius:999px;
+            font-weight:700;
+            letter-spacing:.02em;
+            transition:background-color .2s ease, color .2s ease, border-color .2s ease;
+        }
+
+        #navigation .navigation-primary > a:hover,
+        #navigation .navigation-primary > a:focus-visible {
+            color:#000;
+            background:#fff;
+            border-color:#fff;
+        }
+
+        #navigation .navigation-random {
+            margin-right:26px;
+        }
+
+        #navigation .navigation-tag > a {
+            color:rgba(255,255,255,.64);
+            text-transform:none;
+        }
+
+        #navigation .navigation-tag > a:hover,
+        #navigation .navigation-tag > a:focus-visible {
             color:#fff;
         }
         
@@ -2835,10 +2867,11 @@
         <nav id="navigation">
             <ul class="navigation-list">
             
-                {block:ifHomeLink}<li><a href="/">{text:Home Link Label}</a></li>{/block:ifHomeLink}
+                {block:ifHomeLink}<li class="navigation-primary"><a href="/">{text:Home Link Label}</a></li>{/block:ifHomeLink}
                 {block:HasPages}
-                    {block:Pages}<li> <a href="{URL}">{Label}</a></li>{/block:Pages}
+                    {block:Pages}<li class="navigation-primary"><a href="{URL}">{Label}</a></li>{/block:Pages}
                 {/block:HasPages}
+                <li class="navigation-primary navigation-random"><a href="{BlogURL}random" title="{text:Random Link Label}">{text:Random Link Label}</a></li>
                 
                 {block:IfCustomLink1URL}<li><a href="{text:Custom Link 1 URL}">{text:Custom Link 1 Name}</a></li>{/block:IfCustomLink1URL}
                 {block:IfCustomLink2URL}<li><a href="{text:Custom Link 2 URL}">{text:Custom Link 2 Name}</a></li>{/block:IfCustomLink2URL}
@@ -2863,8 +2896,8 @@
                 
                 {block:HasFeaturedTags}
                     {block:FeaturedTags}
-                        <li>
-                            <a href="{TagURL}">{Tag}</a>
+                        <li class="navigation-tag">
+                            <a href="{TagURL}">#{Tag}</a>
                         </li>
                     {/block:FeaturedTags}
                 {/block:HasFeaturedTags}
@@ -2878,9 +2911,6 @@
                 {block:IfArchiveLink}
                 <li><a href="https://{name}.tumblr.com/archive" title="{text:Archive Link Label}">{text:Archive Link Label}</a></li>
                 {/block:IfArchiveLink}
-                {block:ifRandomLink}
-                <li><a href="https://{name}.tumblr.com/random" title="{text:Random Link Label}">{text:Random Link Label}</a></li>
-                {/block:ifRandomLink}
                 
                 {block:ifPhoneNumber}<li><a target="_blank" href="tel:{text:Phone Number}"><i class="fa fa-phone"></i></a></li>{/block:ifPhoneNumber} 
                 {block:ifEmailAddress}<li><a target="_blank" href="mailto:{text:Email Address}"><i class="fa fa-envelope"></i></a></li>{/block:ifEmailAddress}
