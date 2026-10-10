@@ -478,7 +478,10 @@
             opacity:.65;
         }
 
-        #navigation .navigation-home > a {
+        #navigation .navigation-home > a,
+        #navigation .navigation-about > a {
+            width:18px;
+            justify-content:center;
             font-size:18px;
             line-height:1;
             transform:translateY(-1px);
@@ -2884,9 +2887,7 @@
         <nav id="navigation" aria-label="Primary navigation">
             <ul class="navigation-list">
                 <li class="navigation-primary navigation-home"><a href="/" aria-label="Home" title="Home">⌂</a></li>
-                {block:HasPages}
-                    {block:Pages}<li class="navigation-primary"><a href="{URL}">{Label}</a></li>{/block:Pages}
-                {/block:HasPages}
+                <li class="navigation-primary navigation-about"><a href="/about" aria-label="About" title="About">☺︎</a></li>
                 <li class="navigation-primary navigation-random"><a href="/random" title="{text:Random Link Label}">{text:Random Link Label}</a></li>
                 {block:ifInstagramURL}
                     <li class="navigation-social navigation-instagram">
