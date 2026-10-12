@@ -465,27 +465,50 @@
         #navigation .navigation-primary > a {
             display:inline-flex;
             align-items:center;
-            min-height:26px;
+            justify-content:center;
+            width:32px;
+            height:32px;
+            min-height:32px;
             padding:0;
-            font-weight:700;
-            letter-spacing:.02em;
-            transition:opacity .2s ease;
+            color:#000;
+            background:#fff;
+            border-radius:50%;
+            line-height:1;
+            transition:transform .2s ease, background-color .2s ease;
         }
 
         #navigation .navigation-primary > a:hover,
         #navigation .navigation-primary > a:focus-visible {
-            color:#fff;
-            opacity:.65;
+            color:#000;
+            background:#e6e6e6;
+            transform:translateY(-1px);
         }
 
-        #navigation .navigation-home > a,
-        #navigation .navigation-about > a,
-        #navigation .navigation-random > a {
+        #navigation .navigation-primary > a i {
             width:18px;
-            justify-content:center;
             font-size:18px;
             line-height:1;
-            transform:translateY(-1px);
+            text-align:center;
+        }
+
+        @keyframes navigation-dice-shake {
+            0%, 100% { transform:translateX(0) rotate(0); }
+            20% { transform:translateX(-1px) rotate(-12deg); }
+            40% { transform:translateX(1px) rotate(10deg); }
+            60% { transform:translateX(-1px) rotate(-8deg); }
+            80% { transform:translateX(1px) rotate(6deg); }
+        }
+
+        #navigation .navigation-random > a:hover i,
+        #navigation .navigation-random > a:focus-visible i {
+            animation:navigation-dice-shake .55s ease-in-out 1;
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+            #navigation .navigation-random > a:hover i,
+            #navigation .navigation-random > a:focus-visible i {
+                animation:none;
+            }
         }
 
         #navigation .navigation-random {
@@ -2887,9 +2910,9 @@
         {block:ifnavigation}
         <nav id="navigation" aria-label="Primary navigation">
             <ul class="navigation-list">
-                <li class="navigation-primary navigation-home"><a href="/" aria-label="Home" title="Home">⌂</a></li>
-                <li class="navigation-primary navigation-about"><a href="/about" aria-label="About" title="About">☺︎</a></li>
-                <li class="navigation-primary navigation-random"><a href="/random" aria-label="Random post" title="Random post">⚄︎</a></li>
+                <li class="navigation-primary navigation-home"><a href="/" aria-label="Home" title="Home"><i class="fa-solid fa-door-open" aria-hidden="true"></i></a></li>
+                <li class="navigation-primary navigation-about"><a href="/about" aria-label="About" title="About"><i class="fa-solid fa-eye" aria-hidden="true"></i></a></li>
+                <li class="navigation-primary navigation-random"><a href="/random" aria-label="Random post" title="Random post"><i class="fa-solid fa-dice-d20" aria-hidden="true"></i></a></li>
                 {block:ifInstagramURL}
                     <li class="navigation-social navigation-instagram">
                         <a target="_blank" rel="me noopener" href="{text:Instagram URL}" aria-label="Instagram" title="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
