@@ -1012,6 +1012,45 @@
             width:100%;
         }
         
+        article .caption a.external-description-link {
+            display:inline-flex;
+            align-items:center;
+            gap:.4em;
+            max-width:100%;
+            box-sizing:border-box;
+            margin:.1em .1em;
+            padding:.18em .6em;
+            border:1px solid color-mix(in srgb, currentColor 45%, transparent);
+            border-radius:999px;
+            color:inherit;
+            background:color-mix(in srgb, currentColor 8%, transparent);
+            font-size:inherit;
+            font-weight:inherit;
+            line-height:1.35;
+            text-decoration:none;
+            vertical-align:middle;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+        }
+
+        article .caption a.external-description-link:hover,
+        article .caption a.external-description-link:focus-visible {
+            border-color:currentColor;
+            background:color-mix(in srgb, currentColor 14%, transparent);
+        }
+
+        .external-link-indicator {
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            flex:none;
+            width:1em;
+            height:1em;
+            font-size:.78em;
+            line-height:1;
+        }
+
         .npf-link-block {
             margin:var(--spacing) 0 !important;
             padding:0 !important;
@@ -1021,23 +1060,53 @@
             box-shadow:none !important;
         }
         
-        .npf-link-block a {
-            display:inline;
+        .npf-link-block a.external-description-link {
+            display:block;
+            margin:0;
             padding:0 !important;
             border:0 !important;
+            border-radius:0;
             background:transparent !important;
             color:var(--text) !important;
-            font-size:1em !important;
+            font-size:var(--font-size) !important;
             font-weight:inherit !important;
             line-height:1.5;
-            text-decoration:underline;
-            text-underline-offset:.15em;
+            text-decoration:none;
             overflow-wrap:anywhere;
         }
-        
-        .npf-link-block a::after {
-            content:" ↗";
-            font-size:.8em;
+
+        .npf-link-block .external-link-label {
+            display:block;
+            width:fit-content;
+            max-width:100%;
+            box-sizing:border-box;
+            padding:.4em .7em;
+            border:1px solid color-mix(in srgb, currentColor 45%, transparent);
+            border-radius:999px;
+            background:color-mix(in srgb, currentColor 8%, transparent);
+            font-size:var(--font-size) !important;
+            font-weight:inherit !important;
+            line-height:1.35;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+        }
+
+        .npf-link-block a.external-description-link:hover .external-link-label,
+        .npf-link-block a.external-description-link:focus-visible .external-link-label {
+            border-color:currentColor;
+            background:color-mix(in srgb, currentColor 14%, transparent);
+        }
+
+        .npf-link-block .external-link-label .external-link-indicator {
+            margin-right:.4em;
+        }
+
+        .npf-link-block .site-name {
+            margin-top:.45rem;
+            font-size:calc(var(--font-size) * .75) !important;
+            line-height:1.3;
+            opacity:.65;
         }
         
         article .caption p {
@@ -1051,7 +1120,7 @@
 	        margin:var(--spacing) 0 0;
         }
         
-        article .caption p a {
+        article .caption p a:not(.external-description-link) {
             text-decoration:underline;
         }
         
@@ -3436,11 +3505,58 @@
                 $embeds.attr("scrolling", "no").css("overflow", "hidden");
             }
 
+            function styleExternalDescriptionLinks(context) {
+                var $context = $(context);
+                var selector = "article .caption a[href], article .npf-link-block a[href]";
+                var $links = $context.filter(selector).add($context.find(selector));
+
+                $links.each(function() {
+                    var $link = $(this);
+                    var destination;
+
+                    if ($link.hasClass("external-description-link") ||
+                        $link.closest(".tags, .post-date, .post-permalink, .reblog-user, .reblog-header").length) {
+                        return;
+                    }
+
+                    try {
+                        destination = new URL(this.href, window.location.href);
+                    } catch (error) {
+                        return;
+                    }
+
+                    if (!/^https?:$/.test(destination.protocol) ||
+                        destination.hostname.replace(/^www\./, "") === window.location.hostname.replace(/^www\./, "")) {
+                        return;
+                    }
+
+                    $link.addClass("external-description-link");
+
+                    var $label = $link.closest(".npf-link-block").length
+                        ? $link.find(".title").first()
+                        : $link;
+
+                    if (!$label.length) {
+                        $label = $link;
+                    }
+
+                    $label.addClass("external-link-label");
+
+                    if (!$label.children(".external-link-indicator").length) {
+                        $("<i>", {
+                            "class": "fa-solid fa-arrow-up-right-from-square external-link-indicator",
+                            "aria-hidden": "true"
+                        }).prependTo($label);
+                    }
+                });
+            }
+
             stashFuel();
             initBackToTopVisibility();
             initOwnerEditLinks();
             initImageLightbox();
             containSpotifyEmbeds(document);
+            styleExternalDescriptionLinks(document);
             
             $(document).ready(function(){
             
@@ -3754,6 +3870,7 @@
                       
                     stashFuel();
                     containSpotifyEmbeds(newElements);
+                    styleExternalDescriptionLinks(newElements);
                 
                     // Remove Reblogs
                     $(this).find('.tumblr_blog').closest('p').addClass('reblog-user');
