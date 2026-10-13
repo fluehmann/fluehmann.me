@@ -32,10 +32,6 @@
         <meta name="color:Banner Text" content="#ffffff">
         <meta name="color:Banner Button Background" content="#ffffff">
         <meta name="color:Banner Button Text" content="#141414">
-        <meta name="color:Footer Background" content="#ffffff" />
-        <meta name="color:Footer Text" content="#000000" />
-
-        <meta name="text:Footer Text" content="">
         <meta name="text:&#x2584;&#x2580;&#x2584;&#x2580; Text Sizes &#x2580;&#x2584;&#x2580;&#x2584;" content="">
         <meta name="text:Font Size" content="16px" />
         <meta name="text:Logo Size" content="9vw" />
@@ -46,8 +42,6 @@
         <meta name="if:Full Background" content="1" />
         <meta name="if:Repeat Background Image" content="">
         <meta name="if:Navigation" content="1"/>
-        <meta name="if:Footer" content="0" />
-        <meta name="if:Footer Toggle Icon" content="1" />
         <meta name="if:Search" content="0" />
         <meta name="if:Curved Edges" content="1">
         <meta name="if:Modal Post" content="1" />
@@ -485,10 +479,19 @@
         }
 
         #navigation .navigation-primary > a i {
-            width:18px;
-            font-size:18px;
-            line-height:1;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            width:16px;
+            height:16px;
+            font-size:16px;
+            line-height:16px;
             text-align:center;
+        }
+
+        #navigation .navigation-primary > a i::before {
+            display:block;
+            line-height:1;
         }
 
         @keyframes navigation-dice-shake {
@@ -1003,6 +1006,31 @@
             width:100%;
         }
         
+        article .caption a[href]:not(.open-modal),
+        article .npf-link-block a[href] {
+            color:inherit;
+            font-size:inherit;
+            font-weight:inherit;
+            text-decoration:underline;
+            text-decoration-thickness:1px;
+            text-underline-offset:.16em;
+            overflow-wrap:anywhere;
+        }
+
+        article .caption a[href]:not(.open-modal)::before,
+        article .npf-link-block a[href]::before {
+            content:"\f0c1";
+            display:inline-block;
+            margin-right:.35em;
+            font-family:"Font Awesome 6 Free";
+            font-size:.72em;
+            font-style:normal;
+            font-weight:900;
+            line-height:1;
+            text-decoration:none;
+            vertical-align:.04em;
+        }
+
         .npf-link-block {
             margin:var(--spacing) 0 !important;
             padding:0 !important;
@@ -1013,22 +1041,29 @@
         }
         
         .npf-link-block a {
-            display:inline;
+            display:block;
+            margin:0;
             padding:0 !important;
             border:0 !important;
+            border-radius:0;
             background:transparent !important;
             color:var(--text) !important;
-            font-size:1em !important;
+            font-size:var(--font-size) !important;
             font-weight:inherit !important;
             line-height:1.5;
             text-decoration:underline;
-            text-underline-offset:.15em;
             overflow-wrap:anywhere;
         }
-        
-        .npf-link-block a::after {
-            content:" ↗";
-            font-size:.8em;
+
+        .npf-link-block .title,
+        .npf-link-block .site-name {
+            display:inline;
+            margin:0;
+            padding:0;
+            font-size:var(--font-size) !important;
+            font-weight:inherit !important;
+            line-height:1.5;
+            opacity:1;
         }
         
         article .caption p {
@@ -1040,10 +1075,6 @@
         article .caption h1 {
 	        padding:0;
 	        margin:var(--spacing) 0 0;
-        }
-        
-        article .caption p a {
-            text-decoration:underline;
         }
         
         article .caption {
@@ -1079,7 +1110,7 @@
 
         /** Photo **/
         {block:IfCurvedEdges}
-            article.post-photo .media, .post-photoset .npf_col, .stash-overlay .media img, .permalink .npf_col .post_media_photo, .post-video .media, .post-video iframe, .permalink .post_media_photo_anchor img, #footer, .post-text .post_media_photo, .stacked-photoset img {
+            article.post-photo .media, .post-photoset .npf_col, .stash-overlay .media img, .permalink .npf_col .post_media_photo, .post-video .media, .post-video iframe, .permalink .post_media_photo_anchor img, .post-text .post_media_photo, .stacked-photoset img {
                 border-radius:20px;
                 overflow:hidden;
             }
@@ -1532,150 +1563,34 @@
         }
         
         /**** Footer *****/
-        
-        .footer-toggle {
-            cursor: pointer;
-            width: 32px;
-            height: 32px;
-            position: fixed;
-            color: black;
-            text-align: center;
-            font-size: 24px;
-            line-height: 24px;
-            vertical-align: middle;
-            left: 50%;
-            bottom: var(--outer-margin);
-            transform: translate(-50%, 0);
-            -webkit-transform: translate(-50%, 0);
-            background: #ffffff;
-            border-radius: 250px;
-            z-index:0;
-        }
-        
-        body.permalink .footer-toggle {
-            display:none;
-        }
-        
-        #footer {
-            padding:64px;
+
+        #site-footer {
+            clear:both;
             width:100%;
-            margin:var(--outer-margin) 0;
-            background:{color:Footer Background};
-            color:{color:Footer Text};
-            font-size:{text:Description Text Size};
-            font-weight:{select:Description Font Weight};
-            position:relative;
-            overflow:hidden;
+            box-sizing:border-box;
+            margin-top:var(--outer-margin);
+            padding:var(--outer-margin);
+            border-top:1px solid color-mix(in srgb, currentColor 22%, transparent);
+            color:darkgray;
+            font-size:.8em;
+            font-weight:normal;
+            line-height:1.5;
+            text-align:center;
         }
-        
-        body.footer-open #footer {
-            position:fixed;
-            bottom:0;
-            left:var(--outer-margin);
-            width:calc(100% - var(--outer-margin)*2);
-        }
-        
-        .footer-text {
-            max-width:640px;
-        }
-        
-        .footer-links {
-            padding-top: 160px;
-            align-content: flex-end;
-            align-items: flex-end;
-            display: flex;
-            flex-grow: 0;
-            flex-shrink: 0;
-            flex-basis: auto;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            height: min-content;
-            justify-content: space-between;
-            overflow-x: hidden;
-            overflow-y: hidden;
-            position: relative;
-            width: 100%;
-        }
-        
-        .footer-contact {
-            align-content: center;
-            align-items: center;
-            display: flex;
-            flex-grow: 0;
-            flex-shrink: 0;
-            flex-basis: auto;
-            flex-direction: row;
-            flex-wrap: wrap;
-            row-gap: 10px;
-            column-gap: 10px;
-            height: min-content;
-            justify-content: flex-end;
-            overflow-x: hidden;
-            overflow-y: hidden;
-            padding-top: 0px;
-            position: relative;
-            width: min-content;
-        }
-        
-        .footer-links li {
-            list-style-type:none;
-        }
-        
-        .footer-links a {
-            color:{color:Footer Text};
-        }
-        
-        .footer-social {
-            align-content: flex-start;
-            align-items: flex-start;
-            display: flex;
-            flex-grow: 0.8;
-            flex-shrink: 0;
-            flex-basis: 0px;
-            flex-direction: column;
-            flex-wrap: nowrap;
-            row-gap: 10px;
-            column-gap: 10px;
-            height: min-content;
-            justify-content: flex-start;
-            overflow-x: hidden;
-            overflow-y: hidden;
-            padding-top: 0px;
-            position: relative;
-        }
-        
-        .footer-social li {
-            display:inline-block;
-            margin:12px 12px 0 0;
+
+        #site-footer p {
+            margin:0;
         }
         
         #navigation .bluesky-icon {
     		transform:translateY(1.5px);
     	}
     
-        .footer-social ul li svg, .bluesky-icon svg {
-            height:13px;
-            width:auto;
-        }
-        
-        .x-icon {
-            height:11px;
-        }
-    
-        .footer-social ul li svg path {
-            fill:{color:Footer Text};
-        }
-        
         @media only screen and (max-width: 768px) {
-            #footer {
-                padding:var(--outer-margin);
-                font-size:{text:Description Mobile Text Size};
+            #site-footer {
+                padding:var(--outer-margin) var(--spacing);
+                font-size:.78em;
             }
-            
-            .footer-links {
-                padding-top: 100px;
-            }
-
         }
         
         .stash-credit {
@@ -3175,50 +3090,9 @@
             </div>
         {/block:pagination}
                 
-        {block:IfFooter}
-            {block:IfFooterToggleIcon}
-                <div class="footer-toggle">+</div>
-            {/block:IfFooterToggleIcon}
-        
-            <div id="footer">
-                {block:IfFooterText}
-                    <div class="footer-text">{text:Footer Text}</div>
-                {/block:IfFooterText}
-                
-                <div class="footer-links">
-                    <div class="footer-social">
-                        <ul class="social-links">
-                            {block:ifTwitterURL}<li><a target="_blank" href="{text:Twitter URL}"><svg class="x-icon" width="13.69" height="14" viewBox="0 0 1200 1227" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.165 687.828L521.697 619.934L144.011 79.6944H306.615L611.412 515.685L658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z" fill="white"/></svg></a></li>{/block:ifTwitterURL}
-                            {block:ifInstagramURL}<li><a target="_blank" href="{text:Instagram URL}"><i class="fa-brands fa-instagram"></i></a></li>{/block:ifInstagramURL}
-                            {block:ifFacebookURL}<li><a target="_blank" href="{text:Facebook URL}"><i class="fa-brands fa-facebook"></i></a></li>{/block:ifFacebookURL}
-                            {block:ifTikTokURL}<li><a target="_blank" href="{text:TikTok URL}"><i class="fa-brands fa-tiktok"></i></a></li>{/block:ifTikTokURL}
-                            {block:ifYoutubeURL}<li><a target="_blank" href="{text:Youtube URL}"><i class="fa-brands fa-youtube"></i></a></li>{/block:ifYoutubeURL}
-                            {block:ifBlueskyURL}<li class="bluesky-icon"><a target="_blank" href="{text:Bluesky URL}"><svg width="18" height="16.56" viewBox="0 0 25 23" fill="none" xmlns="<http://www.w3.org/2000/svg>"><path d="M5.65498 1.83464C8.42565 3.91468 11.4058 8.13214 12.5 10.3955C13.5942 8.13231 16.5742 3.91464 19.345 1.83464C21.3441 0.333764 24.5833 -0.827528 24.5833 2.86776C24.5833 3.60576 24.1602 9.06735 23.912 9.95401C23.0494 13.0367 19.906 13.8229 17.1099 13.3471C21.9974 14.1789 23.2408 16.9342 20.5556 19.6896C15.4561 24.9225 13.2261 18.3766 12.6544 16.6993C12.5496 16.3918 12.5006 16.248 12.4999 16.3703C12.4992 16.248 12.4502 16.3918 12.3454 16.6993C11.774 18.3766 9.54405 24.9226 4.44417 19.6896C1.759 16.9342 3.0023 14.1787 7.88988 13.3471C5.09371 13.8229 1.9503 13.0367 1.0878 9.95401C0.839621 9.06726 0.416504 3.60568 0.416504 2.86776C0.416504 -0.827528 3.65575 0.333764 5.65484 1.83464H5.65498Z" fill="white"/></svg></a></li>{/block:ifBlueskyURL}
-                            
-                            {block:ifSnapchatURL}<li><a target="_blank" href="{text:Snapchat URL}"><i class="fa-brands fa-snapchat-ghost"></i></a></li>{/block:ifSnapchatURL}
-                            {block:ifLinkTreeURL}<li><a target="_blank" href="{text:LinkTree URL}"><i class="fa-solid fa-tree"></i></a></li>{/block:ifLinkTreeURL}
-                            {block:ifGithubURL}<li><a target="_blank" href="{text:Github URL}"><i class="fa-brands fa-github"></i></a></li>{/block:ifGithubURL}
-                            {block:ifLinkedinURL}<li><a target="_blank" href="{text:Linkedin URL}"><i class="fa-brands fa-linkedin"></i></a></li>{/block:ifLinkedinURL}
-                            {block:ifPayPalURL}<li><a target="_blank" href="{text:PayPal URL}"><i class="fa-brands fa-paypal"></i></a></li>{/block:ifPayPalURL}
-                            {block:ifPinterestURL}<li><a target="_blank" href="{text:Pinterest URL}"><i class="fa-brands fa-pinterest"></i></a></li>{/block:ifPinterestURL}
-                            {block:ifMixcloudURL}<li><a target="_blank" href="{text:Mixcloud URL}"><i class="fa-brands fa-mixcloud"></i></a></li>{/block:ifMixcloudURL}
-                            {block:ifShopURL}<li><a target="_blank" href="{text:Shop URL}"><i class="fa fa-store"></i></a></li>{/block:ifShopURL}
-                            {block:ifSoundcloudURL}<li><a target="_blank" href="{text:Soundcloud URL}"><i class="fa-brands fa-soundcloud"></i></a></li>{/block:ifSoundcloudURL}
-                            {block:ifSpotifyURL}<li><a target="_blank" href="{text:Spotify URL}"><i class="fa-brands fa-spotify"></i></a></li>{/block:ifSpotifyURL}
-                            {block:ifTelegramURL}<li><a target="_blank" href="{text:Telegram URL}"><i class="fa-brands fa-telegram"></i></a></li>{/block:ifTelegramURL}
-                            {block:ifTwitchURL}<li><a target="_blank" href="{text:Twitch URL}"><i class="fa-brands fa-twitch"></i></a></li>{/block:ifTwitchURL}
-                            {block:ifVimeoURL}<li><a target="_blank" href="{text:Vimeo URL}"><i class="fa-brands fa-vimeo"></i></a></li>{/block:ifVimeoURL}
-                            {block:ifWordpressURL}<li><a target="_blank" href="{text:Wordpress URL}"><i class="fa-brands fa-wordpress"></i></a></li>{/block:ifWordpressURL}
-        
-                        </ul>
-                    </div>
-                    <div class="footer-contact">
-                        {block:ifEmailAddress}<li><a target="_blank" href="mailto:{text:Email Address}">{text:Email Address}</a></li>{/block:ifEmailAddress}
-                        {block:ifPhoneNumber}<li><a target="_blank" href="tel:{text:Phone Number}">{text:Phone Number}</a></li>{/block:ifPhoneNumber} 
-                    </div>
-                </div>
-            </div>
-        {/block:IfFooter}
+        <footer id="site-footer">
+            <p>&copy; {CopyrightYears} Simon Flühmann. Words, pictures, links, yada yada &mdash; entirely human.</p>
+        </footer>
     </main>
     
     
@@ -3447,28 +3321,6 @@
                     }
                 {/block:ifNotBannerOnTaggedPage}
 
-                // Footer Toggle
-                $(document).on("click",".footer-toggle",function(e){
-                    $('body').toggleClass("footer-open");
-                });
-                
-                if(windowwidth > 740){
-                    $(document).on({
-                        mouseenter: function () {
-                            // openNavigation();
-                        },
-                        mouseleave: function (e) {
-                            $('body').removeClass("footer-open");
-                        }
-                    }, "#footer, .footer-open"); //pass the element as an argument to .on
-                } else {
-                    $('body').click(function(e) {
-                        if (!$(e.target).closest('#footer').length && $('body').hasClass( "footer-open" )){
-                            $('body').removeClass("footer-open");
-                        }
-                    });
-                }
-                
             });
         
             
