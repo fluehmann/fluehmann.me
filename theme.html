@@ -256,6 +256,21 @@
  <path d="m627.79 113.59 10.039-6.5742 19.719 30.121-10.039 6.5742z"/>
  <path d="m824.96 414.79 10.039-6.5742 19.719 30.121-10.039 6.5742z"/>
         </symbol>
+        <symbol id="icon-satellite" viewBox="0 0 96 64">
+            <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <g transform="rotate(-12 48 32)">
+                    <rect x="39" y="23" width="18" height="18" rx="2" />
+                    <path d="M32 32h7M57 32h7" />
+                    <rect x="5" y="23" width="27" height="18" rx="1" />
+                    <path d="M14 23v18M23 23v18" />
+                    <rect x="64" y="23" width="27" height="18" rx="1" />
+                    <path d="M73 23v18M82 23v18" />
+                    <path d="M44 23v-7" />
+                    <circle cx="44" cy="13" r="3" />
+                    <path d="M52 41v7l6 5" />
+                </g>
+            </g>
+        </symbol>
     </svg>
     
     <style>
@@ -1581,6 +1596,142 @@
         #site-footer p {
             margin:0;
         }
+
+        .footer-satellite {
+            display:block;
+            width:46px;
+            height:auto;
+            margin:1.35rem auto 0;
+            color:currentColor;
+            opacity:.62;
+        }
+
+        /**** Ambient events *****/
+
+        #ambient-events {
+            position:fixed;
+            inset:0;
+            z-index:50;
+            overflow:hidden;
+            color:var(--text);
+            pointer-events:none;
+        }
+
+        .ambient-event {
+            position:absolute;
+            pointer-events:none;
+            will-change:transform, opacity;
+        }
+
+        .ambient-shooting-star {
+            top:var(--event-top);
+            left:-20vw;
+            width:clamp(90px, 14vw, 180px);
+            height:1px;
+            background:linear-gradient(90deg, transparent, currentColor);
+            animation:ambient-shooting-star 1.35s ease-in forwards;
+        }
+
+        .ambient-shooting-star::after {
+            content:"";
+            position:absolute;
+            top:50%;
+            right:-1px;
+            width:3px;
+            height:3px;
+            border-radius:50%;
+            background:currentColor;
+            transform:translateY(-50%);
+        }
+
+        .ambient-satellite {
+            top:var(--event-top);
+            left:-90px;
+            width:62px;
+            height:auto;
+            opacity:0;
+            animation:ambient-satellite 6s linear forwards;
+        }
+
+        .ambient-fake-cursor {
+            top:0;
+            left:0;
+            width:18px;
+            height:24px;
+            color:var(--text);
+            opacity:0;
+            animation:ambient-fake-cursor 4s ease-in-out forwards;
+        }
+
+        .ambient-fake-cursor svg,
+        .ambient-satellite svg {
+            display:block;
+            width:100%;
+            height:auto;
+        }
+
+        .ambient-fake-cursor path {
+            fill:var(--text);
+            stroke:var(--background-color);
+            stroke-width:1.4;
+            stroke-linejoin:round;
+        }
+
+        @keyframes ambient-shooting-star {
+            0% {
+                opacity:0;
+                transform:translate3d(0, -8vh, 0) rotate(15deg);
+            }
+            12% { opacity:.68; }
+            78% { opacity:.55; }
+            100% {
+                opacity:0;
+                transform:translate3d(140vw, 34vh, 0) rotate(15deg);
+            }
+        }
+
+        @keyframes ambient-satellite {
+            0% {
+                opacity:0;
+                transform:translate3d(0, 12px, 0) rotate(-5deg);
+            }
+            12% { opacity:.52; }
+            86% { opacity:.52; }
+            100% {
+                opacity:0;
+                transform:translate3d(calc(100vw + 180px), -24px, 0) rotate(13deg);
+            }
+        }
+
+        @keyframes ambient-fake-cursor {
+            0% {
+                opacity:0;
+                transform:translate3d(-30px, var(--cursor-y-start), 0) rotate(-4deg);
+            }
+            14% { opacity:.48; }
+            42% {
+                opacity:.48;
+                transform:translate3d(var(--cursor-x-one), var(--cursor-y-one), 0) rotate(1deg);
+            }
+            68% {
+                opacity:.48;
+                transform:translate3d(var(--cursor-x-two), var(--cursor-y-two), 0) rotate(-2deg);
+            }
+            82% {
+                opacity:.48;
+                transform:translate3d(var(--cursor-x-two), var(--cursor-y-two), 0) rotate(-2deg);
+            }
+            100% {
+                opacity:0;
+                transform:translate3d(calc(100vw + 30px), var(--cursor-y-end), 0) rotate(3deg);
+            }
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+            #ambient-events {
+                display:none;
+            }
+        }
         
         #navigation .bluesky-icon {
     		transform:translateY(1.5px);
@@ -1590,6 +1741,10 @@
             #site-footer {
                 padding:var(--outer-margin) var(--spacing);
                 font-size:.78em;
+            }
+
+            .footer-satellite {
+                width:40px;
             }
         }
         
@@ -3091,7 +3246,9 @@
         {/block:pagination}
                 
         <footer id="site-footer">
-            <p>&copy; {CopyrightYears} Simon Flühmann. Words, pictures, links, yada yada &mdash; entirely human.</p>
+            <p>&copy; {CopyrightYears} Simon Flühmann.<br>
+            Words, pictures, links, yada yada - one ordinary guy living the life in the early 21st century.</p>
+            <svg class="footer-satellite" aria-hidden="true"><use href="#icon-satellite" xlink:href="#icon-satellite"></use></svg>
         </footer>
     </main>
     
@@ -3141,6 +3298,8 @@
         <svg class="loading-dodecahedron" aria-hidden="true"><use href="#icon-dodecahedron" xlink:href="#icon-dodecahedron"></use></svg>
         <span class="sr-text">Loading older posts</span>
     </div>
+
+    <div id="ambient-events" aria-hidden="true"></div>
     
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
@@ -3301,10 +3460,87 @@
                 $embeds.attr("scrolling", "no").css("overflow", "hidden");
             }
 
+            function initAmbientEvents() {
+                var layer = document.getElementById("ambient-events");
+                var reducedMotion = window.matchMedia &&
+                    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+                if (!layer || reducedMotion || window.location.pathname.indexOf("customize_preview") > -1) {
+                    return;
+                }
+
+                function randomBetween(minimum, maximum) {
+                    return Math.round(minimum + Math.random() * (maximum - minimum));
+                }
+
+                function finishEvent(element) {
+                    element.addEventListener("animationend", function() {
+                        if (element.parentNode) {
+                            element.parentNode.removeChild(element);
+                        }
+                    }, {once:true});
+                }
+
+                function createShootingStar() {
+                    var star = document.createElement("span");
+                    star.className = "ambient-event ambient-shooting-star";
+                    star.style.setProperty("--event-top", randomBetween(8, 48) + "vh");
+                    return star;
+                }
+
+                function createSatellite() {
+                    var satellite = document.createElement("span");
+                    satellite.className = "ambient-event ambient-satellite";
+                    satellite.style.setProperty("--event-top", randomBetween(14, 72) + "vh");
+                    satellite.innerHTML = '<svg viewBox="0 0 96 64" aria-hidden="true"><use href="#icon-satellite" xlink:href="#icon-satellite"></use></svg>';
+                    return satellite;
+                }
+
+                function createFakeCursor() {
+                    var cursor = document.createElement("span");
+                    cursor.className = "ambient-event ambient-fake-cursor";
+                    cursor.style.setProperty("--cursor-y-start", randomBetween(12, 78) + "vh");
+                    cursor.style.setProperty("--cursor-x-one", randomBetween(18, 42) + "vw");
+                    cursor.style.setProperty("--cursor-y-one", randomBetween(16, 76) + "vh");
+                    cursor.style.setProperty("--cursor-x-two", randomBetween(55, 82) + "vw");
+                    cursor.style.setProperty("--cursor-y-two", randomBetween(12, 72) + "vh");
+                    cursor.style.setProperty("--cursor-y-end", randomBetween(18, 82) + "vh");
+                    cursor.innerHTML = '<svg viewBox="0 0 24 32" aria-hidden="true"><path d="M2 1v25l6.2-6.4 4.7 10.2 4.1-1.9-4.7-9.9H22z"></path></svg>';
+                    return cursor;
+                }
+
+                function playRandomEvent() {
+                    var factories = [createShootingStar, createSatellite, createFakeCursor];
+                    var element;
+
+                    if (layer.firstChild) {
+                        return;
+                    }
+
+                    element = factories[Math.floor(Math.random() * factories.length)]();
+                    finishEvent(element);
+                    layer.appendChild(element);
+                }
+
+                function scheduleNextEvent(firstEvent) {
+                    var delay = firstEvent
+                        ? randomBetween(45000, 90000)
+                        : randomBetween(60000, 150000);
+
+                    window.setTimeout(function() {
+                        playRandomEvent();
+                        scheduleNextEvent(false);
+                    }, delay);
+                }
+
+                scheduleNextEvent(true);
+            }
+
             stashFuel();
             initBackToTopVisibility();
             initOwnerEditLinks();
             initImageLightbox();
+            initAmbientEvents();
             containSpotifyEmbeds(document);
             
             $(document).ready(function(){
