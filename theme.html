@@ -860,6 +860,27 @@
             }
         }
 
+        /* Two columns on portrait tablets such as the iPad mini. */
+        @media screen and (min-width: 741px) and (max-width: 900px) {
+            .post-columns-four .post-sizer,
+            .post-columns-four #posts article {
+                width:48.5% !important;
+            }
+
+            .post-columns-four .post-gutter {
+                width:3% !important;
+            }
+
+            .post-columns-four .description-main p {
+                max-width:100% !important;
+            }
+
+            .index-search {
+                width:100%;
+                max-width:none;
+            }
+        }
+
         /* Give posts more breathing room without changing the masonry gutters. */
         #posts article:not(.description-main),
         .post-columns-three #posts article:not(.description-main),
