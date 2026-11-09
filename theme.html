@@ -256,21 +256,6 @@
  <path d="m627.79 113.59 10.039-6.5742 19.719 30.121-10.039 6.5742z"/>
  <path d="m824.96 414.79 10.039-6.5742 19.719 30.121-10.039 6.5742z"/>
         </symbol>
-        <symbol id="icon-satellite" viewBox="0 0 96 64">
-            <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <g transform="rotate(-12 48 32)">
-                    <rect x="39" y="23" width="18" height="18" rx="2" />
-                    <path d="M32 32h7M57 32h7" />
-                    <rect x="5" y="23" width="27" height="18" rx="1" />
-                    <path d="M14 23v18M23 23v18" />
-                    <rect x="64" y="23" width="27" height="18" rx="1" />
-                    <path d="M73 23v18M82 23v18" />
-                    <path d="M44 23v-7" />
-                    <circle cx="44" cy="13" r="3" />
-                    <path d="M52 41v7l6 5" />
-                </g>
-            </g>
-        </symbol>
     </svg>
     
     <style>
@@ -1620,11 +1605,12 @@
 
         .footer-satellite {
             display:block;
-            width:46px;
-            height:auto;
+            width:max-content;
             margin:1.35rem auto 0;
             color:currentColor;
-            opacity:.62;
+            font-size:42px;
+            line-height:1;
+            opacity:.8;
         }
 
         /**** Ambient events *****/
@@ -1668,8 +1654,9 @@
         .ambient-satellite {
             top:var(--event-top);
             left:-90px;
-            width:62px;
-            height:auto;
+            width:auto;
+            font-size:54px;
+            line-height:1;
             opacity:0;
             animation:ambient-satellite 6s linear forwards;
         }
@@ -1684,11 +1671,14 @@
             animation:ambient-fake-cursor 4s ease-in-out forwards;
         }
 
-        .ambient-fake-cursor svg,
-        .ambient-satellite svg {
+        .ambient-fake-cursor svg {
             display:block;
             width:100%;
             height:auto;
+        }
+
+        .ambient-satellite i {
+            display:block;
         }
 
         .ambient-fake-cursor path {
@@ -1703,8 +1693,8 @@
                 opacity:0;
                 transform:translate3d(0, -8vh, 0) rotate(15deg);
             }
-            12% { opacity:.68; }
-            78% { opacity:.55; }
+            12% { opacity:.9; }
+            78% { opacity:.82; }
             100% {
                 opacity:0;
                 transform:translate3d(140vw, 34vh, 0) rotate(15deg);
@@ -1716,8 +1706,8 @@
                 opacity:0;
                 transform:translate3d(0, 12px, 0) rotate(-5deg);
             }
-            12% { opacity:.52; }
-            86% { opacity:.52; }
+            12% { opacity:.85; }
+            86% { opacity:.85; }
             100% {
                 opacity:0;
                 transform:translate3d(calc(100vw + 180px), -24px, 0) rotate(13deg);
@@ -1729,17 +1719,17 @@
                 opacity:0;
                 transform:translate3d(-30px, var(--cursor-y-start), 0) rotate(-4deg);
             }
-            14% { opacity:.48; }
+            14% { opacity:.82; }
             42% {
-                opacity:.48;
+                opacity:.82;
                 transform:translate3d(var(--cursor-x-one), var(--cursor-y-one), 0) rotate(1deg);
             }
             68% {
-                opacity:.48;
+                opacity:.82;
                 transform:translate3d(var(--cursor-x-two), var(--cursor-y-two), 0) rotate(-2deg);
             }
             82% {
-                opacity:.48;
+                opacity:.82;
                 transform:translate3d(var(--cursor-x-two), var(--cursor-y-two), 0) rotate(-2deg);
             }
             100% {
@@ -1765,7 +1755,7 @@
             }
 
             .footer-satellite {
-                width:40px;
+                font-size:36px;
             }
         }
         
@@ -2831,8 +2821,8 @@
         {block:ifnavigation}
         <nav id="navigation" aria-label="Primary navigation">
             <ul class="navigation-list">
-                <li class="navigation-primary navigation-home"><a href="/" aria-label="Home" title="Home"><i class="fa-solid fa-door-open" aria-hidden="true"></i></a></li>
-                <li class="navigation-primary navigation-about"><a href="/about" aria-label="About" title="About"><i class="fa-solid fa-eye" aria-hidden="true"></i></a></li>
+                <li class="navigation-primary navigation-home"><a href="/" aria-label="Home" title="Home"><i class="fa-solid fa-earth-americas" aria-hidden="true"></i></a></li>
+                <li class="navigation-primary navigation-about"><a href="/about" aria-label="About" title="About"><i class="fa-solid fa-user-astronaut" aria-hidden="true"></i></a></li>
                 <li class="navigation-primary navigation-random"><a href="/random" aria-label="Random post" title="Random post"><i class="fa-solid fa-dice-d20" aria-hidden="true"></i></a></li>
                 {block:ifInstagramURL}
                     <li class="navigation-social navigation-instagram">
@@ -3099,7 +3089,7 @@
         <footer id="site-footer">
             <p>&copy; {CopyrightYears} Simon Flühmann.<br>
             Words, pictures, links, yada yada - one ordinary guy living the life in the early 21st century.</p>
-            <svg class="footer-satellite" aria-hidden="true"><use href="#icon-satellite" xlink:href="#icon-satellite"></use></svg>
+            <i class="fa-solid fa-satellite footer-satellite" aria-hidden="true"></i>
         </footer>
     </main>
     
@@ -3343,7 +3333,7 @@
                     var satellite = document.createElement("span");
                     satellite.className = "ambient-event ambient-satellite";
                     satellite.style.setProperty("--event-top", randomBetween(14, 72) + "vh");
-                    satellite.innerHTML = '<svg viewBox="0 0 96 64" aria-hidden="true"><use href="#icon-satellite" xlink:href="#icon-satellite"></use></svg>';
+                    satellite.innerHTML = '<i class="fa-solid fa-satellite" aria-hidden="true"></i>';
                     return satellite;
                 }
 
