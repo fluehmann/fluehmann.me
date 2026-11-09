@@ -190,6 +190,7 @@
     </script>
     
     <link href='https://static.tumblr.com/jzzkxgh/Ot6rrcrk6/font-awesome.css' rel='stylesheet' type='text/css'>
+    <link rel="preconnect" href="https://assets.fluehmann.me" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com"> 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
     <link href="https://fonts.googleapis.com/css2?family={select:Font}:wght@400,700,{select:Description Font Weight},{select:Logo Font Weight}&display=swap" rel="stylesheet">
@@ -261,6 +262,14 @@
     <style>
         /* Theme Options */
         
+        @font-face {
+            font-family:"Euclid Mono Vanguard";
+            src:url("https://assets.fluehmann.me/fonts/EuclidMono-Vanguard.woff2") format("woff2");
+            font-style:normal;
+            font-weight:400;
+            font-display:swap;
+        }
+
         :root {
             --background-image: url({image:background});
             --background-color: {color:background};
@@ -2593,6 +2602,12 @@
                 top:0;
                 left:initial;
             }
+        }
+
+        /* Licensed Euclid Mono webfont: blog title only. */
+        #animated-title {
+            font-family:"Euclid Mono Vanguard", "Courier New", monospace;
+            font-weight:400;
         }
 
         {CustomCSS}
