@@ -1610,6 +1610,14 @@
             margin:1.35rem auto 0;
             color:var(--text);
             opacity:1;
+            transform-box:fill-box;
+            transform-origin:center;
+            animation:footer-dodecahedron-clock 60s steps(60, end) infinite;
+        }
+
+        @keyframes footer-dodecahedron-clock {
+            from { transform:rotate(0deg); }
+            to { transform:rotate(360deg); }
         }
 
         /**** Ambient events *****/
@@ -1713,6 +1721,10 @@
         @media (prefers-reduced-motion:reduce) {
             #ambient-events {
                 display:none;
+            }
+
+            .footer-dodecahedron {
+                animation:none;
             }
         }
         
