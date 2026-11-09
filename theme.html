@@ -504,6 +504,22 @@
             min-height:44px;
         }
 
+        #navigation .navigation-dodecahedron > a {
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            width:44px;
+            height:44px;
+            color:#fff;
+            transition:opacity .2s ease;
+        }
+
+        #navigation .navigation-dodecahedron > a:hover,
+        #navigation .navigation-dodecahedron > a:focus-visible {
+            color:#fff;
+            opacity:.65;
+        }
+
         .navigation-dodecahedron-clock {
             display:block;
             width:44px;
@@ -2625,6 +2641,10 @@
                 font-size:clamp(30px, 10vw, 48px);
             }
 
+            #animated-title {
+                letter-spacing:-0.2rem;
+            }
+
             #navigation ul li,
             #navigation .navigation-dodecahedron,
             #navigation .navigation-primary > a,
@@ -2632,6 +2652,7 @@
                 min-height:34px;
             }
 
+            #navigation .navigation-dodecahedron > a,
             .navigation-dodecahedron-clock {
                 width:34px;
                 height:34px;
@@ -2834,8 +2855,11 @@
         {block:ifnavigation}
         <nav id="navigation" aria-label="Primary navigation">
             <ul class="navigation-list">
-                <li class="navigation-dodecahedron" aria-hidden="true"><svg class="navigation-dodecahedron-clock ticking-dodecahedron"><use href="#icon-dodecahedron" xlink:href="#icon-dodecahedron"></use></svg></li>
-                <li class="navigation-primary navigation-home"><a href="/">HOME</a></li>
+                <li class="navigation-dodecahedron">
+                    <a href="/" aria-label="Home" title="Home">
+                        <svg class="navigation-dodecahedron-clock ticking-dodecahedron" aria-hidden="true"><use href="#icon-dodecahedron" xlink:href="#icon-dodecahedron"></use></svg>
+                    </a>
+                </li>
                 <li class="navigation-primary navigation-about"><a href="/about">ABOUT</a></li>
                 <li class="navigation-primary navigation-random"><a href="/random">RANDOM</a></li>
                 {block:ifInstagramURL}
