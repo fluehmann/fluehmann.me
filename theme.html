@@ -454,10 +454,12 @@
         
         #navigation ul li {
             list-style-type:none;
-            display:block;
-            margin:0 14px 0 0;
+            display:flex;
+            align-items:center;
+            min-height:44px;
+            margin:0 12px 0 0;
             text-transform:uppercase;
-            font-size:13px;
+            font-size:16px;
             letter-spacing:-0.12px;
         }
         
@@ -471,15 +473,20 @@
             justify-content:center;
             width:auto;
             height:auto;
-            min-height:26px;
+            min-height:44px;
             padding:0;
             color:#fff;
             background:transparent;
             border-radius:0;
-            font-size:18px;
+            font-size:16px;
             font-weight:700;
             letter-spacing:.04em;
             line-height:1;
+            text-decoration-line:underline;
+            text-decoration-style:solid;
+            text-decoration-color:#fff;
+            text-decoration-thickness:1px;
+            text-underline-offset:.22em;
             transition:opacity .2s ease;
         }
 
@@ -494,19 +501,19 @@
             display:flex;
             align-items:center;
             justify-content:center;
-            min-height:26px;
+            min-height:44px;
         }
 
         .navigation-dodecahedron-clock {
             display:block;
-            width:18px;
-            height:18px;
+            width:44px;
+            height:44px;
             color:#fff;
             opacity:1;
         }
 
         #navigation .navigation-random {
-            margin-right:18px;
+            margin-right:12px;
         }
 
         #navigation .navigation-social {
@@ -522,7 +529,7 @@
             align-items:center;
             justify-content:center;
             min-width:18px;
-            min-height:26px;
+            min-height:44px;
         }
 
         #navigation .navigation-tag > a {
@@ -1596,8 +1603,8 @@
 
         .footer-dodecahedron {
             display:block;
-            width:88px;
-            height:88px;
+            width:44px;
+            height:44px;
             margin:1.35rem auto 0;
             color:var(--text);
             opacity:1;
@@ -1733,8 +1740,8 @@
             }
 
             .footer-dodecahedron {
-                width:68px;
-                height:68px;
+                width:34px;
+                height:34px;
             }
         }
         
@@ -2606,8 +2613,29 @@
 
         /* Licensed Euclid Mono webfont: blog title only. */
         #animated-title {
+            display:inline-block;
             font-family:"Euclid Mono Vanguard", "Courier New", monospace;
             font-weight:400;
+            letter-spacing:-0.5rem;
+            white-space:nowrap;
+        }
+
+        @media screen and (max-width:740px) {
+            #header .logo a {
+                font-size:clamp(30px, 10vw, 48px);
+            }
+
+            #navigation ul li,
+            #navigation .navigation-dodecahedron,
+            #navigation .navigation-primary > a,
+            #navigation .navigation-social > a {
+                min-height:34px;
+            }
+
+            .navigation-dodecahedron-clock {
+                width:34px;
+                height:34px;
+            }
         }
 
         {CustomCSS}
