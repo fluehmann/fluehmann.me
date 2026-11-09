@@ -460,58 +460,40 @@
             display:inline-flex;
             align-items:center;
             justify-content:center;
-            width:32px;
-            height:32px;
-            min-height:32px;
+            width:auto;
+            height:auto;
+            min-height:26px;
             padding:0;
-            color:#000;
-            background:#fff;
-            border-radius:50%;
+            color:#fff;
+            background:transparent;
+            border-radius:0;
+            font-size:18px;
+            font-weight:700;
+            letter-spacing:.04em;
             line-height:1;
-            transition:transform .2s ease, background-color .2s ease;
+            transition:opacity .2s ease;
         }
 
         #navigation .navigation-primary > a:hover,
         #navigation .navigation-primary > a:focus-visible {
-            color:#000;
-            background:#e6e6e6;
-            transform:translateY(-1px);
+            color:#fff;
+            background:transparent;
+            opacity:.65;
         }
 
-        #navigation .navigation-primary > a i {
+        #navigation .navigation-dodecahedron {
             display:flex;
             align-items:center;
             justify-content:center;
-            width:16px;
-            height:16px;
-            font-size:16px;
-            line-height:16px;
-            text-align:center;
+            min-height:26px;
         }
 
-        #navigation .navigation-primary > a i::before {
+        .navigation-dodecahedron-clock {
             display:block;
-            line-height:1;
-        }
-
-        @keyframes navigation-dice-shake {
-            0%, 100% { transform:translateX(0) rotate(0); }
-            20% { transform:translateX(-1px) rotate(-12deg); }
-            40% { transform:translateX(1px) rotate(10deg); }
-            60% { transform:translateX(-1px) rotate(-8deg); }
-            80% { transform:translateX(1px) rotate(6deg); }
-        }
-
-        #navigation .navigation-random > a:hover i,
-        #navigation .navigation-random > a:focus-visible i {
-            animation:navigation-dice-shake .55s ease-in-out 1;
-        }
-
-        @media (prefers-reduced-motion:reduce) {
-            #navigation .navigation-random > a:hover i,
-            #navigation .navigation-random > a:focus-visible i {
-                animation:none;
-            }
+            width:18px;
+            height:18px;
+            color:#fff;
+            opacity:1;
         }
 
         #navigation .navigation-random {
@@ -1605,17 +1587,20 @@
 
         .footer-dodecahedron {
             display:block;
-            width:44px;
-            height:44px;
+            width:88px;
+            height:88px;
             margin:1.35rem auto 0;
             color:var(--text);
             opacity:1;
-            transform-box:fill-box;
-            transform-origin:center;
-            animation:footer-dodecahedron-clock 60s steps(60, end) infinite;
         }
 
-        @keyframes footer-dodecahedron-clock {
+        .ticking-dodecahedron {
+            transform-box:fill-box;
+            transform-origin:center;
+            animation:dodecahedron-clock 60s steps(60, end) infinite;
+        }
+
+        @keyframes dodecahedron-clock {
             from { transform:rotate(0deg); }
             to { transform:rotate(360deg); }
         }
@@ -1723,7 +1708,7 @@
                 display:none;
             }
 
-            .footer-dodecahedron {
+            .ticking-dodecahedron {
                 animation:none;
             }
         }
@@ -1739,8 +1724,8 @@
             }
 
             .footer-dodecahedron {
-                width:34px;
-                height:34px;
+                width:68px;
+                height:68px;
             }
         }
         
@@ -2806,9 +2791,10 @@
         {block:ifnavigation}
         <nav id="navigation" aria-label="Primary navigation">
             <ul class="navigation-list">
-                <li class="navigation-primary navigation-home"><a href="/" aria-label="Home" title="Home"><i class="fa-solid fa-earth-americas" aria-hidden="true"></i></a></li>
-                <li class="navigation-primary navigation-about"><a href="/about" aria-label="About" title="About"><i class="fa-solid fa-user-astronaut" aria-hidden="true"></i></a></li>
-                <li class="navigation-primary navigation-random"><a href="/random" aria-label="Random post" title="Random post"><i class="fa-solid fa-dice-d20" aria-hidden="true"></i></a></li>
+                <li class="navigation-dodecahedron" aria-hidden="true"><svg class="navigation-dodecahedron-clock ticking-dodecahedron"><use href="#icon-dodecahedron" xlink:href="#icon-dodecahedron"></use></svg></li>
+                <li class="navigation-primary navigation-home"><a href="/">HOME</a></li>
+                <li class="navigation-primary navigation-about"><a href="/about">ABOUT</a></li>
+                <li class="navigation-primary navigation-random"><a href="/random">RANDOM</a></li>
                 {block:ifInstagramURL}
                     <li class="navigation-social navigation-instagram">
                         <a target="_blank" rel="me noopener" href="{text:Instagram URL}" aria-label="Instagram" title="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
@@ -3074,7 +3060,7 @@
         <footer id="site-footer">
             <p>&copy; {CopyrightYears} Simon Flühmann.<br>
             Words, pictures, links, yada yada - one ordinary guy living the life in the early 21st century.</p>
-            <svg class="footer-dodecahedron" aria-hidden="true"><use href="#icon-dodecahedron" xlink:href="#icon-dodecahedron"></use></svg>
+            <svg class="footer-dodecahedron ticking-dodecahedron" aria-hidden="true"><use href="#icon-dodecahedron" xlink:href="#icon-dodecahedron"></use></svg>
         </footer>
     </main>
     
