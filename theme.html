@@ -1603,14 +1603,13 @@
             margin:0;
         }
 
-        .footer-satellite {
+        .footer-dodecahedron {
             display:block;
-            width:max-content;
+            width:44px;
+            height:44px;
             margin:1.35rem auto 0;
-            color:currentColor;
-            font-size:42px;
-            line-height:1;
-            opacity:.8;
+            color:var(--text);
+            opacity:1;
         }
 
         /**** Ambient events *****/
@@ -1651,16 +1650,6 @@
             transform:translateY(-50%);
         }
 
-        .ambient-satellite {
-            top:var(--event-top);
-            left:-90px;
-            width:auto;
-            font-size:54px;
-            line-height:1;
-            opacity:0;
-            animation:ambient-satellite 6s linear forwards;
-        }
-
         .ambient-fake-cursor {
             top:0;
             left:0;
@@ -1675,10 +1664,6 @@
             display:block;
             width:100%;
             height:auto;
-        }
-
-        .ambient-satellite i {
-            display:block;
         }
 
         .ambient-fake-cursor path {
@@ -1698,19 +1683,6 @@
             100% {
                 opacity:0;
                 transform:translate3d(140vw, 34vh, 0) rotate(15deg);
-            }
-        }
-
-        @keyframes ambient-satellite {
-            0% {
-                opacity:0;
-                transform:translate3d(0, 12px, 0) rotate(-5deg);
-            }
-            12% { opacity:.85; }
-            86% { opacity:.85; }
-            100% {
-                opacity:0;
-                transform:translate3d(calc(100vw + 180px), -24px, 0) rotate(13deg);
             }
         }
 
@@ -1754,8 +1726,9 @@
                 font-size:.78em;
             }
 
-            .footer-satellite {
-                font-size:36px;
+            .footer-dodecahedron {
+                width:34px;
+                height:34px;
             }
         }
         
@@ -3089,7 +3062,7 @@
         <footer id="site-footer">
             <p>&copy; {CopyrightYears} Simon Flühmann.<br>
             Words, pictures, links, yada yada - one ordinary guy living the life in the early 21st century.</p>
-            <i class="fa-solid fa-satellite footer-satellite" aria-hidden="true"></i>
+            <svg class="footer-dodecahedron" aria-hidden="true"><use href="#icon-dodecahedron" xlink:href="#icon-dodecahedron"></use></svg>
         </footer>
     </main>
     
@@ -3329,14 +3302,6 @@
                     return star;
                 }
 
-                function createSatellite() {
-                    var satellite = document.createElement("span");
-                    satellite.className = "ambient-event ambient-satellite";
-                    satellite.style.setProperty("--event-top", randomBetween(14, 72) + "vh");
-                    satellite.innerHTML = '<i class="fa-solid fa-satellite" aria-hidden="true"></i>';
-                    return satellite;
-                }
-
                 function createFakeCursor() {
                     var cursor = document.createElement("span");
                     cursor.className = "ambient-event ambient-fake-cursor";
@@ -3351,7 +3316,7 @@
                 }
 
                 function playRandomEvent() {
-                    var factories = [createShootingStar, createSatellite, createFakeCursor];
+                    var factories = [createShootingStar, createFakeCursor];
                     var element;
 
                     if (layer.firstChild) {
