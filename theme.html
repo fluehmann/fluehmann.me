@@ -11,6 +11,7 @@
 <!DOCTYPE html> 
 <html> 
 <head>
+    <!-- Core document metadata. Tumblr expands the page-specific title blocks. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
@@ -23,6 +24,11 @@
     <link rel="apple-touch-icon-precomposed" href="{PortraitURL-128}">
     <link rel="alternate" type="application/rss+xml" href="{RSS}" />
     
+    <!--
+        Tumblr theme controls. Each meta declaration becomes an option in the
+        Customize panel; conditional {block:If...} sections below read the value.
+        Keep option names stable because Tumblr stores settings by these names.
+    -->
     {block:Options}
         <meta name="image:Background" content="" />
         <meta name="image:Logo" content="" />
@@ -178,6 +184,10 @@
         <meta name="text:Random Link Label" content="Random">
     {/block:Options}
     
+    <!--
+        Vendor configuration consumed by Hatfield's external JavaScript. These are
+        global by design because the licensed plugin bundle reads them at startup.
+    -->
     <script>
         TUMBLR_HOSTNAME = {JSPlaintextHost},
         TUMBLR_TITLE = {JSPlaintextTitle},
@@ -189,14 +199,17 @@
         VIMEO_BANNER = {block:IfNotBannerVimeoVideoID} false{/block:IfNotBannerVimeoVideoID}{block:IndexPage}{block:IfBannerVimeoVideoID} true{/block:IfBannerVimeoVideoID}{/block:IndexPage}{block:PermalinkPage}{block:IfBannerVimeoVideoID} false{/block:IfBannerVimeoVideoID}{/block:PermalinkPage};
     </script>
     
+    <!-- Shared icon font, hosted title font and selected Google body font. -->
     <link href='https://static.tumblr.com/jzzkxgh/Ot6rrcrk6/font-awesome.css' rel='stylesheet' type='text/css'>
     <link rel="preconnect" href="https://assets.fluehmann.me" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com"> 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
     <link href="https://fonts.googleapis.com/css2?family={select:Font}:wght@400,700,{select:Description Font Weight},{select:Logo Font Weight}&display=swap" rel="stylesheet">
     
+    <!-- Reusable Hatfield navigation symbols; referenced later with <use>. -->
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;"><symbol id="icon-close" viewBox="0 0 32 32"><title>Close</title><polygon points="16 14 7.5 5.5 5.5 7.5 14 16 5.5 24.5 7.5 26.5 16 18 24.5029945 26.5 26.5 24.5 18 16 26.5 7.5 24.5029945 5.5"></polygon></symbol><symbol id="icon-nextPost" viewBox="0 0 32 32"><title>Next post</title><polygon points="12.5 15.5 22.5 25.5 20.5 27.5 8.5 15.5 20.5 3.5 22.5 5.50242448"></polygon></symbol><symbol id="icon-prevPost" viewBox="0 0 32 32"><title>Previous post</title><polygon points="19.5 15.5 9.5 25.5 11.5 27.5 23.5 15.5 11.5 3.5 9.5 5.50242448"></polygon></symbol><symbol id="icon-top" viewBox="0 0 32 32"><title>No more posts</title><polygon points="5.5 24.5 3.5 22.5 15.5 10.5 27.5 22.5 25.4975755 24.5 15.5 14.5"></polygon><rect x="4" y="6" width="23" height="3"></rect></symbol></svg>
     
+    <!-- Geometric dodecahedron reused by the loaders, Home link and footer clock. -->
     <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
         <symbol id="icon-dodecahedron" viewBox="0 0 1200 1200">
 <g fill="none" stroke="currentColor" stroke-width="35"> <path d="m593.99 49.609-473.64 273.5 0.12109 553.76 479.52 277.02 479.51-277.02 0.015625-553.76-479.52-276.96zm172.3 275.55 12.664 19.348 10.039-6.5742-7.8164-11.941 256.57 14.383-4.3008 2.4805 5.9961 10.395 4.1094-2.3711-115.71 229.15-13.68-27.098-10.711 5.4102 16.227 32.137 3.8906-1.9648-67.855 134.38-74.395-128.86 5.293-9.168-10.391-6-1.8281 3.168-152.98-264.99zm-11.535 556.36-23.059 1.293 0.67188 11.98 14.219-0.79688-140.72 214.97v-4.9375l-12-0.003906v4.7812l-140.61-214.81 30.332 1.6992 0.67187-11.98-35.941-2.0156-0.25 4.375-82.461-125.98 305.97 0.011719-3.3555 5.8086 10.391 6 6.8203-11.809 148.8 0.007813zm-476.33-314.2-6.4336 12.734-115.83-229.39 4.3047 2.4844 6.0039-10.391-4.1406-2.3945 256.35-14.371-16.648 25.434 10.039 6.5742 19.719-30.121-3.6836-2.4102 150.34-8.4297-75.953 131.54v-2.6602h-36v12h30.609l-71.645 124.08-16.836-29.16-10.391 6 18 31.176 6.8984-3.9805-79.008 136.84-65.398-129.51 10.422-20.637zm396.61-109.4 85.5 148.11-2.3164 4.0117 6.9453 4.0117 70.469 122.07-147.05-0.007812-2.3672-1.3672-0.78906 1.3672-171.02-0.011719-15.805-27.375-10.395 6 12.34 21.375-136.37-0.007813 68.188-118.1 13.844 23.98 10.391-6-17.309-29.98 87.188-150.99v2.9102h36v-12h-30.75l68.191-118.11 68.184 118.11-21.625-0.003907v12zm-98.664-350.93 11.605-17.727-0.050781 203.2-138.03 7.7383 14.746-22.527-10.039-6.5703-19.594 29.938-253.05 14.184 391.88-226.29-7.5117 11.477zm-248.8 636.38-175.84 101.46 2.1758-4.3125-9.457-4.7773-0.097656-455.23zm-164.03 122.36 176.03-101.57 75.73 115.69-26.902-1.5078-0.67188 11.98 35.742 2.0039 138.8 212.05-391.61-226.22 13.379 0.75 0.67187-11.98zm696.7-101.55 175.82 101.56-4.8398 0.26953 0.59766 10.664-394.35 227.82zm195.25 68.641-6.1094-12.098-10.711 5.4062 9.5508 18.918-175.98-101.65 62.328-123.43 12.152 24.066 10.711-5.4062-16.141-31.969 114.21-226.2zm-443.56-540.36 0.046875-203.03 2.6641 4.0664 9.082-5.9453 394.17 227.67z"/>
@@ -260,7 +273,28 @@
     </svg>
     
     <style>
-        /* Theme Options */
+        /*
+         * HATFIELD / FLUEHMANN.ME CSS ARCHITECTURE
+         * -----------------------------------------
+         * The theme is intentionally delivered as one Tumblr-compatible HTML file.
+         * CSS is ordered to follow the page DOM: global foundations, navigation,
+         * header, posts and post components, pagination, footer, overlays, then
+         * the single responsive section. Keep future breakpoint-specific rules in
+         * "RESPONSIVE LAYOUT" immediately above {CustomCSS}; do not add media
+         * queries inside individual component sections.
+         *
+         * Tumblr variables such as {color:Text} are resolved by Tumblr before the
+         * browser receives this stylesheet. Tumblr {block:...} conditions are kept
+         * close to the component whose output they control. Remaining !important
+         * declarations are primarily compatibility overrides for Hatfield, Isotope
+         * or Tumblr's generated NPF markup; avoid adding new ones unless an inline
+         * or vendor rule cannot otherwise be overridden.
+         */
+
+        /* 01. Design tokens and theme options
+         * Central values shared by layout components. Desktop values are the base;
+         * the responsive section adjusts the tokens for smaller screens.
+         */
         
         @font-face {
             font-family:"Euclid Mono Vanguard";
@@ -277,14 +311,8 @@
             --outer-margin: 48px;
             --text:{color:text};
         }
-        
-        @media screen and (max-width: 740px) {
-            :root {
-                --outer-margin: 24px;
-                --spacing:0.5rem;
-           }
-        }
-        
+
+        /* 02. Document defaults and reusable utilities */
          * {
              box-sizing:border-box;
         }
@@ -328,16 +356,6 @@
         	font-size: 24px;
         }
         
-        @media screen and (max-width: 740px) {
-            h1 {
-                font-size:32px;
-            }
-            
-            h2 {
-                font-size:18px;
-            }
-        }
-        
         ul, ol {
             margin:0;
             padding:0;
@@ -351,12 +369,16 @@
             margin-top:var(--spacing);
         }
         
+        /* Links inherit the theme colour; components opt into underlines below. */
         a {
             text-decoration:none;
             color: var(--text);
         }
-        
 
+        /* 03. Opening page loader
+         * JavaScript removes this full-screen layer after content is ready, with a
+         * four-second HTML-level failsafe defined directly after its markup.
+         */
         #preloader {
             position: fixed;
             top: 0;
@@ -376,12 +398,7 @@
             color:{color:Text};
         }
 
-        @media screen and (max-width:740px) {
-            #preloader .loading-dodecahedron {
-                width:68px;
-                height:68px;
-            }
-        }
+        /* Generic utilities used by Tumblr post markup and navigation. */
         .hidden {
             display:none;
         } 
@@ -416,7 +433,7 @@
         	word-wrap: normal !important;
         }
         
-        /*** Navigation ***/
+        /* 04. Fixed, horizontally scrollable navigation */
         
         #navigation {
             width:100%;
@@ -564,7 +581,7 @@
             fill:#fff;
         }
 
-        /*** Search ***/
+        /* 05. Search and index-page introduction */
         
         .search input {
             border: none;
@@ -620,17 +637,10 @@
             box-sizing:border-box;
         }
 
-        @media (max-width:740px) {
-            #navigation ul {
-                padding-left:var(--outer-margin);
-            }
-
-            .index-search {
-                width:90%;
-            }
-        }
-        
-        /** Header **/
+        /* 06. Blog header and contextual description
+         * Search and tag pages replace the default description in the HTML. The
+         * animated title uses the licensed Euclid Mono face only in this component.
+         */
         
         #header .logo {
             padding-bottom: var(--outer-margin);
@@ -650,13 +660,12 @@
             text-decoration:none;
         }
 
-        @media screen and (max-width:740px) {
-            #header .logo a {
-                display:inline-block;
-                max-width:100%;
-                font-size:clamp(34px, 12vw, 56px);
-                white-space:nowrap;
-            }
+        #animated-title {
+            display:inline-block;
+            font-family:"Euclid Mono Vanguard", "Courier New", monospace;
+            font-weight:400;
+            letter-spacing:-0.5rem;
+            white-space:nowrap;
         }
         
         {block:iflogoimage}
@@ -664,11 +673,6 @@
                 max-width:{text:Image Logo Max Width};
             }
             
-            @media (max-width:740px) {
-                #header .logo img {
-                    font-size:{text:Image Logo Mobile Max Width};
-                }
-            }
         {/block:iflogoimage}
 
         #header .header-avatar {
@@ -701,20 +705,15 @@
             position:relative;
         }
 
-        @media (max-width:740px) {
-            .description-main {
-                font-size:{text:Description Mobile Text Size};
-                width:100%;
-            }
-        }
-        
-
         .logo img {
             max-width:100%;
         }
         
-        
-        /*** Posts ***/
+        /* 07. Main content and masonry grid
+         * Base widths describe the default two-column variant. The three- and
+         * four-column desktop options, tablet layout and mobile single-column
+         * behavior are all declared once in the responsive section below.
+         */
         
         main {
             padding: 80px var(--outer-margin) 80px var(--outer-margin);
@@ -736,175 +735,58 @@
             width:100%;
         }
         
-        /** Default **/
+        /* Default two-column option. */
         
-        .post-sizer, #posts article {
+        .post-sizer,
+        #posts article {
             width: 48.8%;
         }
 
         #posts article {
-            margin:0 0 2.4% 0;
+            float:left;
+            margin:0 0 3.5rem;
         }
         
         .post-gutter {
             width: 2.4%;
         }
         
-        /** 3 Columns **/
+        /* Three-column option. */
         
-        .post-columns-three .post-sizer, .post-columns-three #posts article {
-            width: 32%;
-        }
-        
+        .post-columns-three .post-sizer,
         .post-columns-three #posts article {
-            margin:0 0 2% 0;
+            width: 32%;
         }
         
         .post-columns-three .post-gutter {
             width: 2%;
         }
-        
-        @media screen and (min-width: 740px) {
-            .post-columns-three .description-main {
-                width:100% !important;
-            }
-            
-            .post-columns-three .description-main p {
-                max-width:66% !important;
-            }
-        }
-        
-        @media screen and (max-width: 740px) {
-            .post-columns-three .post-sizer, .post-columns-three #posts article {
-                width: 32.66% !important;
-            }
 
-            .post-columns-three #posts article {
-                margin:0 0 1% 0 !important;
-            }
-            
-            .post-columns-three .post-gutter {
-                width: 1% !important;
-            }
-            .post-columns-three #posts .description-main {
-                width:100% !important;
-            }
-            
-            .post-columns-three #posts article.tag-x2 {
-                width:100% !important;
-            }
-        
-        }
-        
-        
-        
-        /** 4 Columns **/
-        
-        @media screen and (min-width: 740px) {
-            .post-columns-four .post-sizer, .post-columns-four #posts article {
-                width: 24%;
-            }
-
-            .post-columns-four #posts article {
-                margin:0 0 1.33% 0;
-            }
-            
-            .post-columns-four .post-gutter {
-                width: 1.33%;
-            }
-        
-            .post-columns-four .description-main {
-                width:100% !important;
-            }
-            
-            .post-columns-four .description-main p {
-                max-width:66% !important;
-            }
-        }
-        
-        @media screen and (max-width: 740px) {
-            .post-sizer, #posts article {
-                width: 48.8% !important;
-            }
-
-            #posts article {
-                margin:0 0 2.4% 0;
-            }
-            
-            .post-gutter {
-                width: 2.4% !important;
-            }
-            
-            #posts .description-main {
-                width:100% !important;
-            }
-            
-            #posts .description-main p {
-                max-width:90% !important;
-            }
-        }
-        
-        /* Keep the four-column desktop layout, but use one column on mobile. */
-        @media screen and (max-width: 740px) {
-            .post-columns-four .post-sizer,
-            .post-columns-four #posts article {
-                width:100% !important;
-            }
-            
-            .post-columns-four #posts article {
-                margin:0 0 var(--spacing) 0 !important;
-            }
-            
-            .post-columns-four .post-gutter {
-                width:0 !important;
-            }
+        .post-columns-three .description-main,
+        .post-columns-four .description-main {
+            width:100% !important;
         }
 
-        /* Two columns on portrait tablets such as the iPad mini. */
-        @media screen and (min-width: 741px) and (max-width: 900px) {
-            .post-columns-four .post-sizer,
-            .post-columns-four #posts article {
-                width:48.5% !important;
-            }
-
-            .post-columns-four .post-gutter {
-                width:3% !important;
-            }
-
-            .post-columns-four .description-main p {
-                max-width:100% !important;
-            }
-
-            .index-search {
-                width:100%;
-                max-width:none;
-            }
+        .post-columns-three .description-main p,
+        .post-columns-four .description-main p {
+            max-width:66% !important;
         }
 
-        /* Give posts more breathing room without changing the masonry gutters. */
-        #posts article:not(.description-main),
-        .post-columns-three #posts article:not(.description-main),
-        .post-columns-four #posts article:not(.description-main) {
-            margin-bottom:3.5rem;
+        /* Four-column option used by the current blog configuration. */
+        .post-columns-four .post-sizer,
+        .post-columns-four #posts article {
+            width:24%;
         }
 
-        @media screen and (max-width: 740px) {
-            #posts article:not(.description-main),
-            .post-columns-three #posts article:not(.description-main),
-            .post-columns-four #posts article:not(.description-main) {
-                margin-bottom:3rem !important;
-            }
-        }
-        
-        #posts article {
-            float:left;
+        .post-columns-four .post-gutter {
+            width:1.33%;
         }
         
         #posts article.tag-x2 {
             width:100% !important;
         }
         
-        /** Permalink **/
+        /* 08. Permalink-page layout */
         
         .permalink #posts {
             float:none;
@@ -921,24 +803,16 @@
             max-width:1280px;
         }
         
-        .npf-link-block,
-        article .answer,
-        .tags,
-        .reblog-header,
         article .quote,
-        article .question,
         article .replies,
-        article .source,
-        .pagination,
-        article h1,
-        article h2
-        
-        {
+        article .source {
         	padding-bottom: var(--spacing);
         }
         
         
-        /** Answer/Question **/
+        /* 09. Post components and post-type variants */
+
+        /* Answer and question posts */
         
         .post-answer {
             padding-top: var(--spacing);
@@ -982,13 +856,7 @@
             padding-top:0;
         }
         
-        /** Audio **/
-        
-        @media only screen and (min-width: 1175px) {
-            .permalink article.post-audio {
-                width:600px;
-            }
-        }    
+        /* Audio embeds */
         
         .post-audio figure {
              padding-top:var(--spacing);
@@ -1042,6 +910,9 @@
             width:100%;
         }
         
+        /* All links inside captions share one intentionally simple treatment:
+         * Font Awesome chain glyph plus underline, regardless of destination.
+         */
         article .caption a[href]:not(.open-modal),
         article .npf-link-block a[href] {
             color:inherit;
@@ -1067,6 +938,7 @@
             vertical-align:.04em;
         }
 
+        /* Tumblr's card-like NPF link block is flattened into normal body text. */
         .npf-link-block {
             margin:var(--spacing) 0 !important;
             padding:0 !important;
@@ -1102,6 +974,9 @@
             opacity:1;
         }
         
+        /* Caption rhythm: paragraphs receive top padding; headings use margins so
+         * titles never touch the media above them.
+         */
         article .caption p {
 	        padding:var(--spacing) 0 0;
 	        margin:0;
@@ -1118,6 +993,7 @@
             line-height:1.5;
         }
         
+        /* Date, tags and permalink form the shared metadata stack below captions. */
         article .post-date {
             margin-top:var(--spacing);
             color:darkgray;
@@ -1140,11 +1016,7 @@
             margin:0 0 var(--spacing);
         }
         
-        .reblog-content {
-            white-space:nowrap;
-        }
-
-        /** Photo **/
+        /* Photo and photoset media */
         {block:IfCurvedEdges}
             article.post-photo .media, .post-photoset .npf_col, .stash-overlay .media img, .permalink .npf_col .post_media_photo, .post-video .media, .post-video iframe, .permalink .post_media_photo_anchor img, .post-text .post_media_photo, .stacked-photoset img {
                 border-radius:20px;
@@ -1167,51 +1039,16 @@
            width:auto;
         }
         
-        /** Video **/
+        /* Video posts */
         
         .permalink .post-video {
             width: 100%;
         }
         
-        @media only screen and (min-width: 1275px) {
-            body.permalink article.post-video figure iframe {
-                min-width:900px;
-            }   
-            
-            .permalink article {
-                min-width:900px;
-            }
-            
-            /*.permalink .post-video .tmblr-embed {*/
-            /*    position: relative;*/
-            /*    width: 100%;*/
-            /*    height: 0;*/
-            /*    padding-bottom: 56.25%;*/
-            /*}*/
-    
-            /*.permalink .post-video .tmblr-embed iframe {*/
-            /*    position: absolute;*/
-            /*    width: 100%;*/
-            /*    height: 100%;*/
-            /*    left: 0;*/
-            /*    top: 0;*/
-            /*}*/
-        }
-        
-        @media only screen and (min-width: 1675px) {
-            body.permalink article.post-video figure iframe {
-                min-width:1080px;
-            }   
-                
-            .permalink .post-video {
-                min-width: 1080px;
-            }
-            
-        }
-        
-        /** Reblog **/
+        /* Reblog attribution and quoted reblog content */
         
         .reblog-content {
+            padding-bottom:0;
             white-space: pre-wrap;
         }
         
@@ -1232,8 +1069,7 @@
         	border-top: 1px solid rgba(0,0,0,0.3);
         }
         
-        .reblog-header,
-        .reblog-content {
+        .reblog-header {
         	padding-bottom: 0;
         }
         
@@ -1276,6 +1112,9 @@
             text-decoration:underline;
         }
 
+        /* Hidden by default; JavaScript exposes this only when Tumblr owner chrome
+         * is detected on a permalink page.
+         */
         .post-owner-tools {
             display:none;
             margin-top:var(--spacing);
@@ -1298,8 +1137,11 @@
             color:{color:Text};
         }
         
+        /* Hybrid pagination remains hidden until JavaScript reaches its load limit. */
         .pagination {
+	        display:none;
 	        margin:0 0 var(--outer-margin) 0;
+	        padding-bottom:var(--spacing);
 	        width:100%;
 	        position:relative;
         }
@@ -1368,7 +1210,7 @@
             color:{color:Text};
         }
         
-        /** Notes **/
+        /* Native Tumblr notes; normally suppressed by the configured theme option. */
         
         article .notes {
             list-style:none;
@@ -1396,10 +1238,6 @@
             }
         {/block:ifNotShowPostNotes}
         
-        /*body.permalink video {*/
-        /*    max-width:720px;*/
-        /*}*/
-        
         article iframe,
         article img {
         	max-width: 100%;
@@ -1417,10 +1255,6 @@
 
         .tumblr_video_container {
             width: 100% !important;
-        }
-        
-        a {
-        	text-decoration: none;
         }
         
         figure {
@@ -1463,18 +1297,12 @@
             text-decoration:underline;
         }
 
-        @media screen and (max-width:740px) {
-            article .caption blockquote {
-                padding-left:.75rem;
-            }
-        }
-        
         blockquote:empty, p:empty, .replies:empty, article .caption:empty {
             display:none !important;
         }
         
         
-        /** Posts Loader **/
+        /* 10. Dynamic loading, pagination fallback and back-to-top control */
 
         #dynamic-post-loader {
             position: fixed;
@@ -1531,14 +1359,6 @@
         
         #infscr-loading img {
             display: none;
-        }
-        
-        .pagination {
-            display:none;
-        }
-        
-        @media only screen and (max-width: 768px) {
-            .back-to-top { display:none; }
         }
         
         #back-to-top {
@@ -1598,7 +1418,7 @@
             transform:translate(-50%, -2px);
         }
         
-        /**** Footer *****/
+        /* 11. Site footer and ticking dodecahedron */
 
         #site-footer {
             clear:both;
@@ -1638,7 +1458,10 @@
             to { transform:rotate(360deg); }
         }
 
-        /**** Ambient events *****/
+        /* 12. Ambient visual events
+         * Decorative events never receive pointer input. Reduced-motion handling
+         * is centralized with the other responsive/accessibility rules below.
+         */
 
         #ambient-events {
             position:fixed;
@@ -1738,37 +1561,18 @@
             }
         }
 
-        @media (prefers-reduced-motion:reduce) {
-            #ambient-events {
-                display:none;
-            }
-
-            .ticking-dodecahedron {
-                animation:none;
-            }
-        }
-        
         #navigation .bluesky-icon {
     		transform:translateY(1.5px);
     	}
-    
-        @media only screen and (max-width: 768px) {
-            #site-footer {
-                padding:var(--outer-margin) var(--spacing);
-                font-size:.78em;
-            }
-
-            .footer-dodecahedron {
-                width:34px;
-                height:34px;
-            }
-        }
         
         .poll-row p {
             padding:0 !important;
         }
         
-        /** Stacked Photosets **/
+        /* 13. Stacked photosets
+         * Classic photosets and NPF rows are flattened vertically so every image
+         * is visible without carousel controls.
+         */
         
         .stacked-photoset,
         .post-photoset .adaptable_npf_photoset {
@@ -1828,12 +1632,14 @@
         
         
 
-        /* Banner CSS */
+        /* 14. Optional legacy banner
+         * Hatfield can still render an image, YouTube or Vimeo hero. The current
+         * blog does not rely on it, but the licensed options remain available.
+         */
 
         #banner {
             background-color:{color:Banner Background};
             position: relative;
-            display: block;
             width: 100%;
             display: table;
             height:100vh;
@@ -1843,10 +1649,8 @@
         .banner-text {
             z-index: 2;
             text-align:center;
-            -webkit-transition: .4s all .2s;
-            transition: .4s all .2s;
             opacity:0;
-            transition:font 0.25s ease-out;
+            transition:font .25s ease-out;
             color:{color:Banner Text};
             font-size:{text:Banner Text Size};
         }
@@ -1864,6 +1668,7 @@
             text-align:center;
             z-index: 9;
             width:100%;
+            max-width:{text:Banner Text Width};
         }
                 
         #banner iframe {
@@ -1874,7 +1679,7 @@
             color:{color:Banner Text};
         }
         
-        /*** Banner Banner ***/
+        /* Banner typography and call-to-action buttons */
 
         .button {
             padding: 12px 24px;
@@ -1899,9 +1704,6 @@
         .banner-button {
             background:{color:Banner Button Background};
             color:{color:Banner Button Text} !important;
-        }
-
-        .banner-button {
             margin:0 14px 14px 0;
         } 
         
@@ -1933,12 +1735,6 @@
             z-index:-2;
         }
         
-        @media (min-width:740px) {
-            .mobile-banner-img {
-                display:none;
-            }
-        }
-        
         {block:IfBannerYoutubeVideoID}
             .banner-img, .mobile-banner-img {
                 display:none;
@@ -1950,26 +1746,6 @@
                 display:none;
             }
         {/block:IfBannerVimeoVideoID}
-        
-        {block:IfBannerVimeoVideoID}
-            @media (max-width:740px) {
-                .banner-img, .mobile-banner-img {
-                    display:block;
-                }   
-            }
-        {/block:IfBannerVimeoVideoID}
-        
-        @media (max-width:740px) {
-            {block:ifmobilebannerbackgroundimage}
-                .banner-img {
-                    display:none;
-                }
-            {/block:ifmobilebannerbackgroundimage}
-        }
-        
-        .banner-center {
-            max-width: {text:Banner Text Width};
-        }
         
         {block:ifnotBannerVideoButtons}
             .banner-video-options, .arr-down {
@@ -1992,21 +1768,6 @@
         }
 
 
-        {block:ifMobileHideBanner}
-            @media (max-width:740px) {
-                #banner, #banner.has-video, #banner.has-banner-image, html body #banner.has-video, html body #banner.has-banner-image, body.has-banner #banner, body.has-banner-image #banner {
-                    display:none !important;
-                    opacity:0 !important;
-                    visibility:hidden !important;
-                    height:0 !important;
-                }
-                
-                body.has-banner.index .page-container, body.has-banner-image.index .page-container, body.has-mobile-banner-image.index .page-container {
-                    padding-top:50px !important;
-                }
-            }
-        {/block:ifMobileHideBanner}
-        
         {block:ifBannerOnlyNoPosts}
             .index-page #posts, .index-page #header {
                 display:none;
@@ -2027,50 +1788,10 @@
         }
         
         
-        @media (max-width: 740px) { 
-            {block:ifmobilebannerbackgroundimage}
-                .banner-img {
-                    display:none;
-                }
-            {/block:ifmobilebannerbackgroundimage}
-            
-            .banner-text {
-                font-size:{text:Banner Mobile Text Size};
-                max-width:100%;
-            }
-            
-            .banner-text p {
-                margin-bottom:15px;
-            }
-            
-            .banner-center {
-                max-width:94%;
-            }
-        }
-        
-       
-
-        
-        
-        /* Banner Video */
+        /* Banner video controls */
         
         
         .tagged-page .banner { display:none; }
-        
-        @media (min-width: 740px) { 
-            #banner.has-video .banner-img {
-                display:none;
-            }
-        
-            #banner.has-video {
-                height:100vh;
-            }
-        
-            #banner.bg .banner-youtube-video, #banner.bg #banner-vimeo-video, #banner.bg .banner-img, #banner.bg .mobile-banner-img {
-                opacity:1;
-            }
-            
-        }
         
         #banner-vimeo-video {
             width:100%;
@@ -2086,7 +1807,6 @@
             bottom: 35px;
             left: 35px;
             height: 25px;
-            z-index: 100;
             z-index:80;
             font-size: 22px;
         }
@@ -2146,14 +1866,14 @@
         }
 
         
-        /** Tagged page hidden banner **/
+        /* Tag pages intentionally suppress the optional homepage banner. */
         
         body.tagged-page #banner {
             display:none !important;
         }
         
 
-        /** Instagram Post **/
+        /* Instagram embeds */
     
         .instagram-post iframe, .stash-overlay.instagram iframe  {
             position:absolute;
@@ -2174,7 +1894,7 @@
             height:100%;
         }
         
-        /** Video Poster **/
+        /* Poster image shown while a video embed initializes. */
         
         .video-poster {
             width:100%;
@@ -2183,12 +1903,6 @@
             position:absolute;
             left:0;
             top:0;
-        }
-        
-        @media (min-width: 740px) {
-            .video-poster {
-                display:none;
-            }
         }
         
         .media {
@@ -2203,7 +1917,7 @@
             display:none;
         }
         
-        /** Tumblr Options **/
+        /* 15. Tumblr and vendor controls intentionally hidden by this theme */
 
         .stash-credit,
         .remove-stash-credit,
@@ -2223,7 +1937,10 @@
         
         
         
-        /*** Overlay ***/
+        /* 16. Hatfield modal overlay
+         * Retained for optional modal-post configurations. The custom image
+         * lightbox below is the default interaction for post images.
+         */
                 
                 
         .stash-overlay {
@@ -2232,7 +1949,6 @@
             width: 100%;
             height: 100%;
             position: fixed;
-            opacity: 0;
             transform:translateY(100%);
             backface-visibility:hidden;
             z-index:99;
@@ -2260,103 +1976,9 @@
             z-index:9999;
         }
         
-        /*html.modal-open .stash-overlay, html.modal-open .post-navigation {*/
-        /*    opacity:1;*/
-        /*    visibility:visible;*/
-        /*    transform:none;*/
-        /*}*/
-        
-        @media (min-width:740px) {
-        
-        
-            body.modal-photo-fit .stash-overlay.photo .stash-container .stash-content {
-                width:100%;
-                height:100vh;
-            }
-        
-            body.modal-photo-fit .stash-overlay.photo .stash-container .media {
-                width: 100%;
-                height: 100vh;
-                max-width: 100%;
-                position: relative;
-                margin: 0;
-            }
-        
-            body.modal-photo-fit .stash-overlay.photo .stash-container .media img {
-                max-width: 100%;
-                max-height: 100%;
-                height: auto;
-                width: auto;
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                -webkit-transform: translate(-50%, -50%);
-                -moz-transform: translate(-50%, -50%);
-                -ms-transform: translate(-50%, -50%);
-                -o-transform: translate(-50%, -50%);
-                transform: translate(-50%, -50%);
-                padding:var(--outer-margin);
-            }
-        
-            
-            body.modal-photo-fit .stash-overlay article {
-                padding: 0 0 var(--outer-margin) 0;
-            }
-            
-            body.modal-photo-fit .stash-overlay article.post-photoset {
-                max-width: 75vw;
-                margin: 0 auto;
-                padding:var(--outer-margin) 0;
-            }
-            
-            /*** Modal Full **/
-        
-            body.modal-photo-full .stash-container .stash-content {
-                padding:var(--outer-margin);
-            }
-        
-            body.modal-photo-full .stash-overlay.photo .stash-container .media {
-                width:100%;
-            }
-        
-            body.modal-photo-full .stash-overlay.photo .stash-container .media, body.modal-photo-full .stash-overlay.photo .stash-container .media img, body.modal-photo-full .post-photoset .caption, body.modal-photo-full .post-photoset .info {
-                max-width: 100%;
-            }
-            
-            .stash-overlay article.post-video video {
-                max-width:1280px;
-            }
-            
-            body .stash-overlay article.post-answer, body .stash-overlay article.post-text {
-                padding:var(--outer-margin) 0;
-            }
-            
-            /*body.modal-photo-full .stash-overlay.photo .caption, body.modal-photo-full .stash-overlay.photo .info {*/
-            /*    padding:0 var(--outer-margin);*/
-            /*}*/
-        
-            /*body.modal-photo-wrap .stash-content {*/
-            /*    max-width: 900px;*/
-            /*    padding: 0 30px;*/
-            /*    margin: 0 auto;*/
-            /*}*/
-        
-        /*    .stash-overlay.photo .stash-container .stash-content .inner {
-                padding: 100px;
-            }*/
-        }
-        
-        
         .stash-overlay.photo .stash-container,  .stash-overlay.video .stash-container, .stash-overlay.audio .stash-container, .stash-overlay.photoset .stash-container {
             max-width:100%;
             padding:0;
-        }
-        
-        @media (min-width:740px) {
-            .modal-photo-full .stash-overlay.photo .stash-post-meta, .modal-photo-full .stash-overlay.photoset .stash-post-meta, .modal-photo-full .stash-overlay.photoset-grid .stash-post-meta   {
-                padding:30px 0;
-            }
-        
         }
         
         .stash-overlay.photo .caption, .stash-overlay.video .caption, .stash-overlay.audio .caption, .stash-overlay.photoset .caption, .stash-overlay.photo .info, .stash-overlay.video .info, .stash-overlay.audio .info, .stash-overlay.photoset .info, .stash-overlay.text .tags, .stash-overlay.text .tags, .stash-overlay.text .tags, .stash-overlay.text .tags, .stash-overlay .caption, .stash-overlay .info, .stash-overlay .tags
@@ -2385,7 +2007,7 @@
         }
         
 
-        /** Image lightbox **/
+        /* 17. Custom image lightbox */
 
         html.image-lightbox-open,
         html.image-lightbox-open body {
@@ -2443,7 +2065,7 @@
             cursor:pointer;
         }
 
-                /** OverlayNavigation **/
+        /* Modal and permalink post navigation */
 
   
         .dark-overlay {
@@ -2487,24 +2109,6 @@
             float:right;
         }
         
-        @media (min-width:740px) {
-        
-            .permalink .stash-prev-btn, .permalink .stash-next-btn {
-                position:fixed;
-                top:50%;
-                transform: translate(0, -50%);
-            }
-        
-            .permalink .stash-prev-btn {
-                left: var(--outer-margin);
-            }
-        
-            .permalink .stash-next-btn {
-                right: var(--outer-margin);
-            }
-        
-        }
-        
         .overlay-navigation {
             opacity:0;
         }
@@ -2546,13 +2150,6 @@
             height: 24px;
         }
         
-        @media (min-width: 740px) {
-            .icon {
-                width: 32px;
-                height: 32px;
-            }
-        }
-    
         .close-modal svg rect {
             fill:{color:Text};
         }
@@ -2578,74 +2175,42 @@
             opacity:0.9;
         }
         
-        @media only screen and (max-width: 740px) {
-            
-            .stash-overlay article, .stash-overlay .stash-content {
-                width:100%;
-            }
-            
-            .stash-overlay article.post-photo figure.tmblr-full img {
-                width:100%;
-            }
+        /*
+         * 18. RESPONSIVE LAYOUT — SINGLE SOURCE OF TRUTH
+         * ------------------------------------------------
+         * All viewport-dependent layout belongs in this section. Rules are grouped
+         * by explicit ranges so components do not override one another elsewhere:
+         *   - mobile:            0–740px
+         *   - portrait tablet: 741–900px
+         *   - desktop:          741px and wider
+         *   - wide media:       component-specific minimum widths
+         *
+         * When changing a component for a breakpoint, edit its rule here instead
+         * of adding another media query beside the component's base styles.
+         */
 
-            .stash-overlay .stash-container {
-                padding: 50px 0 0 0 !important;
-            }
-            
-            .stash-overlay .stash-content {
-                padding:var(--outer-margin);
-            }
-            
-            .overlay-navigation {
-                margin:0;
-                height:50px;
-            }
-        
-            .overlay-navigation .stash-prev-btn {
-                left:0;
-            }
-            
-            .overlay-navigation .stash-next-btn {
-                right: initial;
-                left:50px;
-            }
-        
-            .overlay-navigation .stash-prev-btn,  .overlay-navigation .stash-next-btn {
-                padding:10.5px 0;
-                transform:none;
-                top:0;
-                width:50px;
-            }
-        
-            .overlay-navigation svg {
-                vertical-align: middle;
-            }
-        
-            .close-modal {
-                position: fixed;
-                padding:10px;
-                right:0;
-                top:0;
-                left:initial;
-            }
-        }
-
-        /* Licensed Euclid Mono webfont: blog title only. */
-        #animated-title {
-            display:inline-block;
-            font-family:"Euclid Mono Vanguard", "Courier New", monospace;
-            font-weight:400;
-            letter-spacing:-0.5rem;
-            white-space:nowrap;
-        }
-
+        /* Mobile phones: compact chrome and a single-column four-column preset. */
         @media screen and (max-width:740px) {
-            #header .logo a {
-                font-size:clamp(27px, 9.4vw, 44px);
+            :root {
+                --outer-margin:24px;
+                --spacing:.5rem;
             }
 
-            #animated-title {
-                letter-spacing:-0.2rem;
+            h1 {
+                font-size:32px;
+            }
+
+            h2 {
+                font-size:18px;
+            }
+
+            #preloader .loading-dodecahedron {
+                width:68px;
+                height:68px;
+            }
+
+            #navigation ul {
+                padding-left:var(--outer-margin);
             }
 
             #navigation ul li,
@@ -2660,8 +2225,364 @@
                 width:34px;
                 height:34px;
             }
+
+            #header .logo a {
+                display:inline-block;
+                max-width:100%;
+                font-size:clamp(27px, 9.4vw, 44px);
+                white-space:nowrap;
+            }
+
+            #animated-title {
+                letter-spacing:-.2rem;
+            }
+
+            {block:iflogoimage}
+                #header .logo img {
+                    font-size:{text:Image Logo Mobile Max Width};
+                }
+            {/block:iflogoimage}
+
+            .description-main {
+                width:100%;
+                font-size:{text:Description Mobile Text Size};
+            }
+
+            .index-search {
+                width:90%;
+            }
+
+            /* Preserve Hatfield's two-column mobile default and three-column option. */
+            .post-sizer,
+            #posts article {
+                width:48.8% !important;
+            }
+
+            #posts article {
+                margin-bottom:3rem !important;
+            }
+
+            .post-gutter {
+                width:2.4% !important;
+            }
+
+            .post-columns-three .post-sizer,
+            .post-columns-three #posts article {
+                width:32.66% !important;
+            }
+
+            .post-columns-three .post-gutter {
+                width:1% !important;
+            }
+
+            #posts .description-main,
+            .post-columns-three #posts .description-main {
+                width:100% !important;
+            }
+
+            #posts .description-main p {
+                max-width:90% !important;
+            }
+
+            .post-columns-three #posts article.tag-x2 {
+                width:100% !important;
+            }
+
+            /* The active four-column preset becomes one readable mobile column. */
+            .post-columns-four .post-sizer,
+            .post-columns-four #posts article {
+                width:100% !important;
+            }
+
+            .post-columns-four .post-gutter {
+                width:0 !important;
+            }
+
+            article .caption blockquote {
+                padding-left:.75rem;
+            }
+
+            /* Optional banner variants. */
+            {block:IfBannerVimeoVideoID}
+                .banner-img,
+                .mobile-banner-img {
+                    display:block;
+                }
+            {/block:IfBannerVimeoVideoID}
+
+            {block:ifmobilebannerbackgroundimage}
+                .banner-img {
+                    display:none;
+                }
+            {/block:ifmobilebannerbackgroundimage}
+
+            {block:ifMobileHideBanner}
+                #banner,
+                #banner.has-video,
+                #banner.has-banner-image,
+                html body #banner.has-video,
+                html body #banner.has-banner-image,
+                body.has-banner #banner,
+                body.has-banner-image #banner {
+                    display:none !important;
+                    opacity:0 !important;
+                    visibility:hidden !important;
+                    height:0 !important;
+                }
+
+                body.has-banner.index .page-container,
+                body.has-banner-image.index .page-container,
+                body.has-mobile-banner-image.index .page-container {
+                    padding-top:50px !important;
+                }
+            {/block:ifMobileHideBanner}
+
+            .banner-text {
+                max-width:100%;
+                font-size:{text:Banner Mobile Text Size};
+            }
+
+            .banner-text p {
+                margin-bottom:15px;
+            }
+
+            .banner-center {
+                max-width:94%;
+            }
+
+            /* Hatfield modal controls collapse into a top mobile toolbar. */
+            .stash-overlay article,
+            .stash-overlay .stash-content {
+                width:100%;
+            }
+
+            .stash-overlay article.post-photo figure.tmblr-full img {
+                width:100%;
+            }
+
+            .stash-overlay .stash-container {
+                padding:50px 0 0 !important;
+            }
+
+            .stash-overlay .stash-content {
+                padding:var(--outer-margin);
+            }
+
+            .overlay-navigation {
+                height:50px;
+                margin:0;
+            }
+
+            .overlay-navigation .stash-prev-btn {
+                left:0;
+            }
+
+            .overlay-navigation .stash-next-btn {
+                right:auto;
+                left:50px;
+            }
+
+            .overlay-navigation .stash-prev-btn,
+            .overlay-navigation .stash-next-btn {
+                top:0;
+                width:50px;
+                padding:10.5px 0;
+                transform:none;
+            }
+
+            .overlay-navigation svg {
+                vertical-align:middle;
+            }
+
+            .close-modal {
+                right:0;
+                left:auto;
+                top:0;
+                padding:10px;
+            }
         }
 
+        /* Small tablets retain compact footer typography. */
+        @media screen and (max-width:768px) {
+            #site-footer {
+                padding:var(--outer-margin) var(--spacing);
+                font-size:.78em;
+            }
+
+            .footer-dodecahedron {
+                width:34px;
+                height:34px;
+            }
+        }
+
+        /* Portrait tablets such as the iPad mini use a two-column post grid. */
+        @media screen and (min-width:741px) and (max-width:900px) {
+            .post-columns-four .post-sizer,
+            .post-columns-four #posts article {
+                width:48.5% !important;
+            }
+
+            .post-columns-four .post-gutter {
+                width:3% !important;
+            }
+
+            .post-columns-four .description-main p {
+                max-width:100% !important;
+            }
+
+            .index-search {
+                width:100%;
+                max-width:none;
+            }
+        }
+
+        /* Desktop-only banner, modal and permalink navigation behavior. */
+        @media screen and (min-width:741px) {
+            .mobile-banner-img {
+                display:none;
+            }
+
+            #banner.has-video .banner-img {
+                display:none;
+            }
+
+            #banner.has-video {
+                height:100vh;
+            }
+
+            #banner.bg .banner-youtube-video,
+            #banner.bg #banner-vimeo-video,
+            #banner.bg .banner-img,
+            #banner.bg .mobile-banner-img {
+                opacity:1;
+            }
+
+            .video-poster {
+                display:none;
+            }
+
+            body.modal-photo-fit .stash-overlay.photo .stash-container .stash-content {
+                width:100%;
+                height:100vh;
+            }
+
+            body.modal-photo-fit .stash-overlay.photo .stash-container .media {
+                position:relative;
+                width:100%;
+                max-width:100%;
+                height:100vh;
+                margin:0;
+            }
+
+            body.modal-photo-fit .stash-overlay.photo .stash-container .media img {
+                position:absolute;
+                left:50%;
+                top:50%;
+                width:auto;
+                max-width:100%;
+                height:auto;
+                max-height:100%;
+                padding:var(--outer-margin);
+                transform:translate(-50%, -50%);
+            }
+
+            body.modal-photo-fit .stash-overlay article {
+                padding:0 0 var(--outer-margin);
+            }
+
+            body.modal-photo-fit .stash-overlay article.post-photoset {
+                max-width:75vw;
+                margin:0 auto;
+                padding:var(--outer-margin) 0;
+            }
+
+            body.modal-photo-full .stash-container .stash-content {
+                padding:var(--outer-margin);
+            }
+
+            body.modal-photo-full .stash-overlay.photo .stash-container .media {
+                width:100%;
+            }
+
+            body.modal-photo-full .stash-overlay.photo .stash-container .media,
+            body.modal-photo-full .stash-overlay.photo .stash-container .media img,
+            body.modal-photo-full .post-photoset .caption,
+            body.modal-photo-full .post-photoset .info {
+                max-width:100%;
+            }
+
+            .stash-overlay article.post-video video {
+                max-width:1280px;
+            }
+
+            body .stash-overlay article.post-answer,
+            body .stash-overlay article.post-text {
+                padding:var(--outer-margin) 0;
+            }
+
+            .modal-photo-full .stash-overlay.photo .stash-post-meta,
+            .modal-photo-full .stash-overlay.photoset .stash-post-meta,
+            .modal-photo-full .stash-overlay.photoset-grid .stash-post-meta {
+                padding:30px 0;
+            }
+
+            .permalink .stash-prev-btn,
+            .permalink .stash-next-btn {
+                position:fixed;
+                top:50%;
+                transform:translateY(-50%);
+            }
+
+            .permalink .stash-prev-btn {
+                left:var(--outer-margin);
+            }
+
+            .permalink .stash-next-btn {
+                right:var(--outer-margin);
+            }
+
+            .icon {
+                width:32px;
+                height:32px;
+            }
+        }
+
+        /* Wide permalink media sizes from the original Hatfield theme. */
+        @media screen and (min-width:1175px) {
+            .permalink article.post-audio {
+                width:600px;
+            }
+        }
+
+        @media screen and (min-width:1275px) {
+            body.permalink article.post-video figure iframe {
+                min-width:900px;
+            }
+
+            .permalink article {
+                min-width:900px;
+            }
+        }
+
+        @media screen and (min-width:1675px) {
+            body.permalink article.post-video figure iframe,
+            .permalink .post-video {
+                min-width:1080px;
+            }
+        }
+
+        /* Accessibility: eliminate decorative motion when the visitor requests it. */
+        @media (prefers-reduced-motion:reduce) {
+            #ambient-events {
+                display:none;
+            }
+
+            .ticking-dodecahedron {
+                animation:none;
+            }
+        }
+
+        /* Tumblr's Custom CSS field is intentionally last so owner overrides win. */
         {CustomCSS}
     </style>    
     
@@ -2669,10 +2590,19 @@
     {text:Font Embed Code}
 </head>
 
+<!--
+    BODY ARCHITECTURE
+    =================
+    Tumblr conditionally adds page-state classes here. CSS and JavaScript use them
+    to distinguish index, tag, search and permalink views without URL parsing.
+    The rendered order is: loader, optional banner, main navigation/header/posts,
+    pagination/footer, global overlays, then scripts.
+-->
 <body class="{block:homepage}home {/block:homepage}{block:tagpage}tagged-page {/block:tagpage} {block:IndexPage}index-page {/block:IndexPage} {block:PermalinkPage}permalink  {/block:PermalinkPage}{block:searchpage}search-page {/block:searchpage}{block:submitpage}submit {/block:submitpage}{block:AskPage}ask-page {/block:AskPage}
  {block:ifbanner} has-banner {block:IfBannerVimeoVideoID}has-vimeo-video {/block:IfBannerVimeoVideoID} {block:ifmobilebannerbackgroundimage}has-mobile-banner-image {/block:ifmobilebannerbackgroundimage}{/block:ifbanner} modal-photo-{select:Modal Photo Size} post-columns-{select:Posts Columns} page-layout-{select:Layout}">
 
-
+    <!-- Full-page opening loader. The adjacent inline script is a dependency-free
+         failsafe in case the larger jQuery initialization cannot complete. -->
     <div id="preloader"><div id="loader"><svg class="loading-dodecahedron" aria-hidden="true"><use href="#icon-dodecahedron" xlink:href="#icon-dodecahedron"></use></svg></div></div>
     <script>
         // Independent failsafe: the opening loader must be gone after four seconds.
@@ -2695,6 +2625,8 @@
     </script>
     
     
+    <!-- Optional Hatfield hero/banner. It is emitted on index pages only and can
+         contain an image, YouTube video/playlist or Vimeo video. -->
     {block:IndexPage}
         {block:ifbanner}
             <div id="banner" class="{block:IfBannerYoutubeVideoID}has-video {/block:IfBannerYoutubeVideoID} {block:IfBannerVimeoVideoID}has-video has-vimeo-video {/block:IfBannerVimeoVideoID} {block:ifbannerbackgroundimage}has-banner-image {/block:ifbannerbackgroundimage}{block:ifmobilebannerbackgroundimage}has-mobile-banner-image {/block:ifmobilebannerbackgroundimage}">
@@ -2742,6 +2674,8 @@
                         <div class="banner-youtube-video" data-height="1080" data-width="1920">
                             <div id="player"></div>
                             <script>
+                                // Load YouTube's API and expose its required global
+                                // callback for the optional single-video banner.
                                 var tag = document.createElement('script');
                                 tag.src = "https://www.youtube.com/player_api";
                                 var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -2787,6 +2721,9 @@
                         <div class="banner-youtube-video" data-height="1080" data-width="1920">
                             <div id="player"></div>
                             <script>
+                                // Playlist variant of the optional banner player.
+                                // Tumblr never emits this together with the single
+                                // video block when only one banner source is set.
                                 var tag = document.createElement('script');
                                 tag.src = "https://www.youtube.com/player_api";
                                 var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -2852,10 +2789,12 @@
     
     
     
-    <!-- main container -->    
+    <!-- Main page shell: fixed navigation followed by header, posts and footer. -->
     <main id="main">
     
         {block:ifnavigation}
+        <!-- Primary navigation: geometric Home link, editorial links, social links
+             and Tumblr-managed featured tags in one horizontal scroll row. -->
         <nav id="navigation" aria-label="Primary navigation">
             <ul class="navigation-list">
                 <li class="navigation-dodecahedron">
@@ -2882,12 +2821,13 @@
                         </li>
                     {/block:FeaturedTags}
                 {/block:HasFeaturedTags}
-            </ul><!--navigation end-->
+            </ul>
         </nav>
         {/block:ifnavigation}
 
     
-        <!-- header -->
+        <!-- Blog identity. The text title is corrected once by JavaScript after
+             load; an uploaded logo can replace it through Tumblr settings. -->
         <div id="header">
 
             {block:ShowAvatar} 
@@ -2909,7 +2849,8 @@
     
 
     
-        <!-- posts -->        
+        <!-- Post region. Contextual tag/search titles replace the default blog
+             description, while the search form remains above the masonry grid. -->
         <section id="posts">
             {block:IndexPage}
             <div class="index-intro">
@@ -2934,6 +2875,8 @@
             </div>
             {/block:IndexPage}
 
+        <!-- Isotope masonry container. The sizer and gutter are layout probes and
+             exist only on index-style pages, not on individual permalinks. -->
         <div id="stash-ants">
         
            {block:IndexPage}
@@ -2943,7 +2886,10 @@
             
         {block:Posts}
     	
+        <!-- One article is generated for each Tumblr post. Data attributes allow
+             plugins to find the permalink, ID and post type after dynamic loads. -->
         <article id="{PostID}" data-id="{PostID}" data-permalink="{Permalink}" data-pt="{posttype}" class="post-{posttype} post articlepost {block:Text}{/block:Text} {block:Audio}parsed{/block:Audio}  {block:Video}parsed{/block:Video} {block:Quote}parsed{/block:Quote} {block:Link}parsed{/block:Link} {block:Chat}parsed{/block:Chat} {block:Photo}parsed{/block:Photo} {block:Photoset}parsed{/block:Photoset} {block:Answer}parsed{/block:Answer} {block:Tags}tag-{Tag} {/block:Tags}">
+            <!-- Permalink pages place the date above the post media. -->
             {block:PermalinkPage}
                 {block:Date}
                 <div class="post-date permalink-post-date">
@@ -2955,12 +2901,15 @@
             {/block:PermalinkPage}
 
                 
+			<!-- Raw NPF metadata retained for Hatfield's post parser. -->
         	<div class="hidden">
         		<script type="text/json">
         			{NPF}
         		</script>
         	</div>
             
+            <!-- Photo and photoset anchors point at high-resolution sources; the
+                 custom lightbox intercepts their clicks on every page type. -->
             {block:Photo}
                 <div class="media"><a class="image-lightbox-trigger" href="{PhotoURL-HighRes}"><img src="{PhotoURL-HighRes}" alt="{photoalt}" class="photos"></a></div>
             {/block:Photo}
@@ -2979,6 +2928,7 @@
                 <div class="media"><img src="{photourl-panorama}" alt="{photoalt}"></div>
             {/block:Panorama}
             
+            <!-- Post-type-specific primary content. -->
         <!-- quote posts -->            
             {block:Quote}
                 <div class="quote">
@@ -3031,6 +2981,8 @@
                {/block:NotReblog}
             {/block:Answer}
             
+            <!-- Shared caption area. Original captions render directly; reblogs
+                 retain every author header and body in chronological order. -->
             <div class="caption {block:notreblog} original-post {/block:notreblog}">
                 {block:Text}
                     {block:Title}<h2><a class="open-modal" href="{Permalink}" data-id="{PostID}">{Title}</a></h2>{/block:Title}
@@ -3057,6 +3009,7 @@
                 {/block:RebloggedFrom}
             </div>
 
+            <!-- Index pages place the date after the caption and before tags. -->
             {block:IndexPage}
                 {block:Date}
                 <div class="post-date">
@@ -3067,6 +3020,7 @@
                 {/block:Date}
             {/block:IndexPage}
             
+            <!-- Tags are followed by the compact ellipsis permalink on indexes. -->
             <div class="tags">
                 {block:HasTags}
                     {block:Tags}
@@ -3076,6 +3030,7 @@
                 {block:IndexPage}<a class="permalink-link" href="{Permalink}" aria-label="Permalink" title="Permalink">⋯</a>{/block:IndexPage}
             </div>
             
+            <!-- Previous/next post navigation and owner-only edit shortcut. -->
             {block:PermalinkPage}
                 {block:PermalinkPagination}
                 <div class="post-navigation">
@@ -3103,6 +3058,8 @@
       </div>
     </section> 
     
+        <!-- Hybrid index navigation. Infinite Scroll consumes the older link for
+             three loads; JavaScript then reveals this complete page list. -->
       {block:Pagination}
             {block:nextpage}<button id="load-more-fallback" type="button">Load more</button>{/block:nextpage}
             <div class="pagination hybrid-pagination" data-current-page="{CurrentPage}" data-total-pages="{TotalPages}" aria-label="Page navigation">
@@ -3127,6 +3084,7 @@
             </div>
         {/block:pagination}
                 
+        <!-- Site footer always follows posts, fallback controls and pagination. -->
         <footer id="site-footer">
             <p>&copy; {CopyrightYears} Simon Flühmann.<br>
             Words, pictures, links, yada yada - one ordinary guy living the life in the early 21st century.</p>
@@ -3135,7 +3093,7 @@
     </main>
     
     
-    <!-- Overlay -->
+    <!-- Legacy Hatfield modal shell. Kept for the optional Modal Post setting. -->
     
     <div class="dark-overlay"></div>
     <div class="stash-overlay">
@@ -3166,24 +3124,29 @@
     
     
     
+    <!-- Global image lightbox populated from whichever post image was clicked. -->
     <div id="image-lightbox" role="dialog" aria-modal="true" aria-label="Image preview" aria-hidden="true">
         <button class="image-lightbox-close" type="button" aria-label="Close image">&times;</button>
         <img src="" alt="">
     </div>
 
+    <!-- Floating return control appears after approximately 2.5 viewport heights. -->
     <button id="back-to-top" type="button" aria-label="Back to top">
         <i class="fa fa-rocket upstairs-rocket" aria-hidden="true"></i>
         <span>UPSTAIRS</span>
     </button>
 
+    <!-- Loader for automatic pages, manual Load more and internal navigation. -->
     <div id="dynamic-post-loader" role="status" aria-live="polite" aria-hidden="true">
         <svg class="loading-dodecahedron" aria-hidden="true"><use href="#icon-dodecahedron" xlink:href="#icon-dodecahedron"></use></svg>
         <span class="sr-text">Loading older posts</span>
     </div>
 
+    <!-- Empty decorative layer; JavaScript occasionally inserts one subtle event. -->
     <div id="ambient-events" aria-hidden="true"></div>
     
-
+    <!-- Vendor dependencies. Loading order matters: jQuery, bundled plugins,
+         Hatfield runtime, optional vendor modal, then custom site behavior. -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <script type="text/javascript" src="https://static.tumblr.com/evx2wil/QWfsf7w2i/plugins.js"></script>
     <script type="text/javascript" src="https://static.tumblr.com/evx2wil/W6nsf36xg/hatfield.js"></script>
@@ -3191,10 +3154,23 @@
 
     
     <script type="text/javascript">
+        /*
+         * CUSTOM THEME RUNTIME
+         * --------------------
+         * This wrapper receives the legacy jQuery instance required by Hatfield.
+         * Its responsibilities are deliberately documented here, but not
+         * structurally refactored in this CSS-focused change:
+         *   1. remove the opening loader safely;
+         *   2. initialize lightbox, edit link, Spotify and ambient enhancements;
+         *   3. start Isotope after images are measurable;
+         *   4. load three older Tumblr pages, then reveal full pagination.
+         */
         (function($) {
+            // Opening loader timing is independent of the later post loader.
             var preloaderShownAt = Date.now();
             var preloaderMinimumDuration = 1100;
 
+            // Fade the opening screen only after its minimum visible duration.
             function hideInitialPreloader() {
                 var remaining = Math.max(0, preloaderMinimumDuration - (Date.now() - preloaderShownAt));
 
@@ -3214,6 +3190,7 @@
                 }, remaining);
             }
             
+            // Reveal UPSTAIRS after the visitor has moved through 2.5 screens.
             function initBackToTopVisibility() {
                 var thresholdInViewports = 2.5;
 
@@ -3232,6 +3209,8 @@
                 updateBackToTopVisibility();
             }
 
+            // Tumblr injects owner controls only for logged-in visitors. Their
+            // presence is used as a conservative signal for showing edit links.
             function initOwnerEditLinks() {
                 var loggedInControlsSelector = [
                     "iframe.tmblr-iframe--desktop-loggedin-controls",
@@ -3260,6 +3239,8 @@
                 window.setTimeout(updateOwnerControls, 3000);
             }
 
+            // Delegate image clicks from document so dynamically appended posts
+            // receive identical lightbox behavior without rebinding each image.
             function initImageLightbox() {
                 var triggerSelector = "article img";
                 var $lightbox = $("#image-lightbox");
@@ -3333,6 +3314,7 @@
                     });
             }
 
+            // Normalize Spotify iframe overflow in either document or a new-post set.
             function containSpotifyEmbeds(context) {
                 var $context = $(context);
                 var $embeds = $context
@@ -3342,6 +3324,8 @@
                 $embeds.attr("scrolling", "no").css("overflow", "hidden");
             }
 
+            // Schedule one non-interactive visual event at irregular intervals.
+            // Reduced-motion and Tumblr's Customize preview disable the feature.
             function initAmbientEvents() {
                 var layer = document.getElementById("ambient-events");
                 var reducedMotion = window.matchMedia &&
@@ -3410,6 +3394,7 @@
                 scheduleNextEvent(true);
             }
 
+            // Hatfield parses Tumblr/NPF markup before custom enhancements run.
             stashFuel();
             initBackToTopVisibility();
             initOwnerEditLinks();
@@ -3419,7 +3404,8 @@
             
             $(document).ready(function(){
             
-                // Reblogs
+                // Mark legacy Tumblr author paragraphs for the shared reblog style
+                // and remove obsolete "(via ...)" lines from older post markup.
 				$( "article" ).each(function(i, v) {
                     $(this).find('.tumblr_blog').closest('p').addClass('reblog-user');
                     $( "p:contains('(via')" ).closest('p').empty();
@@ -3434,7 +3420,9 @@
             });
         
             
-            {block:IndexPage}    
+            {block:IndexPage}
+                // Isotope needs final image dimensions before calculating masonry
+                // positions. Search pages with no articles bypass that wait.
                 $antsIsoCont = $('#stash-ants');
 
                 if ($('body').hasClass('search-page') && !$antsIsoCont.find('.articlepost').length) {
@@ -3471,6 +3459,8 @@
                     $('#stash-ants').isotope(true).isotope('layout');
                 });
                 
+                // fitVids normalizes responsive video dimensions and each loaded
+                // video's metadata event triggers a fresh masonry measurement.
                 if ( $('.post-video').length > 0 ) {
                     $('.post').each(function(){
                         TweenMax.to(".post", 0.4, {autoAlpha:1, ease:Power2.easeOut});
@@ -3495,6 +3485,7 @@
 
             
             {block:TaggedPage}
+                // Tagged pages use the same post grid and need video relayouts too.
                 if ( $('.post-video').length > 0 ) {
                     $('video').on('loadeddata',function (){
                         $("article").fitVids();
@@ -3507,6 +3498,7 @@
                 hideInitialPreloader();
             {/block:PermalinkPage}
 
+            // Final opening-loader cleanup also restores optional banner elements.
             function removePre() {
                 $('#preloader').remove();
                 $('.banner-img, .mobile-banner-img').css({
@@ -3522,6 +3514,8 @@
                     var windowwidth = $(document).width();
                 });
                 
+                // Hybrid pagination state. ScrollMagic remains a Hatfield vendor
+                // dependency; the controller is retained for compatibility.
                 var controller = new ScrollMagic.Controller();
                 var $container = $('#stash-ants');
                 var $pagination = $('.hybrid-pagination');
@@ -3536,6 +3530,8 @@
                 var initialPage = parseInt($pagination.attr('data-current-page'), 10) || 1;
                 var totalPages = parseInt($pagination.attr('data-total-pages'), 10) || initialPage;
 
+                // Show/hide functions enforce a short minimum duration so the
+                // dodecahedron reads as intentional rather than a visual flash.
                 function showPostLoader() {
                     window.clearTimeout(postLoaderHideTimer);
                     postLoaderShownAt = Date.now();
@@ -3553,6 +3549,8 @@
                     }, remaining);
                 }
 
+                // Internal navigation starts immediate feedback unless a modifier
+                // key indicates that the destination opens elsewhere.
                 $(document).on('click.pageLoader', '#navigation a, .tags a, .hybrid-pagination a', function(event) {
                     if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
                         showPostLoader();
@@ -3563,11 +3561,14 @@
                     showPostLoader();
                 });
 
+                // Browser back/forward cache may restore a previously visible loader.
                 window.addEventListener('pageshow', function() {
                     $dynamicPostLoader.removeClass('is-loading').attr('aria-hidden', 'true');
                     $loadMoreFallback.prop('disabled', false);
                 });
 
+                // Build pagination URLs while preserving /tagged/... or /search/...
+                // path prefixes and replacing only a trailing /page/N segment.
                 function getPageUrl(pageNumber) {
                     var url = new URL(window.location.href);
                     var basePath = url.pathname.replace(/\/page\/\d+\/?$/, '');
@@ -3582,6 +3583,8 @@
                     return url.toString();
                 }
 
+                // Convert Tumblr's initially rendered page list to the page reached
+                // after automatic loads, then expose conventional navigation.
                 function revealPagination(currentPage) {
                     if (!$pagination.length) {
                         return;
@@ -3638,6 +3641,7 @@
                     $pagination.addClass('pagination-visible').css('display', 'flex');
                 }
 
+                // Destroy Infinite Scroll once and always leave usable pagination.
                 function stopInfiniteScroll(currentPage) {
                     if (!infiniteScrollStopped) {
                         infiniteScrollStopped = true;
@@ -3651,12 +3655,16 @@
                     revealPagination(currentPage);
                 }
 
+                // Infinite Scroll v1 uses jQuery AJAX; watch page requests so every
+                // automatic or manual retrieval gets the same loader treatment.
                 $(document).on('ajaxSend.postLoader', function(event, request, settings) {
                     if (settings && settings.url && /\/page\/\d+/.test(settings.url)) {
                         showPostLoader();
                     }
                 });
 
+                // Manual fallback calls the same vendor retrieval path. If the
+                // plugin is unavailable, numbered pagination is revealed instead.
                 $loadMoreFallback.on('click', function() {
                     if (infiniteScrollStopped) {
                         revealPagination(Math.min(initialPage + automaticLoads, totalPages));
@@ -3691,6 +3699,8 @@
                         },
                     },
                   },function( newElements ) {
+                    // Successful page callback: enhance new posts, wait for images,
+                    // append them to Isotope and stop after the configured limit.
 
                     automaticLoads += 1;
                     var currentLoadedPage = Math.min(initialPage + automaticLoads, totalPages);
@@ -3708,7 +3718,7 @@
                     stashFuel();
                     containSpotifyEmbeds(newElements);
                 
-                    // Remove Reblogs
+                    // Apply the same legacy reblog cleanup used on the initial page.
                     $(this).find('.tumblr_blog').closest('p').addClass('reblog-user');
                     $( "p:contains('(via')" ).closest('p').remove();
                     
@@ -3756,6 +3766,11 @@
     
         })(window.jQuery);
 
+        /*
+         * TITLE CORRECTION ANIMATION
+         * Keep "Herr Fühlmann?" visible, delete the mistaken ending, then type
+         * "Flühmann" once. Reduced-motion visitors receive the final title directly.
+         */
         window.addEventListener('load', function() {
             var title = document.getElementById('animated-title');
             var preserve = 'Herr F';
@@ -3798,7 +3813,8 @@
     </script>
     
     {block:IfGoogleAnalyticsID}
-        <!-- Google tag/Analytics (gtag.js) -->
+        <!-- Optional Google Analytics. Tumblr emits this block only when an ID is
+             configured in the theme options; no ID means no Analytics request. -->
         <script async src="https://www.googletagmanager.com/gtag/js?id={text:Google Analytics ID}"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
