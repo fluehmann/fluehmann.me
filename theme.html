@@ -2229,12 +2229,19 @@
             #header .logo a {
                 display:inline-block;
                 max-width:100%;
-                font-size:clamp(27px, 9.4vw, 44px);
+                font-size:clamp(46px, 15vw, 68px);
                 white-space:nowrap;
             }
 
             #animated-title {
                 letter-spacing:-.2rem;
+                line-height:.92;
+                white-space:normal;
+            }
+
+            #animated-title .title-prefix,
+            #animated-title .title-name {
+                display:block;
             }
 
             {block:iflogoimage}
@@ -2838,7 +2845,7 @@
 
             {block:ShowTitle} 
                 {block:ifnotlogoimage}
-                    <div class="logo"><h1><a href="/" aria-label="Herr Flühmann"><span id="animated-title">Herr Fühlmann?</span></a></h1></div>
+                    <div class="logo"><h1><a href="/" aria-label="Herr Flühmann"><span id="animated-title"><span class="title-prefix">Herr</span> <span id="animated-title-name" class="title-name">Fühlmann?</span></span></a></h1></div>
                 {/block:ifnotlogoimage}
                 
                 {block:iflogoimage}
@@ -3768,29 +3775,31 @@
 
         /*
          * TITLE CORRECTION ANIMATION
-         * Keep "Herr Fühlmann?" visible, delete the mistaken ending, then type
-         * "Flühmann" once. Reduced-motion visitors receive the final title directly.
+         * Keep "Herr Fühlmann?" visible, delete the mistaken surname ending, then
+         * type "Flühmann" once. The fixed "Herr" span preserves the mobile line
+         * break. Reduced-motion visitors receive the final title directly.
          */
         window.addEventListener('load', function() {
             var title = document.getElementById('animated-title');
-            var preserve = 'Herr F';
+            var titleName = document.getElementById('animated-title-name');
+            var preserve = 'F';
             var correction = 'lühmann';
-            var current = 'Herr Fühlmann?';
+            var current = 'Fühlmann?';
             var correctionIndex = 0;
 
-            if (!title) {
+            if (!title || !titleName) {
                 return;
             }
 
             if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                title.textContent = preserve + correction;
+                titleName.textContent = preserve + correction;
                 return;
             }
 
             function typeCorrection() {
                 if (correctionIndex < correction.length) {
                     current += correction.charAt(correctionIndex);
-                    title.textContent = current;
+                    titleName.textContent = current;
                     correctionIndex += 1;
                     window.setTimeout(typeCorrection, 100);
                 }
@@ -3799,7 +3808,7 @@
             function deleteMistake() {
                 if (current.length > preserve.length) {
                     current = current.slice(0, -1);
-                    title.textContent = current;
+                    titleName.textContent = current;
                     window.setTimeout(deleteMistake, 70);
                 } else {
                     window.setTimeout(typeCorrection, 250);
