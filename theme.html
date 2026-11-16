@@ -1394,10 +1394,20 @@
             transition:opacity .2s ease, color .2s ease, background-color .2s ease, transform .2s ease;
         }
 
-        #back-to-top .upstairs-rocket {
+        #back-to-top .rewind-hourglass {
             flex:none;
             font-size:14px;
             line-height:1;
+            transform-origin:50% 50%;
+        }
+
+        /* A single half-turn makes the hourglass feel mechanically reset. */
+        #back-to-top.is-rewinding .rewind-hourglass {
+            animation:rewind-hourglass-flip .55s ease-in-out both;
+        }
+
+        @keyframes rewind-hourglass-flip {
+            to { transform:rotate(180deg); }
         }
 
         html.back-to-top-visible #back-to-top {
@@ -2229,7 +2239,7 @@
             #header .logo a {
                 display:inline-block;
                 max-width:100%;
-                font-size:clamp(46px, 15vw, 68px);
+                font-size:clamp(42px, 13.5vw, 62px);
                 white-space:nowrap;
             }
 
@@ -2585,6 +2595,10 @@
             }
 
             .ticking-dodecahedron {
+                animation:none;
+            }
+
+            #back-to-top.is-rewinding .rewind-hourglass {
                 animation:none;
             }
         }
@@ -3138,9 +3152,9 @@
     </div>
 
     <!-- Floating return control appears after approximately 2.5 viewport heights. -->
-    <button id="back-to-top" type="button" aria-label="Back to top">
-        <i class="fa fa-rocket upstairs-rocket" aria-hidden="true"></i>
-        <span>UPSTAIRS</span>
+    <button id="back-to-top" type="button" aria-label="Rewind to the top">
+        <i class="fa-solid fa-hourglass-half rewind-hourglass" aria-hidden="true"></i>
+        <span>REWIND</span>
     </button>
 
     <!-- Loader for automatic pages, manual Load more and internal navigation. -->
@@ -3197,9 +3211,11 @@
                 }, remaining);
             }
             
-            // Reveal UPSTAIRS after the visitor has moved through 2.5 screens.
+            // Reveal REWIND after the visitor has moved through 2.5 screens and
+            // flip its hourglass once whenever the existing scroll action is used.
             function initBackToTopVisibility() {
                 var thresholdInViewports = 2.5;
+                var $backToTop = $("#back-to-top");
 
                 function updateBackToTopVisibility() {
                     var threshold = window.innerHeight * thresholdInViewports;
@@ -3212,6 +3228,22 @@
                 $(window)
                     .off("scroll.backToTopVisibility resize.backToTopVisibility")
                     .on("scroll.backToTopVisibility resize.backToTopVisibility", updateBackToTopVisibility);
+
+                $backToTop
+                    .off("click.rewindHourglass")
+                    .on("click.rewindHourglass", function() {
+                        var button = this;
+
+                        $(button).removeClass("is-rewinding");
+                        void button.offsetWidth;
+                        $(button).addClass("is-rewinding");
+                    });
+
+                $backToTop.find(".rewind-hourglass")
+                    .off("animationend.rewindHourglass")
+                    .on("animationend.rewindHourglass", function() {
+                        $backToTop.removeClass("is-rewinding");
+                    });
 
                 updateBackToTopVisibility();
             }
